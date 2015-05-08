@@ -11,5 +11,5 @@ bower install
 
 ##Developing
 You have to submit a pull request against the dev branch.
-Details can be found [on the wiki](https://github.com/craftyjs/Crafty/wiki)
+Details can be found [on the wiki](https://github.com/aymen-mouelhi/korko/wiki)
 
