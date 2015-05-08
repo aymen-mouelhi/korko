@@ -7,6 +7,7 @@ korko is aa [Sails](http://sailsjs.org) application using react/Flux for Fronten
 ```
 npm install
 bower install
+sails lift
 ```
 
 ##Developing
