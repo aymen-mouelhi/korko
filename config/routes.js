@@ -37,7 +37,7 @@ module.exports.routes = {
     },
 
     '/home': {
-        view: 'home'
+        view: 'dashboard'
     },
 
     '/air': {
