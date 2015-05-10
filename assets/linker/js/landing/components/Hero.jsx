@@ -24,7 +24,7 @@ define(['react'], function (React) {
                      </video>
                      */}
 
-                        <img src="https://a0.muscache.com/airbnb/static/landing_pages/pretzel/slideshow/hero8-7187849aff939a535678d94c25d3c88c.jpg" width="100%" />
+                        <img src="https://drscdn.500px.org/photo/108016165/m%3D2048/03015752bba7af6a710317a0f7b679fc" width="100%" />
                     </div>
 
                 {/* Hero Description */}
