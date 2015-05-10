@@ -53,13 +53,13 @@ define(['react'], function (React) {
                                         <hr/>
                                     </div>
 
-                                    <form accept-charset="UTF-8" action="/authenticate" className="signin-form login-form" data-action="Signin" method="post">
+                                    <form accept-charset="UTF-8" action="/auth/local" className="signin-form login-form" data-action="Signin" method="post">
 
                                         <input id="from" name="from" type="hidden" value="email_login" />
 
 
                                         <div className="control-group row-space-1">
-                                            <input className="decorative-input inspectletIgnore" id="signin_email" name="email" placeholder="Email Address" type="email" />
+                                            <input className="decorative-input inspectletIgnore" id="signin_email" name="identifier" placeholder="Email Address" type="email" />
                                         </div>
                                         <div className="control-group row-space-2">
                                             <input className="decorative-input inspectletIgnore" id="signin_password" name="password" placeholder="Password" type="password" />
