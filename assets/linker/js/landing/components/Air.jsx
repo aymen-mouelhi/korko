@@ -6,20 +6,20 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'app/Air'], function (React, Air) {
+define(['react', 'app/Hero', 'app/Header'], function (React, Hero, Header) {
     'use strict';
 
-    var LandingApp = React.createClass({
+    var Air = React.createClass({
 
         render: function () {
             return (
-                <div>
-                    <Air />
+                <div id="content">
+                    <Header />
+                    <Hero />
                 </div>
             );
         }
     });
 
-    return LandingApp;
-
+    return Air;
 });

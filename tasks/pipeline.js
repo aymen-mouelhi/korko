@@ -15,13 +15,16 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+    /*
     'bower_components/pure/pure-min.css',
 
     'bower_components/pure/grids-responsive-min.css',
 
     'bower_components/pure/font-awesome/css/font-awesome.css',
+    */
+    // Only keep bootsrap
 
-    'styles/**/*.css'
+
 ];
 
 

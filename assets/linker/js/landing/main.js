@@ -5,6 +5,8 @@ requirejs.config({
     paths: {
         'react': '/bower_components/react/react-with-addons',
         'jquery': '/bower_components/jquery/dist/jquery.min',
+        'classnames': '/bower_components/classnames/index',
+        'react-bootstrap': '/bower_components/react-bootstrap/react-bootstrap.min',
         'underscore':'/bower_components/underscore/underscore-min',
         'geolocator':'/bower_components/geolocator/src/geolocator.min',
         'app': '/linker/js/landing/components',
@@ -18,7 +20,7 @@ requirejs.config({
 });
 
 require(['react', 'app/App'],
-    function (React, App) {
+    function (React, App, classnames) {
 
         // as soon as this file is loaded, connect automatically,
         //var socket = io.connect();
