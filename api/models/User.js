@@ -1,3 +1,5 @@
+// Todo: Update User Model from: https://github.com/aymen-mouelhi/sails-starter-app/blob/master/api/models/User.js
+
 var User = {
     // Enforce model schema in the case of schemaless databases
     schema: true,

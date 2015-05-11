@@ -5,7 +5,7 @@ requirejs.config({
       'react': '/bower_components/react/react.min',
       'jquery': '/bower_components/jquery/dist/jquery',
       'jquery.timeago': '/bower_components/jquery-timeago/jquery.timeago',  
-      'showdown': '/bower_components/showdown/compressed/showdown',  
+      'showdown': '/bower_components/showdown/compressed/showdown',
       'bootstrap': '/bower_components/bootstrap/dist/js/bootstrap',
       'app': '/linker/js'
     },

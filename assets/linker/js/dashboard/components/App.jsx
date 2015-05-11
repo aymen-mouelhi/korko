@@ -6,20 +6,21 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'app/Air'], function (React, Air) {
+define(['react', 'app/Categories'], function (React, Categories) {
     'use strict';
 
-    var LandingApp = React.createClass({
+    // Todo: Loop over categories
+
+    var Dashboard = React.createClass({
 
         render: function () {
             return (
                 <div>
-                    <Air />
+                    <Categories url={'/categories'}/>
                 </div>
             );
         }
     });
 
-    return LandingApp;
-
+    return Dashboard;
 });

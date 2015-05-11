@@ -2,6 +2,8 @@ var path = require('path')
     , url = require('url')
     , passport = require('passport');
 
+// Todo: Add Rememeber Me Strategy:  RememberMeStrategy = require('passport-remember-me').Strategy;
+
 /**
  * Passport Service
  *

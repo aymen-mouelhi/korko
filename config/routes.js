@@ -37,7 +37,7 @@ module.exports.routes = {
     },
 
     '/home': {
-        view: 'dashboard'
+        view: 'dashboard/app'
     },
 
     '/air': {
@@ -62,5 +62,17 @@ module.exports.routes = {
     'post /auth/local/:action': 'AuthController.callback',
 
     'get /auth/:provider': 'AuthController.provider',
-    'get /auth/:provider/callback': 'AuthController.callback'
+    'get /auth/:provider/callback': 'AuthController.callback',
+
+    'post /password-reset' : {
+        controller: 'passwordReset',
+        action: 'create'
+    },
+
+    'get /repos': 'PinController.json',
+
+    'put /password-reset/:id?' : {
+        controller: 'passwordReset',
+        action: 'update'
+    }
 };

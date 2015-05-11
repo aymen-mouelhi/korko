@@ -9,8 +9,9 @@ requirejs.config({
         'react-bootstrap': '/bower_components/react-bootstrap/react-bootstrap.min',
         'underscore': '/bower_components/underscore/underscore-min',
         'geolocator': '/bower_components/geolocator/src/geolocator.min',
-        'app': '/linker/js/landing/components',
-        'utils': '/linker/js/landing/utils/utils'
+        'app': '/linker/js/dashboard/components',
+        'utils': '/linker/js/landing/utils/utils',
+        'showdown': '/bower_components/showdown/compressed/showdown'
     },
     shim: {
         'underscore': {
