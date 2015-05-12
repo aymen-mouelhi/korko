@@ -78,24 +78,18 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
     var Pin = React.createClass({
 
         mouseOver: function () {
-            /*
-            this.setState({
-                style: true
-            });
-            */
             $('#cover_' + this.props.id).show();
             $('#button_' + this.props.id).show();
         },
 
         mouseOut: function () {
-            //this.setState({hover: false});
+
             $('#cover_' + this.props.id).hide();
             $('#button_' + this.props.id).hide();
         },
 
 
         render: function () {
-
             var pinId = "pin_" + this.props.id;
             var coverId = "cover_" + this.props.id;
             var buttonId = "button_" + this.props.id;
@@ -120,6 +114,25 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
             );
         }
     }); //Pin
+
+
+    var Header = React.createClass({
+
+        render: function () {
+            return (
+                <div id="non-scrolling-section">
+                    <div className="header">
+                        <div className="header-logo">
+                            <a href="#">
+                                <img src="http://netflix.github.io/assets/netflix-oss-logo-new.png" align="middle" alt="Korko" border="0" />
+                            </a>
+                            <div className="header-text">Korko</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    });
 
     var Dashboard = React.createClass({
 
@@ -197,15 +210,27 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                     {category.text}
                     </Category>);
             });
+
+
+            var margin = {
+                "margin-top" : "100px"
+            };
+
+
             return (
-                <div id="scrolling-section">
-                    <div id="tab-content-repo">
-                        <div id="content-left">
-                            <div id="repo-heading">
-                                <a href="#"><h2>Trending Pins</h2></a>
-                            </div>
-                            <div id="repo-content">
-          {categoryNodes}
+                <div>
+                    <Header/>
+                    <div id="scrolling-section">
+                        <div id="tab-content-repo">
+                            <div id="content-left">
+                                <div id="repo-heading" style={margin}>
+                                    <a href="#">
+                                        <h2>Trending Pins</h2>
+                                    </a>
+                                </div>
+                                <div id="repo-content">
+                    {categoryNodes}
+                                </div>
                             </div>
                         </div>
                     </div>
