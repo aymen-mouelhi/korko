@@ -1,5 +1,5 @@
 /**
- * Created by I060307 on 08/05/2015.
+ * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 08/05/2015.
  */
 $(document).ready(function(){
     // login

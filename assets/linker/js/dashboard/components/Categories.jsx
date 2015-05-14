@@ -116,8 +116,193 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
     }); //Pin
 
 
-    var Header = React.createClass({
+    var NotificationWrapper = React.createClass({
 
+        render: function () {
+            var none = {
+                "display": "none"
+            };
+
+            // Todo: List of notifications: same as Account links
+
+            return (
+                <div className="notification-wrapper">
+                    <div id="notifications">
+                        <a href="#" className="unread-count unlitCounter">
+                            <span></span>
+                        </a>
+                        <div id="notification-firstTime" className="dropdown-menu">
+                            <div className="inner1">
+                                <div className="inner2">
+                                    <div className="notification-body">
+                                        <span className="up-arrow"></span>
+                                        <div className="firstTime-msg">
+                                            <p className="firstTime-title">Vous avez des notifications&nbsp;!</p>
+                                            <p className="firstTime-subtitle">
+                                                Cliquez pour voir vos messages.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="notification-panel" className="dropdown-menu connect">
+                            <div className="inner1">
+                                <div className="inner2">
+                                    <span className="up-arrow"></span>
+                                    <div className="connect">
+                                        <p className="title">Connectez-vous pour recevoir des recommandations privées de vos amis</p>
+                                        <div className="connect-container">
+                                            <div className="error-container">
+                                                <p className="generic">Une erreur est survenue lors de la tentative de connexion à Facebook.</p>
+                                                <div className="already-connected">
+                                                    Le compte Facebook que nous tentons de connecter est déjà utilisé par un autre compte Netflix.
+                                                    <button className="cta-fb-logout">
+                                                        S'identifier avec un autre compte
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div className="notification-body">
+                                        <span className="notification-title">Notifications</span>
+                                        <div className="notification-container clearfix">
+                                            <div className="spinning-loader" style={none}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            );
+        }
+    });
+
+    var SearchWrapper = React.createClass({
+
+        render: function () {
+            return (
+
+                <div id="searchWrapper" className="showTab">
+                    <div id="searchTab" className="nav-item">
+                        <a href="#">
+                            <span className="searchSprite search-icon "></span>
+                            <div className="content">Rechercher</div>
+                        </a>
+                    </div>
+
+                    <div id="global-search-form" className="productized">
+                        <form action="http://www.netflix.com/WiSearch" id="global-search" name="search">
+                            <div>
+                                <input type="text" tabindex="1" id="searchField" placeholder="Titres, Personnes, Genres" name="v1" autocorrect="off" autocomplete="off" autocapitalize="off" />
+                                <button type="submit" className="search-submit" name="search_submit" tabindex="2">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+    });
+
+
+    var Account = React.createClass({
+        render: function () {
+
+            return (
+                <div className="last notification2014 allow-hover">
+                    <div className="account-search">
+                        <div id="account-tools">
+                            <div className="account-tools">
+                                <div id="profileSwitcher" className="i-b account-menu ">
+                                    <div id="profilesLauncher">
+                                        <img src="https://pbs.twimg.com/profile_images/1879877721/aymen_200x200.png" className="profileImg i-b " title="Aymen" />
+                                        <div className="acct-menu-dropdown-trigger i-b">Aymen</div>
+                                    </div>
+                                    <span className="down-arrow"></span>
+                                    <span className="down-arrow-shadow"></span>
+                                    <AccountActions />
+                                </div>
+                            </div>
+                        </div>
+
+                        <NotificationWrapper />
+                        <SearchWrapper />
+                    </div>
+                </div>
+            );
+        }
+    });
+
+    var AccountActions = React.createClass({
+
+        render: function () {
+
+            var pointer = {
+                "cursor": "pointer"
+            };
+
+            var block = {
+                "display": "block"
+            };
+
+            return (
+                <div id="profiles-menu" className="dropdown-menu dropdown-profiles">
+                    <div className="inner1">
+                        <div className="inner2">
+                            <div className="profiles-menuBody">
+                                <span className="up-arrow"></span>
+
+                                <ul className="clearfix">
+                                    <li className="profileData" style={pointer}>
+                                        <a href="https://www.netflix.com/SwitchProfile?tkn=TIMRTUIOFRFAXCQGMLCOCENGWA" data-guid="TIMRTUIOFRFAXCQGMLCOCENGWA" data-img="http://cdn-0.nflximg.com/en_fr/ffe/avatars_v2/32x32/PICON_036B.png" data-kids="true" data-firstuse="false" data-accountowner="false" onclick="return false;">
+                                            <div className="i-b shim"></div>
+                                            <img src="https://pbs.twimg.com/profile_images/3545002921/8290e27287bbd38321b8859a53c0a4a2.jpeg" className="profileImg i-b" />
+                                            <div className="profileName i-b">Mister Pizza</div>
+                                        </a>
+                                    </li>
+
+                                    <li className="profileData profileTemplate" id="profileTemplate" style={pointer}>
+                                        <a href="" data-guid="" data-img="" data-kids="" data-firstuse="" data-accountowner="" onclick="return false;">
+                                            <div className="i-b shim"></div>
+                                            <img src="" className="profileImg i-b" />
+                                            <div className="profileName i-b"></div>
+                                        </a>
+                                    </li>
+
+                                    <li className="manage">
+                                        <a href="/profiles">
+                                            <div className="i-b shim"></div>
+                                            <div className="i-b">Manage my profiles</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div className="link" id="profilesMenuBrowseLink">
+                                    <a href="/categories" target="_top">Browse</a>
+                                </div>
+                                <div className="link">
+                                    <a href="/account" target="_top">My Account</a>
+                                </div>
+                                <div className="link">
+                                    <a href="/help" target="_top">Help</a>
+                                </div>
+                                <div className="link" id="signout">
+                                    <a href="/signout" target="_top">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    });
+
+
+    var Header = React.createClass({
         render: function () {
             return (
                 <div id="non-scrolling-section">
@@ -133,6 +318,68 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
             );
         }
     });
+
+
+    var NetflixHeader = React.createClass({
+        render: function () {
+            return (
+                <div className="svfDoc">
+                    <div className="contentWrap2014">
+
+                        <div id="hd" className="darkText headerShadow">
+                            <div className="logo">
+                                <a href="http://www.netflix.com/WiHome">Korko</a>
+                            </div>
+
+                            <div className="nav-wrap">
+                                <ul id="global-header" className="global-header-wrap i-b notDvdOnly">
+                                    <li id="nav-edgenre" className="globalConsistency nav-genres nav-item dropdown-trigger">
+                                        <span className="i-b content">
+                                            <a href="http://www.netflix.com/WiHome?lnkctr=mhWN">Parcourir</a>
+                                            <span className="right-arrow"></span>
+                                        </span>
+
+                                        <span className="i-b shim"></span>
+                                        <span className="up-arrow"></span>
+                                        <span className="down-arrow"></span>
+                                        <span className="down-arrow-shadow"></span>
+                                    </li>
+
+
+                                    <li id="rTab" className="nav-item-large nav-item">
+                                        <span className="i-b content">
+                                            <a href="http://www.netflix.com/RateMovies">
+                                                <span className="icon-star"></span>
+                                                Personnaliser</a>
+
+                                        </span>
+                                        <span className="i-b shim"></span>
+
+                                        <span className="down-arrow"></span>
+                                        <span className="down-arrow-shadow"></span>
+                                    </li>
+
+
+                                    <li id="nav-kids" className="nav-item dropdown-trigger">
+                                        <span className="i-b content">
+                                            <a href="#">Kids</a>
+                                        </span>
+                                        <span className="i-b shim"></span>
+                                        <span className="down-arrow"></span>
+                                        <span className="down-arrow-shadow"></span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <Account />
+
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    });
+
 
     var Dashboard = React.createClass({
 
@@ -207,19 +454,19 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
             var categoryNodes = this.state.data.map(function (category, index) {
                 return (
                     <Category>
-                    {category.text}
+            {category.text}
                     </Category>);
             });
 
 
             var margin = {
-                "margin-top" : "100px"
+                "margin-top": "100px"
             };
 
 
             return (
                 <div>
-                    <Header/>
+                    <NetflixHeader/>
                     <div id="scrolling-section">
                         <div id="tab-content-repo">
                             <div id="content-left">
@@ -229,7 +476,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                                     </a>
                                 </div>
                                 <div id="repo-content">
-                    {categoryNodes}
+            {categoryNodes}
                                 </div>
                             </div>
                         </div>
@@ -240,4 +487,5 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
     });
 
     return Dashboard;
-});
+})
+;

@@ -1,5 +1,5 @@
 /**
- * Created by I060307 on 10/05/2015.
+ * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 10/05/2015.
  */
 requirejs.config({
     paths: {
