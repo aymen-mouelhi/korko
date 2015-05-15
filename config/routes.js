@@ -65,14 +65,14 @@ module.exports.routes = {
     'get /auth/:provider/callback': 'AuthController.callback',
 
     'post /password-reset' : {
-        controller: 'passwordReset',
+        controller: 'PasswordReset',
         action: 'create'
     },
 
     'get /repos': 'PinController.json',
 
     'put /password-reset/:id?' : {
-        controller: 'passwordReset',
+        controller: 'PasswordReset',
         action: 'update'
     }
 };

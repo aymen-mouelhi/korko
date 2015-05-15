@@ -191,7 +191,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                     <div id="searchTab" className="nav-item">
                         <a href="#">
                             <span className="searchSprite search-icon "></span>
-                            <div className="content">Rechercher</div>
+                            <div className="content">Search</div>
                         </a>
                     </div>
 
@@ -322,20 +322,25 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
     var NetflixHeader = React.createClass({
         render: function () {
+
+            var customLogo = {
+                "background-image": "url(/images/korko.png)"
+            };
+
             return (
                 <div className="svfDoc">
                     <div className="contentWrap2014">
 
                         <div id="hd" className="darkText headerShadow">
                             <div className="logo">
-                                <a href="http://www.netflix.com/WiHome">Korko</a>
+                                <a href="http://www.netflix.com/WiHome" style={customLogo}>Korko</a>
                             </div>
 
                             <div className="nav-wrap">
                                 <ul id="global-header" className="global-header-wrap i-b notDvdOnly">
                                     <li id="nav-edgenre" className="globalConsistency nav-genres nav-item dropdown-trigger">
                                         <span className="i-b content">
-                                            <a href="http://www.netflix.com/WiHome?lnkctr=mhWN">Parcourir</a>
+                                            <a href="/map/app">Map</a>
                                             <span className="right-arrow"></span>
                                         </span>
 

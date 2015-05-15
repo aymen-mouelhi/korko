@@ -10,11 +10,9 @@ module.exports = {
 
     _processors: {
 
-
         /**
          * Send password reset email
          */
-
         sendPasswordResetEmail: function(job, cb) {
             if (!job.data.user) return cb( new Error("User not provided") );
 

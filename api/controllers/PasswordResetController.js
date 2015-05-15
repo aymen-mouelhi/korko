@@ -20,6 +20,11 @@
 
 module.exports = {
 
+
+    dummy: function (req, res) {
+        res.send({info: "Password dummy reset instructions sent"});
+    },
+
     /**
      * Create a new password reset token and send
      * an email with instructions to user
