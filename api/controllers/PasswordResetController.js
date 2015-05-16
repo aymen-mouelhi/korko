@@ -113,7 +113,7 @@ module.exports = {
                             passport.save(function (err) {
                                 if (err) return res.serverError(err);
                                 req.flash('success', 'Password has been updated');
-                                //res.send({info: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
+                                // Todo: Send Email to inform user that password has been updated
                                 res.redirect('/reset')
                             });
                         }

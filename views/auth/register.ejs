@@ -1,13 +1,27 @@
-<% if (errors) {%>
-  <% errors.forEach(function (error) { %>
+<div class="container">
+    <% if (errors) { %>
+    <% errors.forEach(function (error) { %>
     <%= __(error) %>
-  <% }) %>
-<% } %>
+    <% }) %>
+    <% } %>
 
-<form role="form" action="/auth/local/register" method="post">
-    <input type="text" name="firstName" placeholder="First Name">
-    <input type="text" name="lastName" placeholder="Last Name">
-  <input type="text" name="email" placeholder="Email">
-  <input type="password" name="password" placeholder="Password">
-  <button type="submit">Sign up</button>
-</form>
+    <div class="block">
+        <form role="form" action="/auth/local/register" method="post">
+            <legend>Sign Up</legend>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" name="firstName" placeholder="First Name" autofocus="true" class="form-control">
+                <label for="lastName">Last Name</label>
+                <input type="text" name="lastName" placeholder="Last Name" autofocus="true" class="form-control">
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="Email" autofocus="true" class="form-control">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Enter your password" autofocus="true"
+                       class="form-control">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+

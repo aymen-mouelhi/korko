@@ -112,6 +112,35 @@ module.exports = {
             });
         },
 
+
+        /**
+         * Send password update email
+         *
+         * Inform user that password has been updated
+         */
+
+        sendPasswordUpdatedEmail: function (cb) {
+            var self = this;
+
+            // Send email
+            var email = new Email._model({
+                to: {
+                    name: self.fullName(),
+                    email: self.email
+                },
+                subject: "Your Korko password has been updated",
+                tags: ['password-update', 'transactional'],
+                template: 'password-update'
+            });
+
+            email.setDefaults();
+
+            email.send(function (err, res, msg) {
+                cb(err, res, msg, self.resetPasswordToken);
+            });
+
+        },
+
         /**
          * Functions that run before a user is created
          */

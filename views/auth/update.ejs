@@ -1,12 +1,22 @@
-<% if (errors) { %>
-<% errors.forEach(function (error) { %>
-<%= __(error) %>
-<% }) %>
-<% } %>
+<div class="container">
+    <% if (errors) { %>
+    <% errors.forEach(function (error) { %>
+    <%= __(error) %>
+    <% }) %>
+    <% } %>
 
-<form role="form" action="/reset/<%= (token) %>" method="post">
-    <input type="password" name="password" placeholder="Password"/>
-    <input type="password" name="passwordConfirmation" placeholder="Confirm password"/>
-    <input type="hidden" name="token" value="<%= (token) %>"/>
-    <button type="submit">Update</button>
-</form>
+    <div class="block">
+        <form role="form" action="/reset/<%= (token) %>" method="post">
+            <legend>Update Password</legend>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Enter your password" autofocus="true"
+                       class="form-control">
+                <label for="password">Confirm Password</label>
+                <input type="password" name="passwordConfirmation" placeholder="Confirm password" autofocus="true"
+                       class="form-control">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+        </form>
+    </div>
+</div>
