@@ -5,17 +5,15 @@
  * Node Mailer service and setup
  */
 
-var sails = require("sails"),
-    nodemailer = require("nodemailer");
+var sails = require("sails");
+var nodemailer = require("nodemailer");
+var smtpTransport = require('nodemailer-smtp-transport');
 
-module.exports = nodemailer.createTransport("SMTP", {
-    /*
-     host: sails.config.smtp.host,
-     secureConnection: sails.config.smtp.ssl,
-     port: sails.config.smtp.port,
-     auth: {
-     user: sails.config.smtp.user,
-     pass: sails.config.smtp.pass
-     }
-     */
-});
+module.exports = nodemailer.createTransport(smtpTransport({
+    host: sails.config.smtp.host,
+    port: sails.config.smtp.port,
+    auth: {
+        user: sails.config.smtp.user,
+        pass: sails.config.smtp.pass
+    }
+}));

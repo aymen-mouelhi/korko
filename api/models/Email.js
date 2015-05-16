@@ -63,7 +63,7 @@ module.exports = {
         /**
          * Set default values if available
          *
-         * Funcionality taken from waterline, hopefully a setDefaults instance method will be
+         * Functionality taken from waterline, hopefully a setDefaults instance method will be
          * available in future releases, so we can remove this from the model definition.
          */
 
@@ -78,7 +78,7 @@ module.exports = {
         /**
          * Validate email based on current values
          *
-         * Funcionality taken from waterline, hopefully a validate instance method will be
+         * Functionality taken from waterline, hopefully a validate instance method will be
          * available in future releases, so we can remove this from the model definition.
          */
 
@@ -172,8 +172,13 @@ module.exports = {
 
                 message.to = recipients.join();
 
+                console.info("Message to be sent: " + JSON.stringify(message));
+
                 // Send mail
                 Mailer.sendMail(message, function (err, result) {
+                    console.info("Error while sending email: " + JSON.stringify(err));
+                    console.info("Result of sending email: " + JSON.stringify(result));
+
                     if(err) return cb(err);
                     cb(null, result, message);
                 });

@@ -126,7 +126,7 @@ var AuthController = {
     callback: function (req, res) {
         function tryAgain(err) {
 
-            console.log("Error: " + err);
+            console.log("Error in callback: " + JSON.stringify(err));
 
             // Only certain error messages are returned via req.flash('error', someError)
             // because we shouldn't expose internal authorization errors to the user.
@@ -159,7 +159,7 @@ var AuthController = {
 
         passport.callback(req, res, function (err, user, challenges, statuses) {
 
-            console.log("Error: " + err);
+            console.log("Error: " + JSON.stringify(err));
             console.log("User: " + user);
 
             if (err || !user) {

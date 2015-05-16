@@ -90,12 +90,12 @@ module.exports.connections = {
      ***************************************************************************/
 
     // Todo: Select a redis client in heroku
-
+    // pub-redis-17480.eu-west-1-1.1.ec2.garantiadata.com:17480
     redis: {
-        port: 6379,
-        host: 'localhost',
-        password: null,
-        database: null
+        port: 17480,
+        host: 'pub-redis-17480.eu-west-1-1.1.ec2.garantiadata.com',
+        password: "p5pmBGS5Ow6vSa73",
+        database: "redis-app34481958"
     }
 
 

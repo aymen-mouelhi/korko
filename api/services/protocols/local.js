@@ -172,6 +172,7 @@ exports.login = function (req, identifier, password, next) {
             if (passport) {
                 passport.validatePassword(password, function (err, res) {
                     if (err) {
+                        console.log("Error in Validate Password: " + JSON.stringify(err));
                         return next(err);
                     }
 

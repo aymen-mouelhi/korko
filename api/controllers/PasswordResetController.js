@@ -20,11 +20,6 @@
 
 module.exports = {
 
-
-    dummy: function (req, res) {
-        res.send({info: "Password dummy reset instructions sent"});
-    },
-
     /**
      * Create a new password reset token and send
      * an email with instructions to user
@@ -38,10 +33,20 @@ module.exports = {
 
             if(!user) return res.badRequest({ user: "not found" });
 
+            // Todo: Update Kue
+            /*
             Jobs.create('sendPasswordResetEmail', { user: user.toObject() }).save(function (err) {
                 if(err) return res.serverError(err);
                 res.send({ info: "Password reset instructions sent" });
             });
+             */
+
+            // Send User Email
+            user.sendPasswordResetEmail(function (error) {
+                if (err) return res.serverError(err);
+                res.send({info: "Password reset instructions sent"});
+            });
+
         });
     },
 
@@ -51,9 +56,10 @@ module.exports = {
      */
 
     update: function(req, res, next) {
+
         if (!req.params.id) return res.notFound();
 
-        if (!req.body.token) return res.badRequest({ token: "required" });
+        if (!req.params.token) return res.badRequest({token: "required"});
 
         User.findOneById(req.params.id, function (err, user) {
             if (err) return next(err);
@@ -86,6 +92,27 @@ module.exports = {
             });
         });
 
+    },
+
+    /**
+     * Ceck Password Reset Token
+     * @param req
+     * @param res
+     * @param next
+     */
+    check: function (req, res, next) {
+        User.findOne({
+            resetPasswordToken: req.params.token,
+            resetPasswordExpires: {$gt: Date.now()}
+        }, function (err, user) {
+            if (!user) {
+                req.flash('error', 'Password reset token is invalid or has expired.');
+                return res.redirect('/forgot');
+            }
+            res.render('reset', {
+                user: req.user
+            });
+        });
     },
 
 

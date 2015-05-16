@@ -22,7 +22,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                     <h2>
                         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
                     </h2>
-                    <PinCollection category={this.props.children.toString()} url='/repos' />
+                    <PinCollection category={this.props.children.toString()} url='/pins' />
                 </div>
             );
         }
