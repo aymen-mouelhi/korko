@@ -1,0 +1,12 @@
+<% if (errors) { %>
+<% errors.forEach(function (error) { %>
+<%= __(error) %>
+<% }) %>
+<% } %>
+
+<form role="form" action="/reset/<%= (token) %>" method="post">
+    <input type="password" name="password" placeholder="Password"/>
+    <input type="password" name="passwordConfirmation" placeholder="Confirm password"/>
+    <input type="hidden" name="token" value="<%= (token) %>"/>
+    <button type="submit">Update</button>
+</form>

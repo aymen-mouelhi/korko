@@ -27,8 +27,8 @@ exports.register = function (req, res, next) {
     var email = req.param('email')
         , username = req.param('username')
         , password = req.param('password')
-        , firstName = req.param('first_name')
-        , lastName = req.param('last_name');
+        , firstName = req.param('firstName')
+        , lastName = req.param('lastName');
 
     if (!email) {
         req.flash('error', 'Error.Passport.Email.Missing');
@@ -50,8 +50,8 @@ exports.register = function (req, res, next) {
     User.create({
         username: username,
         email: email,
-        first_name: firstName,
-        last_name: lastName
+        firstName: firstName,
+        lastName: lastName
     }, function (err, user) {
         if (err) {
             if (err.code === 'E_VALIDATION') {

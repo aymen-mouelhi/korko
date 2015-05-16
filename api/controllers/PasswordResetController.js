@@ -59,39 +59,78 @@ module.exports = {
 
     update: function (req, res, next) {
 
-        if (!req.params.id) return res.notFound();
-
         if (!req.params.token) return res.badRequest({token: "required"});
 
-        User.findOneById(req.params.id, function (err, user) {
-            if (err) return next(err);
+        User.findOne({
+            resetPasswordToken: req.params.token
+        }, function (err, user) {
+            if (err) {
+                req.flash('error', err);
+                return next(null, false);
+            } else {
+                if (user) {
+                    // Update user with new password
+                    Passport.findOne({
+                        protocol: 'local'
+                        , user: user.id
+                    }, function (err, passport) {
+                        if (passport) {
 
-            // Check if the token is valid
-            if (!user.passwordResetToken || user.passwordResetToken.value !== req.body.token)
-                return res.badRequest({token: "invalid"});
+                            console.log("Password reset token: " + req.params.token);
+                            console.log("Stored Password reset token: " + user.resetPasswordToken);
 
-            // Check if token is expired
-            var expires = new Date().setHours(new Date().getHours() - 2);
+                            // Check if the token is valid
+                            if (!user.resetPasswordToken || user.resetPasswordToken !== req.params.token) {
+                                console.log("token invalid");
+                                return res.badRequest({token: "invalid"});
+                            }
 
-            if (user.passwordResetToken.issuedAt.getTime() <= expires)
-                return res.badRequest({token: "expired"});
+                            // Check if token is expired
+                            var expires = new Date().setHours(new Date().getHours() - 2);
 
-            // Check if password has been provided
-            if (!req.body.password)
-                return res.badRequest({password: "required"});
+                            if (user.resetPasswordExpires <= expires) {
+                                console.log("token expired");
+                                return res.badRequest({token: "expired"});
+                            }
 
-            // Check if password matches confirmation
-            if (req.body.password !== req.body.passwordConfirmation)
-                return res.badRequest({passwordConfirmation: "invalid"});
 
-            // Update user with new password
-            user.password = req.body.password;
-            user.save(function (err) {
-                if (err) return next(err);
+                            // Check if password has been provided
+                            if (!req.body.password) {
+                                console.log("password not provided");
+                                return res.badRequest({password: "required"});
+                            }
 
-                // Send user data back to client
-                res.send(user.toJSON());
-            });
+
+                            // Check if password matches confirmation
+                            if (req.body.password !== req.body.passwordConfirmation) {
+                                console.log("password doesn't match");
+                                return res.badRequest({passwordConfirmation: "invalid"});
+                            }
+
+
+                            passport.password = req.body.password;
+
+                            passport.save(function (err) {
+                                if (err) return res.serverError(err);
+                                req.flash('success', 'Password has been updated');
+                                //res.send({info: 'An e-mail has been sent to ' + user.email + ' with further instructions.'});
+                                res.redirect('/reset')
+                            });
+                        }
+                        else {
+                            req.flash('error', 'Error.Passport.Password.NotSet');
+                            return next(null, false);
+                        }
+                    });
+                } else {
+                    console.log("User cannot be found");
+                    req.flash('error', 'User cannot be found');
+                    return next(null, false);
+                }
+            }
+
+
+
         });
 
     },
@@ -119,8 +158,8 @@ module.exports = {
                     req.flash('error', 'Password reset token is invalid or has expired.');
                     return res.redirect('/reset');
                 }
-                req.flash('success', 'Password has been updated');
-                return res.redirect('/reset');
+
+                return res.redirect('/update/' + req.params.token);
                 /*
                  res.render('reset', {
                  user: req.user

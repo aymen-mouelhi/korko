@@ -26,11 +26,11 @@ define(['react'], function (React) {
                         <input id="from" name="from" type="hidden" value="email_signup" />
 
                         <div className="control-group row-space-1" id="inputFirst">
-                            <input type="text" name="first_name" placeholder="First name" className="decorative-input" />
+                            <input type="text" name="firstName" placeholder="First name" className="decorative-input" />
                         </div>
 
                         <div className="control-group row-space-1" id="inputLast">
-                            <input type="text" name="last_name" placeholder="Last name" className="decorative-input inspectletIgnore" />
+                            <input type="text" name="lastName" placeholder="Last name" className="decorative-input inspectletIgnore" />
                         </div>
 
                         <div className="control-group row-space-1" id="inputEmail">

@@ -10,8 +10,8 @@ module.exports = {
 
     attributes: {
         //username: {type: 'string', unique: true},
-        first_name: {type: 'string'},
-        last_name: {type: 'string'},
+        firstName: {type: 'string'},
+        lastName: {type: 'string'},
         email: {type: 'email', unique: true},
         birthday: {type: 'date'},
         resetPasswordToken: {type: 'string'},
@@ -23,9 +23,9 @@ module.exports = {
          * Get user's full name
          */
         fullName: function () {
-            console.log("this.first_name: " + this.first_name);
+            console.log("this.firstName: " + this.firstName);
 
-            return _.compact([this.first_name, this.last_name]).join(' ');
+            return _.compact([this.firstName, this.lastName]).join(' ');
         },
 
         /**

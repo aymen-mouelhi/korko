@@ -115,6 +115,20 @@ var AuthController = {
     },
 
     /**
+     * Update Password
+     * @param req
+     * @param res
+     */
+    update: function (req, res) {
+        console.log("Token: " + req.params.token);
+
+        res.view({
+            errors: req.flash('error'),
+            token: req.params.token
+        });
+    },
+
+    /**
      * Create a third-party authentication endpoint
      *
      * @param {Object} req
