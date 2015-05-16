@@ -71,7 +71,7 @@ define(['react'], function (React) {
                                                 <input type="checkbox" name="remember_me" id="remember_me2" value="true" className="remember_me" />
                                                 Remember me
                                             </label>
-                                            <a href="/forgot_password" className="forgot-password pull-right">Forgot password?</a>
+                                            <a href="/reset" className="forgot-password pull-right">Forgot password?</a>
                                         </div>
 
                                         <button type="submit" className="btn btn-block btn-primary btn-large" id="user-login-btn">

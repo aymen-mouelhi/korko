@@ -1,0 +1,30 @@
+<div class="container">
+    <% if (messages) { %>
+    <% messages.error.forEach(function (message) {
+    %>
+    <div class="alert alert-danger"> <%= message %> </div>
+    <% }) %>
+    <%
+    messages.info.forEach(function (message) {
+    %>
+    <div class="alert alert-info"> <%= message %> </div>
+    <% }
+    ) %>
+    <% messages.success.forEach(function (message) {
+    %>
+    <div class="alert alert-success"> <%= message %> </div>
+    <% }) %>
+    <% } %>
+
+    <div class="block">
+        <form role="form" action="/reset" method="post">
+            <legend>Forgot Password</legend>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="Enter your email address" autofocus="true"
+                       class="form-control">
+                <button type="submit" class="btn btn-primary">Reset Password</button>
+            </div>
+        </form>
+    </div>
+</div>

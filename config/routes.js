@@ -57,6 +57,7 @@ module.exports.routes = {
     'get /login': 'AuthController.login',
     'get /logout': 'AuthController.logout',
     'get /register': 'AuthController.register',
+    'get /reset': 'AuthController.reset',
 
     'post /auth/local': 'AuthController.callback',
     'post /auth/local/:action': 'AuthController.callback',
@@ -64,7 +65,7 @@ module.exports.routes = {
     'get /auth/:provider': 'AuthController.provider',
     'get /auth/:provider/callback': 'AuthController.callback',
 
-    'post /password-reset' : {
+    'post /reset': {
         controller: 'PasswordReset',
         action: 'create'
     },

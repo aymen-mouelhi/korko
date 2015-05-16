@@ -98,6 +98,23 @@ var AuthController = {
     },
 
     /**
+     * Reset Password View
+     * @param req
+     * @param res
+     */
+    reset: function (req, res) {
+        var messages = {
+            error: req.flash('error'),
+            info: req.flash('info'),
+            success: req.flash('success')
+        };
+
+        res.view({
+            messages: messages
+        });
+    },
+
+    /**
      * Create a third-party authentication endpoint
      *
      * @param {Object} req

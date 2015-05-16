@@ -172,13 +172,9 @@ module.exports = {
 
                 message.to = recipients.join();
 
-                console.info("Message to be sent: " + JSON.stringify(message));
-
                 // Send mail
                 Mailer.sendMail(message, function (err, result) {
                     console.info("Error while sending email: " + JSON.stringify(err));
-                    console.info("Result of sending email: " + JSON.stringify(result));
-
                     if(err) return cb(err);
                     cb(null, result, message);
                 });

@@ -14,9 +14,9 @@ module.exports = {
         last_name: {type: 'string'},
         email: {type: 'email', unique: true},
         birthday: {type: 'date'},
-        passports: {collection: 'Passport', via: 'user'},
         resetPasswordToken: {type: 'string'},
-        resetPasswordExpires: {type: 'Date'},
+        resetPasswordExpires: {type: 'int'},
+        passports: {collection: 'Passport', via: 'user'},
 
 
         /**
@@ -58,14 +58,23 @@ module.exports = {
          */
 
         generatePasswordResetToken: function (cb) {
-            this.resetPasswordToken = Token.generate();
-            cb();
-            /*
-             this.save(function (err) {
-             if (err) return cb(err);
-             cb();
-             });
-             */
+            this.resetPasswordToken = Token.generate().value;
+
+            // Expires after one hour
+            this.resetPasswordExpires = parseInt(Date.now() + 3600000); // 1 hour
+
+            console.log("resetPasswordToken: " + JSON.stringify(this.resetPasswordToken));
+            console.log("resetPasswordExpires: " + this.resetPasswordExpires);
+
+            // Save user
+            this.save(function (err) {
+                if (err) {
+                    console.log("Error while saving user: " + JSON.stringify(err));
+                    return cb(err);
+                }
+                cb();
+            });
+
         },
 
         /**
@@ -89,7 +98,7 @@ module.exports = {
                     },
                     subject: "Reset your Korko password",
                     data: {
-                        resetURL: sails.getBaseurl() + '/reset/' + self.resetPasswordToken.value
+                        resetURL: sails.getBaseurl() + '/reset/' + self.resetPasswordToken
                     },
                     tags: ['password-reset', 'transactional'],
                     template: 'password-reset'
