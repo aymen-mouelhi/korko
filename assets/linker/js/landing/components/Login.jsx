@@ -67,8 +67,8 @@ define(['react'], function (React) {
                                         </div>
 
                                         <div className="clearfix row-space-2">
-                                            <label for="remember_me2" className="checkbox remember-me">
-                                                <input type="checkbox" name="remember_me" id="remember_me2" value="true" className="remember_me" />
+                                            <label for="remember" className="checkbox remember-me">
+                                                <input type="checkbox" name="remember" id="remember" value="true" className="remember_me" />
                                                 Remember me
                                             </label>
                                             <a href="/reset" className="forgot-password pull-right">Forgot password?</a>

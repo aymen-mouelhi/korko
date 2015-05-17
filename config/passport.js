@@ -19,6 +19,10 @@ module.exports.passport = {
         strategy: require('passport-local').Strategy
     },
 
+    rememberMe: {
+        strategy: require('passport-remember-me').Strategy
+    },
+
     bearer: {
         strategy: require('passport-http-bearer').Strategy
     },

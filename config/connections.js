@@ -21,6 +21,8 @@
 
 module.exports.connections = {
 
+    'default': 'localDiskDb',
+
     /***************************************************************************
      *                                                                          *
      * Local disk storage for DEVELOPMENT ONLY                                  *

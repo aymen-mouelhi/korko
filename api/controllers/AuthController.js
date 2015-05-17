@@ -164,6 +164,8 @@ var AuthController = {
             // We do return a generic error and the original request body.
             var flashError = req.flash('error')[0];
 
+            console.log("flashError Error in callback: " + flashError);
+
             if (err && !flashError) {
                 req.flash('error', 'Error.Passport.Generic');
             } else if (flashError) {
@@ -191,30 +193,71 @@ var AuthController = {
         passport.callback(req, res, function (err, user, challenges, statuses) {
 
             console.log("Error: " + JSON.stringify(err));
-            console.log("User: " + user);
+            //console.log("User: " + user);
+            console.log("Remember me?: " + req.body.remember);
+            console.log("Req: " + req.body.remember);
 
             if (err || !user) {
+                console.log("Error Occured before issuing token:" + err);
                 return tryAgain(challenges);
             }
 
 
+            // Log the user in
             req.login(user, function (err) {
+
                 if (err) {
+                    console.log("Error Occured when trying to login user:" + err);
                     return tryAgain(err);
                 }
-
-                console.info("Authenticated user: " + user);
-                console.info("Authenticated user: " + JSON.stringify(user));
-                // Todo: Store returned user info (image / email)
 
 
                 // Mark the session as authenticated to work with default Sails sessionAuth.js policy
                 req.session.authenticated = true;
 
-                // Upon successful login, send the user to the homepage were req.user
-                // will be available.
-                res.redirect('/dashboard/app');
+                // Make user available to the frontend
+                req.user = user.toJSON();
+
+                // Just return user JSON if remember me was not specified
+                if (!req.body.remember) {
+                    res.redirect('/dashboard/app');
+                } else {
+                    // If remember me option was specified, issue a session token
+                    user.issueSessionToken(user, function (err, token) {
+                        if (err) {
+                            console.log("Error Occured:" + err);
+                            return res.serverError(err);
+                        }
+
+                        // Create Cookie
+                        res.cookie('remember_me', token, {path: '/', httpOnly: true, maxAge: 60 * 60 * 24 * 30});
+                        // ... and return user data as JSON
+
+                        res.redirect('/dashboard/app');
+                        //res.send(user.toJSON());
+                    });
+                }
+
             });
+
+
+            /*
+             req.login(user, function (err) {
+             if (err) {
+             return tryAgain(err);
+             }
+             console.info("Authenticated user: " + user);
+             console.info("Authenticated user: " + JSON.stringify(user));
+             // Todo: Store returned user info (image / email)
+
+
+             // Todo: Create Session cookie
+
+             // Upon successful login, send the user to the homepage were req.user
+             // will be available.
+             res.redirect('/dashboard/app');
+             });
+             */
         });
     },
 

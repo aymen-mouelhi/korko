@@ -2,8 +2,6 @@ var path = require('path')
     , url = require('url')
     , passport = require('passport');
 
-// Todo: Add Rememeber Me Strategy:  RememberMeStrategy = require('passport-remember-me').Strategy;
-
 /**
  * Passport Service
  *
@@ -292,6 +290,7 @@ passport.loadStrategies = function () {
     var self = this
         , strategies = sails.config.passport;
 
+    // Todo: Special Workaround for the remember me strategy
     Object.keys(strategies).forEach(function (key) {
         var options = {passReqToCallback: true}, Strategy;
 
@@ -309,7 +308,12 @@ passport.loadStrategies = function () {
 
                 self.use(new Strategy(options, self.protocols.local.login));
             }
-        } else if (key === 'bearer') {
+        } else if (key === "rememberMe") {
+            Strategy = strategies[key].strategy;
+
+            self.use(new Strategy(options, self.protocols.rememberMe.verify, self.protocols.rememberMe.issue));
+        }
+        else if (key === 'bearer') {
 
             if (strategies.bearer) {
                 Strategy = strategies[key].strategy;

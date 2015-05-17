@@ -16,6 +16,9 @@ module.exports = {
         birthday: {type: 'date'},
         resetPasswordToken: {type: 'string'},
         resetPasswordExpires: {type: 'int'},
+        sessionTokens: {
+            type: 'array'
+        },
         passports: {collection: 'Passport', via: 'user'},
 
 
@@ -36,7 +39,7 @@ module.exports = {
             var user = this.toObject();
             delete user.password;
             delete user.passwordConfirmation;
-            delete user.encryptedPassword;
+            //delete user.password;
             delete user.sessionTokens;
             delete user._csrf;
             return user;
@@ -215,6 +218,7 @@ module.exports = {
             });
 
             user.save(function (err) {
+                console.log("error while saving user?");
                 cb(err, token);
             });
         },
@@ -224,6 +228,7 @@ module.exports = {
          */
 
         consumeSessionToken: function (token, cb) {
+
             if (!token || typeof token === 'function') return cb("A token must be supplied");
 
             User.findOne({'sessionTokens.token': token}, function (err, user) {

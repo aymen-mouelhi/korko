@@ -28,6 +28,9 @@ module.exports = {
      */
 
     create: function(req, res, next) {
+
+        console.log("Create new session is now called !");
+
         passport.authenticate('local', function (err, user, info) {
             if (err) return res.serverError(err);
 
