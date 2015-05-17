@@ -27,7 +27,38 @@ module.exports.policies = {
      ***************************************************************************/
 
     //'*': true,
-    '*': ['passport']
+    /*
+     '*': 'isAuthenticated',
+
+     SessionController: {
+     '*': true
+     },
+
+     user: {
+     create: true,
+     update: ['isAuthenticated']
+     },
+
+     PasswordResetController: {
+     create: true,
+     update: true
+     }
+
+     */
+
+    '*': 'isAuthenticated',
+
+    'DashboardController': {
+        '*': 'isAuthenticated'
+    },
+
+    'PinController': {
+        '*': 'isAuthenticated'
+    },
+
+    'auth': {
+        '*': ['passport']
+    }
 
     /***************************************************************************
      *                                                                          *

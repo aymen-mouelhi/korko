@@ -31,14 +31,20 @@ module.exports.routes = {
      * `assets` directory)                                                      *
      *                                                                          *
      ***************************************************************************/
-
+    /*
     '/': {
-        view: 'home'
+     view: 'home/home'
     },
+     */
 
+    'get /': 'HomeController.home',
+
+
+    /*
     '/home': {
         view: 'dashboard/app'
     },
+     */
 
     '/air': {
         view: 'airbnb'
