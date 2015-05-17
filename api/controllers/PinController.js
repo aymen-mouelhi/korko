@@ -21765,6 +21765,11 @@ module.exports = {
             ]};
 
         res.json(repos);
+    },
 
+    create: function (req, res) {
+        return res.view({
+            errors: req.flash('error')
+        });
     }
 };

@@ -239,6 +239,22 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
     var AccountActions = React.createClass({
 
+        addPin: function () {
+            // Todo: Open Modal Box
+            $(".modal-body").fadeIn(1000).html('<div style="text-align:center; margin-right:auto; margin-left:auto">Loading...</div>');
+            $.ajax({
+                type: "POST",
+                data: {Id: Id},
+                url: "",
+                error: function (msg) {
+                    $(".modal-body").addClass("tableau_msg_erreur").fadeOut(800).fadeIn(800).fadeOut(400).fadeIn(400).html('<div style="margin-right:auto; margin-left:auto; text-align:center">Impossible de charger cette page</div>');
+                },
+                success: function (data) {
+                    $(".modal-body").fadeIn(1000).html(data);
+                }
+            });
+        },
+
         render: function () {
 
             var pointer = {
@@ -280,6 +296,10 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                                         </a>
                                     </li>
                                 </ul>
+
+                                <div className="link" id="profilesMenuBrowseLink">
+                                    <a href="/pin/create" target="_top">Add a new Pin</a>
+                                </div>
 
                                 <div className="link" id="profilesMenuBrowseLink">
                                     <a href="/categories" target="_top">Browse</a>

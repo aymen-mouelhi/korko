@@ -192,24 +192,14 @@ var AuthController = {
 
         passport.callback(req, res, function (err, user, challenges, statuses) {
 
-            console.log("Error: " + JSON.stringify(err));
-            //console.log("User: " + user);
-            console.log("Remember me?: " + req.body.remember);
-            console.log("Req: " + req.body.remember);
-
             if (err || !user) {
-                console.log("Error Occured before issuing token:" + err);
                 return tryAgain(challenges);
             }
 
 
             // Log the user in
             req.login(user, function (err) {
-
-                if (err) {
-                    console.log("Error Occured when trying to login user:" + err);
-                    return tryAgain(err);
-                }
+                if (err) return tryAgain(err);
 
 
                 // Mark the session as authenticated to work with default Sails sessionAuth.js policy
@@ -225,7 +215,6 @@ var AuthController = {
                     // If remember me option was specified, issue a session token
                     user.issueSessionToken(user, function (err, token) {
                         if (err) {
-                            console.log("Error Occured:" + err);
                             return res.serverError(err);
                         }
 

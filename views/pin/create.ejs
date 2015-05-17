@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
+<script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<script>
+    // Dropzone class:
+    var myDropzone = new Dropzone("div#dropzone", {url: "/file/post"});
+</script>
+
+<div class="container">
+    <% if (errors) { %>
+    <% errors.forEach(function (error) { %>
+    <%= __(error) %>
+    <% }) %>
+    <% } %>
+
+    <div class="block">
+
+        <form role="form" action="/pin/create" method="post">
+            <legend>Create new Pin</legend>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" placeholder="title ..." autofocus="true"
+                       class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" name="description" placeholder="title ..." autofocus="true"
+                       class="form-control">
+            </div>
+            <!-- Todo: location: Pick a location -->
+            <!-- Todo: Add category -->
+            <div class="form-group">
+                <label for="category">Password</label>
+                <input type="text" name="category" placeholder="category ..." autofocus="true"
+                       class="form-control">
+            </div>
+
+            <div id="dropzone"></div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+
+        </form>
+
+
+        <!-- <form id="dropzone" action="/target" class="dropzone"></form> -->
+
+    </div>
+
+</div>

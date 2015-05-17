@@ -31,6 +31,7 @@
     "react-geosuggest": "~1.0.2",
     "pure": "~0.6.0",
     "font-awsome": "~4.3.0",
-    "react-bootstrap": "~0.21.2"
+    "react-bootstrap": "~0.21.2",
+    "dropzone": "~4.0.1"
   }
 }
