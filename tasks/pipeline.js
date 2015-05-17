@@ -23,7 +23,7 @@ var cssFilesToInject = [
     'bower_components/pure/font-awesome/css/font-awesome.css',
     */
     // Only keep bootstrap
-    'bower_components/bootstrap/dist/css/bootstrap.min.css'
+    //'bower_components/bootstrap/dist/css/bootstrap.min.css'
 
 ];
 

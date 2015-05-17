@@ -46,7 +46,7 @@ module.exports.policies = {
 
      */
 
-    '*': 'isAuthenticated',
+    '*': true,
 
     'DashboardController': {
         '*': 'isAuthenticated'
