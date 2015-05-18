@@ -1,11 +1,3 @@
-<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
-<script src="/bower_components/dropzone/dist/dropzone.js"></script>
-<script>
-    // Dropzone class:
-    var myDropzone = new Dropzone("div#dropzone", {url: "/file/post"});
-</script>
-
 <div class="container">
     <% if (errors) { %>
     <% errors.forEach(function (error) { %>
@@ -35,15 +27,40 @@
                        class="form-control">
             </div>
 
-            <div id="dropzone"></div>
+            <!-- Upload Images -->
+            <div class="form-group">
+                <label for="category">Images</label>
+
+                <div id="dropzone" class="dropzone dz-clickable"></div>
+            </div>
 
             <button type="submit" class="btn btn-primary">Create</button>
 
         </form>
-
-
-        <!-- <form id="dropzone" action="/target" class="dropzone"></form> -->
-
     </div>
 
 </div>
+
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
+<style>
+
+    .dropzone.dz-clickable {
+        cursor: pointer;
+    }
+
+    .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        background: white;
+    }
+
+</style>
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<script>
+    if (document.getElementById('dropzone')) {
+        var Dropzone = new Dropzone("div#dropzone", {url: "/file/post"});
+    }
+
+</script>
