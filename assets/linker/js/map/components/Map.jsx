@@ -52,9 +52,13 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // Todo: remove polygon
             console.log("polygon / circle should be somehow removed ");
             neighborhood.setMap(null);
+
             drawingManager.setOptions({
                 drawingControl: true
             });
+            // Remove map
+            drawingManager.setMap(null);
+            // hide remove button
             $("#remove-button").hide();
         });
     }
@@ -311,6 +315,10 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 drawingManager.setOptions({
                     drawingControl: false
                 });
+
+                // Remove Map
+                drawingManager.setMap(null);
+
             });
 
 
