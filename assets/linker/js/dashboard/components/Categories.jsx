@@ -274,7 +274,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
                                 <ul className="clearfix">
                                     <li className="profileData" style={pointer}>
-                                        <a href="https://www.netflix.com/SwitchProfile?tkn=TIMRTUIOFRFAXCQGMLCOCENGWA" data-guid="TIMRTUIOFRFAXCQGMLCOCENGWA" data-img="http://cdn-0.nflximg.com/en_fr/ffe/avatars_v2/32x32/PICON_036B.png" data-kids="true" data-firstuse="false" data-accountowner="false" onclick="return false;">
+                                        <a href="/switchProfile?profile=2">
                                             <div className="i-b shim"></div>
                                             <img src="https://pbs.twimg.com/profile_images/3545002921/8290e27287bbd38321b8859a53c0a4a2.jpeg" className="profileImg i-b" />
                                             <div className="profileName i-b">Mister Pizza</div>
@@ -297,11 +297,11 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                                     </li>
                                 </ul>
 
-                                <div className="link" id="profilesMenuBrowseLink">
+                                <div className="link">
                                     <a href="/pin/create" target="_top">Add a new Pin</a>
                                 </div>
 
-                                <div className="link" id="profilesMenuBrowseLink">
+                                <div className="link">
                                     <a href="/categories" target="_top">Browse</a>
                                 </div>
                                 <div className="link">
@@ -358,7 +358,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
                             <div className="nav-wrap">
                                 <ul id="global-header" className="global-header-wrap i-b notDvdOnly">
-                                    <li id="nav-edgenre" className="globalConsistency nav-genres nav-item dropdown-trigger">
+                                    <li id="nav-edgenre" className="nav-genres nav-item">
                                         <span className="i-b content">
                                             <a href="/map/app">Map</a>
                                             <span className="right-arrow"></span>
@@ -370,29 +370,6 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                                         <span className="down-arrow-shadow"></span>
                                     </li>
 
-
-                                    <li id="rTab" className="nav-item-large nav-item">
-                                        <span className="i-b content">
-                                            <a href="http://www.netflix.com/RateMovies">
-                                                <span className="icon-star"></span>
-                                                Personnaliser</a>
-
-                                        </span>
-                                        <span className="i-b shim"></span>
-
-                                        <span className="down-arrow"></span>
-                                        <span className="down-arrow-shadow"></span>
-                                    </li>
-
-
-                                    <li id="nav-kids" className="nav-item dropdown-trigger">
-                                        <span className="i-b content">
-                                            <a href="#">Kids</a>
-                                        </span>
-                                        <span className="i-b shim"></span>
-                                        <span className="down-arrow"></span>
-                                        <span className="down-arrow-shadow"></span>
-                                    </li>
                                 </ul>
                             </div>
 
