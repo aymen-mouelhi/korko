@@ -26,7 +26,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         controlUI.style.cursor = 'pointer';
         controlUI.style.marginBottom = '22px';
         controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to remove the neighborhood';
+        controlUI.title = 'Remove the neighborhood';
         controlDiv.appendChild(controlUI);
 
         // Set CSS for the control interior
@@ -47,7 +47,35 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // Todo: remove polygon
             console.log("polygon / circle should be somehow removed ");
         });
+    }
 
+
+    function MenuControl(controlDiv, map) {
+        var menuUI = document.createElement('div');
+
+        menuUI.style.backgroundColor = '#fff';
+        menuUI.style.border = '2px solid #fff';
+        menuUI.style.borderRadius = '3px';
+        menuUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        menuUI.style.cursor = 'pointer';
+        menuUI.style.marginBottom = '22px';
+        menuUI.style.textAlign = 'center';
+
+
+        var ul = document.createElement("ul");
+        var li = document.createElement("li");
+
+        li.innerHTML = "Remove";
+        li.style.color = 'rgb(25,25,25)';
+        li.style.fontFamily = 'Roboto,Arial,sans-serif';
+        li.style.fontSize = '12px';
+        li.style.lineHeight = '30px';
+        li.style.paddingLeft = '5px';
+        li.style.paddingRight = '5px';
+
+        ul.appendChild(li);
+        menuUI.appendChild(ul);
+        controlDiv.appendChild(menuUI);
     }
 
 
@@ -257,11 +285,34 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
                     // Todo: Store neighborhood
                     console.info("received event after polygon drawn: " + event);
-                    console.info("Coordinates must be: " + event.overlay.getPath().getArray())
+                    console.info("Coordinates must be: " + event.overlay.getPath().getArray());
                     // Todo: add remove button
+                    // Todo: right click
+                    //var overlay = event.overlay;
+
+                    var overlay = new google.maps.OverlayView();
+                    overlay.draw = function () {
+                    };
+                    overlay.setMap(that.state.map);
+
+
+                    google.maps.event.addListener(event.overlay, 'rightclick', function (event) {
+                        console.log("map projection: " + that.state.map.getProjection());
+                        var projection = that.state.map.getProjection();
+                        var pos = overlay.getProjection().fromLatLngToDivPixel(event.latLng);
+
+                        //var menuControlDiv = document.createElement('div');
+                        //var menuControl = new MenuControl(menuControlDiv, that.state.map);
+                        //menuControlDiv.index = 1;
+
+                        $('#menu').show();
+                        $('#menu').css("left", pos.x);
+                        $('#menu').css("top", pos.y);
+                    });
                     // Todo: hide drawing bar
                 }
             });
+
 
             /*
              // Perform search over radius
@@ -471,9 +522,21 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         },
 
         render: function () {
+
+            var hidden = {
+                display: "none"
+            };
+
             return (
+
                 <div id="map-canvas" className="map">
+                    <div id="menu" style={hidden}>
+                        <ul>
+                            <li>Remove</li>
+                        </ul>
+                    </div>
                 </div>
+
             );
         }
     });
