@@ -298,44 +298,19 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     // Todo: add remove button
                     // Todo: right click
                     //var overlay = event.overlay;
-
-                    neighborhood = event.overlay;
-
-                    $('#remove-button').show();
-
-                    drawingManager.setOptions({
-                        drawingControl: false
-                    });
-
-
-                    /*
-                    var overlay = new google.maps.OverlayView();
-                    overlay.draw = function () {
-                    };
-                    overlay.setMap(that.state.map);
-                     */
-
-                    google.maps.event.addListener(event.overlay, 'rightclick', function (event) {
-                        // Todo: remove right click
-                        var projection = that.state.map.getProjection();
-                        console.log("map projection: " + projection);
-
-                        /*
-                        var projection = that.state.map.getProjection();
-                         console.log("map projection: " + projection);
-
-                         var pos = overlay.getProjection().fromLatLngToDivPixel(event.latLng);
-                         console.log("Position: " + pos);
-
-                         var menuControlDiv = document.createElement('div');
-                         var menuControl = new MenuControl(menuControlDiv, that.state.map);
-                         menuControlDiv.index = 1;
-                         */
-                        //that.state.map.controls[google.maps.ControlPosition.CENTER].push(menuControlDiv);
-                        // Todo: hide drawing bar
-
-                    });
                 }
+                // Set neighborhood
+                neighborhood = event.overlay;
+
+                // Todo: Store neighborhood
+
+                // Show remove button
+                $('#remove-button').show();
+
+                // hide drawing panel
+                drawingManager.setOptions({
+                    drawingControl: false
+                });
             });
 
 
