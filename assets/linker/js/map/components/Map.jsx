@@ -10,6 +10,9 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
     'use strict';
 
 
+    var drawingManager;
+    var neighborhood;
+
     /**
      * The RemoveControl adds a control to the map that removes the created polygon / circle
      * This constructor takes the control DIV as an argument.
@@ -19,6 +22,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
         // Set CSS for the control border
         var controlUI = document.createElement('div');
+        controlUI.id = "remove-button";
         controlUI.style.backgroundColor = '#fff';
         controlUI.style.border = '2px solid #fff';
         controlUI.style.borderRadius = '3px';
@@ -27,6 +31,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         controlUI.style.marginBottom = '22px';
         controlUI.style.textAlign = 'center';
         controlUI.title = 'Remove the neighborhood';
+        controlUI.style.display = 'none';
         controlDiv.appendChild(controlUI);
 
         // Set CSS for the control interior
@@ -46,6 +51,11 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             //this.state.map.setCenter(chicago)
             // Todo: remove polygon
             console.log("polygon / circle should be somehow removed ");
+            neighborhood.setMap(null);
+            drawingManager.setOptions({
+                drawingControl: true
+            });
+            $("#remove-button").hide();
         });
     }
 
@@ -60,7 +70,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         menuUI.style.cursor = 'pointer';
         menuUI.style.marginBottom = '22px';
         menuUI.style.textAlign = 'center';
-
 
         var ul = document.createElement("ul");
         var li = document.createElement("li");
@@ -198,7 +207,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             };
 
 
-            var drawingManager = new google.maps.drawing.DrawingManager({
+            drawingManager = new google.maps.drawing.DrawingManager({
                 drawingMode: google.maps.drawing.OverlayType.POLYGON,
                 drawingControl: true,
                 drawingControlOptions: {
@@ -290,26 +299,42 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     // Todo: right click
                     //var overlay = event.overlay;
 
+                    neighborhood = event.overlay;
+
+                    $('#remove-button').show();
+
+                    drawingManager.setOptions({
+                        drawingControl: false
+                    });
+
+
+                    /*
                     var overlay = new google.maps.OverlayView();
                     overlay.draw = function () {
                     };
                     overlay.setMap(that.state.map);
-
+                     */
 
                     google.maps.event.addListener(event.overlay, 'rightclick', function (event) {
-                        console.log("map projection: " + that.state.map.getProjection());
+                        // Todo: remove right click
                         var projection = that.state.map.getProjection();
-                        var pos = overlay.getProjection().fromLatLngToDivPixel(event.latLng);
+                        console.log("map projection: " + projection);
 
-                        //var menuControlDiv = document.createElement('div');
-                        //var menuControl = new MenuControl(menuControlDiv, that.state.map);
-                        //menuControlDiv.index = 1;
+                        /*
+                        var projection = that.state.map.getProjection();
+                         console.log("map projection: " + projection);
 
-                        $('#menu').show();
-                        $('#menu').css("left", pos.x);
-                        $('#menu').css("top", pos.y);
+                         var pos = overlay.getProjection().fromLatLngToDivPixel(event.latLng);
+                         console.log("Position: " + pos);
+
+                         var menuControlDiv = document.createElement('div');
+                         var menuControl = new MenuControl(menuControlDiv, that.state.map);
+                         menuControlDiv.index = 1;
+                         */
+                        //that.state.map.controls[google.maps.ControlPosition.CENTER].push(menuControlDiv);
+                        // Todo: hide drawing bar
+
                     });
-                    // Todo: hide drawing bar
                 }
             });
 
