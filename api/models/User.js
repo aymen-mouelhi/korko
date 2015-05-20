@@ -16,9 +16,7 @@ module.exports = {
         birthday: {type: 'date'},
         resetPasswordToken: {type: 'string'},
         resetPasswordExpires: {type: 'int'},
-        sessionTokens: {
-            type: 'array'
-        },
+        sessionTokens: {type: 'array'},
         passports: {collection: 'Passport', via: 'user'},
         neighborhoods: {collection: 'Neighborhood', via: 'user'},
 

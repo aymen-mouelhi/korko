@@ -79,7 +79,12 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 content: pinString
             };
 
+            // Todo: get uid from cookie
+            var uid = Utils.getCookie("korko").uid;
+
+
             return {
+                //uid: uid,
                 map: null,
                 RADIUS: 100,
                 EARTH_RADIUS: 6378137,
@@ -330,7 +335,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             return (
                 <div id="map-canvas" className="map">
                 </div>
-
             );
         }
     });

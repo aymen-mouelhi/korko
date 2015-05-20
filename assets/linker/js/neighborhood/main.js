@@ -24,8 +24,6 @@ requirejs.config({
 require(['react', 'app/Map', 'geolocator'],
     function (React, Map, geolocator) {
 
-        // as soon as this file is loaded, connect automatically,
-        //var socket = io.connect();
         React.render(
             React.createElement(Map),
             document.getElementById('react')

@@ -9,6 +9,13 @@ module.exports = {
 
     account: function (req, res) {
         return res.view();
+    },
+
+    update: function (req, res) {
+        var id = req.params.id;
+        console.info("recieved user id: " + id);
+        // Get neighborhood
+
     }
 	
 };
