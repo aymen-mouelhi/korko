@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<script src="/bower_components/requirejs/require.js"></script>
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=drawing"></script>
+<script src="/linker/js/neighborhood/main.js"></script>
+<style>
+    .item {
+        color: #333;
+        float: left;
+        font-size: 12px;
+        /*
+        width: 165px;
+        */
+        padding-left: 5px;
+        margin: 0;
+    }
+
+    .itemContent {
+        padding-left: 0;
+        color: #9197a3;
+        /*
+        font-weight: bold;
+        width: 445px;
+        */
+        margin-left: 175px;
+
+        font-size: 12px;
+    }
+
+    .row {
+        border-width: 0;
+        border-color: #e9eaed;
+        border-style: solid;
+    }
+
+    .list {
+        border-bottom: 1px solid #aaa;
+        border-top: 1px solid #aaa;
+        list-style-type: none;
+        word-wrap: break-word;
+        padding: 0 20px;
+        /*
+        width: 759px;
+        */
+        margin-right: 0;
+    }
+
+    html, body {
+        height: 100%;
+        background: #e9eaed;
+    }
+
+    #react {
+        width: 500px;
+        height: 400px;
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
+    }
+
+
+</style>
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Personal Information</div>
+        <div class="panel-body">
+
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div>
+                        <h3 class="item">First Name</h3>
+                        <strong class="itemContent"><%= req.user.firstName %></strong>
+                    </div>
+
+                </li>
+                <li class="list-group-item">
+                    <h3 class="item">Last Name</h3>
+                    <strong class="itemContent"><%= req.user.lastName %></strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Neighborhood</h3>
+        </div>
+        <div class="panel-body" id="map-container">
+            <div id="react"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Payment Information</h3>
+        </div>
+        <div class="panel-body">
+            Panel content
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Social Profiles</h3>
+        </div>
+        <div class="panel-body">
+            Panel content
+        </div>
+    </div>
+</div>

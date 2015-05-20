@@ -6,5 +6,9 @@
  */
 
 module.exports = {
+
+    account: function (req, res) {
+        return res.view();
+    }
 	
 };

@@ -20,6 +20,7 @@ module.exports = {
             type: 'array'
         },
         passports: {collection: 'Passport', via: 'user'},
+        neighborhoods: {collection: 'Neighborhood', via: 'user'},
 
 
         /**
