@@ -49,6 +49,40 @@ define([], function () {
                     }
                 }
                 return "";
+            },
+
+            /**
+             * Get query parameters
+             * @param query
+             * @returns {Object}
+             */
+            parseQuery: function (query) {
+                var Params = new Object();
+                if (!query) return Params; // return empty object
+                var Pairs = query.split(/[;&]/);
+                for (var i = 0; i < Pairs.length; i++) {
+                    var KeyVal = Pairs[i].split('=');
+                    if (!KeyVal || KeyVal.length != 2) continue;
+                    var key = unescape(KeyVal[0]);
+                    var val = unescape(KeyVal[1]);
+                    val = val.replace(/\+/g, ' ');
+                    Params[key] = val;
+                }
+                return Params;
+            },
+
+            /**
+             * Get params passed to a script having the provided id
+             * @param id
+             * @returns {Object}
+             */
+            getScriptParams: function (id) {
+                //script gets the src attribute based on ID of page's script element:
+                var scriptSource = document.getElementById(id).getAttribute("src");
+                var queryString = scriptSource.replace(/^[^\?]+\??/, '');
+
+                var params = Utils.parseQuery(queryString);
+                return params;
             }
         };
 
