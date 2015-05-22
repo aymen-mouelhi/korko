@@ -12,28 +12,34 @@ module.exports = {
     },
 
     update: function (req, res) {
-        console.info("recieved user id: " + req.params.id);
 
         // Get neighborhood
-        var neighborhoods = JSON.parse(req.body.neighborhood);
+        var neighborhood = JSON.parse(req.body.neighborhood);
 
-        console.info("recieved neighborhoods: " + req.body.neighborhood);
-
+        // Check if user exists
         User.findOne({
             id: req.params.id
         }, function (err, user) {
-
             if (err) return res.serverError(err);
 
-            user.neighborhoods.push(neighborhoods);
+            var coordinates = neighborhood.coordinates;
+            var type = neighborhood.type;
 
-            user.save(function () {
-                if (err) return res.serverError(err);
+            Neighborhood.create({
+                coordinates: coordinates,
+                user: req.params.id,
+                type: type
+            }, function (err, neighborhood) {
+                if (err) {
+                    console.info(err);
+                    return res.serverError(err);
+                }
+                console.info("user saved? " + JSON.stringify(neighborhood));
+
                 req.flash('success', 'Neighborhood saved');
                 return res.ok();
+
             });
         });
-
     }
-	
 };

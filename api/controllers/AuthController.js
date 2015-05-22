@@ -208,6 +208,8 @@ var AuthController = {
                 // Make user available to the frontend
                 req.user = user.toJSON();
 
+                console.info("Req.user: " + JSON.stringify(req.user));
+
                 // Just return user JSON if remember me was not specified
                 if (!req.body.remember) {
                     res.redirect('/dashboard/app');

@@ -14,7 +14,7 @@ module.exports = {
     attributes: {
 
         coordinates: {
-            type: 'array'
+            type: 'json'
         },
 
         name: {
@@ -22,6 +22,11 @@ module.exports = {
             defaultsTo: 'My neighborhood'
         },
 
+        type: {
+            type: 'string'
+        },
+
+        // Center of polygon, can be calculated
         location: {
             type: 'json' // lat and lng
         },

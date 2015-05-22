@@ -159,10 +159,11 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
                 // self.state.map.setCenter(centerLocation);
 
-                console.log("Is it called again?");
+                console.log("tilesloaded: Is it called again?");
             });
 
             console.info("Number of neighborhoods: " + JSON.parse(this.state.neighborhood).length);
+            console.info("Neighborhood: " + this.state.neighborhood);
 
             // Check if user already has a neighborhood
             if (JSON.parse(this.state.neighborhood).length > 0) {
@@ -249,10 +250,12 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // Polygon drawed
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
-                var neighborhood = {};
+                var neighborhood = {
+                    type: "",
+                    coordinates: []
+                };
 
                 if (event.type == google.maps.drawing.OverlayType.CIRCLE) {
-
 
                     neighborhood.type = "circle";
 
@@ -295,7 +298,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     });
 
                 } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
-                    // Todo: Store neighborhood
                     console.info("received event after polygon drawn: " + event);
                     console.info("Coordinates must be: " + event.overlay.getPath().getArray());
                     //var overlay = event.overlay;
@@ -305,17 +307,17 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 // Set neighborhood
                 //neighborhood.coordinates = event.overlay;
 
+                // Coordinates Array
                 neighborhood.coordinates = event.overlay.getPath().getArray();
+
+                //console.info("Neighborhood data: " + JSON.stringify(neighborhood));
+                console.info("Neighborhood data: " + event.overlay);
 
                 // Todo: add a button to save overall status, saving should be done explicitly
                 // Todo: Ajax request to store neighborhood for user id
-                $.ajax({
-                    url: "/user/1",
-                    method: "post",
-                    data: neighborhood
-                }).success(function (data) {
-                    console.info("User seems to be updated correctly: " + JSON.stringify(data))
-                });
+
+                // Call backend
+                Utils.call("POST", "/user/" + self.state.uid, neighborhood);
 
                 // Show remove button
                 $('#remove-button').show();

@@ -83,6 +83,35 @@ define([], function () {
 
                 var params = Utils.parseQuery(queryString);
                 return params;
+            },
+
+
+            /**
+             * Call Backend
+             * @param method
+             * @param url
+             * @param data
+             * @param callback
+             */
+            call: function (method, url, data, callback) {
+                console.info("Url: " + url);
+                console.info("Data: " + JSON.stringify(data));
+                $.ajax({
+                    'type': method,
+                    'async': false,
+                    'global': false,
+                    'data': data,
+                    'url': url,
+                    'dataType': "json",
+                    'success': function (data) {
+                        console.info("User seems to be updated correctly: " + JSON.stringify(data))
+                        callback(null, data);
+                    },
+                    'error': function (error) {
+                        console.info("Error occured: " + JSON.stringify(error))
+                        callback(error, null)
+                    }
+                });
             }
         };
 
