@@ -9,7 +9,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
-module.exports = {
+var Neighborhood = {
 
     attributes: {
 
@@ -35,3 +35,5 @@ module.exports = {
     }
 
 };
+
+module.exports = Neighborhood;

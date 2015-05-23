@@ -8,7 +8,21 @@
 module.exports = {
 
     account: function (req, res) {
-        return res.view();
+        req.user.neighborhoods = [];
+
+        Neighborhood.findOne({
+            user: req.user.id
+        }, function (err, neighborhood) {
+            if (!err) {
+                console.info("retrived neighborhood: " + JSON.stringify(neighborhood))
+                req.user.neighborhoods = neighborhood;
+                return res.view();
+            } else {
+                console.info("Error while retrieving neighborhoods: " + err);
+                return res.view();
+            }
+        });
+
     },
 
     update: function (req, res) {

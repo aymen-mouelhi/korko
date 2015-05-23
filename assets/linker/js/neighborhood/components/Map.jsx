@@ -162,42 +162,52 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 console.log("tilesloaded: Is it called again?");
             });
 
-            console.info("Number of neighborhoods: " + JSON.parse(this.state.neighborhood).length);
-            console.info("Neighborhood: " + this.state.neighborhood);
+
 
             // Check if user already has a neighborhood
             if (JSON.parse(this.state.neighborhood).length > 0) {
 
+                // Todo: check nighborhood type (circle / polygon)
+
                 var neighborhood;
                 var bounds = new google.maps.LatLngBounds();
                 var i;
-
-                // Define the LatLng coordinates for the polygon.
-                var polygonCoords = [
-                    new google.maps.LatLng(25.774252, -80.190262),
-                    new google.maps.LatLng(18.466465, -66.118292),
-                    new google.maps.LatLng(32.321384, -64.75737)
-                ];
+                var polygonCoords = [];
 
                 // Get polygon coordinates
-                _.each(this.state.neighborhood, function (item) {
-                    i++;
-                    console.info("Coordinate [" + i + "]: " + item);
-                });
+                for (i = 0; i < JSON.parse(this.state.neighborhood).length; i++) {
+                    var item = JSON.parse(this.state.neighborhood)[i];
+                    polygonCoords.push(new google.maps.LatLng(item.A, item.F));
+                }
 
+                // Extend bounds
                 for (i = 0; i < polygonCoords.length; i++) {
                     bounds.extend(polygonCoords[i]);
                 }
 
-                // Construct the polygon.
-                neighborhood = new google.maps.Polygon({
-                    paths: polygonCoords,
-                    strokeWeight: 0,
-                    fillOpacity: 0.45,
-                    editable: true,
-                    fillColor: '#1E90FF',
-                    map: this.state.map
-                });
+                if (this.state.neighborhood_type === "polygon") {
+                    // Construct the polygon.
+                    neighborhood = new google.maps.Polygon({
+                        paths: polygonCoords,
+                        strokeWeight: 0,
+                        fillOpacity: 0.45,
+                        editable: true,
+                        fillColor: '#1E90FF',
+                        map: this.state.map
+                    });
+                } else {
+                    // Center
+                    neighborhood = new google.maps.Circle({
+                        paths: polygonCoords,
+                        strokeWeight: 0,
+                        fillOpacity: 0.45,
+                        editable: true,
+                        fillColor: '#1E90FF',
+                        map: this.state.map
+                    });
+
+                }
+
 
                 // Recenter Map
                 this.state.map.setCenter(bounds.getCenter());

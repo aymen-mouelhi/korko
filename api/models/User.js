@@ -36,18 +36,6 @@ module.exports = {
 
         toJSON: function () {
             var user = this.toObject();
-            // Todo: retrieve neighborhoods
-            /*
-             Neighborhood.findOne({
-             user: user.id
-             }, function (err, neighborhood) {
-             if (!err) {
-             user.neighborhoods.push(neighborhood);
-             }
-             console.info("Error while retrieeing neigborhood: " + err);
-             });
-             */
-
             delete user.password;
             delete user.passwordConfirmation;
             delete user.sessionTokens;

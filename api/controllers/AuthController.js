@@ -208,6 +208,23 @@ var AuthController = {
                 // Make user available to the frontend
                 req.user = user.toJSON();
 
+                // find neighborhhods of user
+                // Todo: retrieve neighborhoods
+
+                req.user.neighborhoods = [];
+
+                Neighborhood.findOne({
+                    user: user.id
+                }, function (err, neighborhood) {
+                    if (!err) {
+                        console.info("retrived neighborhood: " + JSON.stringify(neighborhood))
+                        req.user.neighborhoods = neighborhood;
+                    } else {
+                        console.info("Error while retrieeing neigborhood: " + err);
+                    }
+                });
+
+
                 console.info("Req.user: " + JSON.stringify(req.user));
 
                 // Just return user JSON if remember me was not specified
