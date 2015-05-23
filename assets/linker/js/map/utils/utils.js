@@ -105,11 +105,11 @@ define([], function () {
                     'dataType': "json",
                     'success': function (data) {
                         console.info("User seems to be updated correctly: " + JSON.stringify(data))
-                        callback(null, data);
+                        //callback(null, data);
                     },
                     'error': function (error) {
                         console.info("Error occured: " + JSON.stringify(error))
-                        callback(error, null)
+                        //callback(error, null)
                     }
                 });
             }

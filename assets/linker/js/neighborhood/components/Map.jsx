@@ -12,6 +12,8 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
     var drawingManager;
     var neighborhood;
+    var radius = 100;
+    window.uid = 0;
 
     /**
      * The RemoveControl adds a control to the map that removes the created polygon / circle
@@ -45,22 +47,154 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         controlText.innerHTML = 'Remove';
         controlUI.appendChild(controlText);
 
-        // Setup the click event listeners: simply set the map to
-        // Chicago
+        // Setup the click event listeners: Remove the selected polygon and show the drawing manager
         google.maps.event.addDomListener(controlUI, 'click', function () {
-            //this.state.map.setCenter(chicago)
-            // Todo: remove polygon
-            console.log("polygon / circle should be somehow removed ");
-            neighborhood.setMap(null);
+            if (neighborhood) {
+                neighborhood.setMap(null);
+            }
 
-            drawingManager.setOptions({
-                drawingControl: true
-            });
-            // Remove map
-            drawingManager.setMap(map);
+            if (drawingManager) {
+                drawingManager.setOptions({
+                    drawingControl: true
+                });
+                // Remove map
+                drawingManager.setMap(null);
+            } else {
+                //  Create Drawing Manager and assign it to the map
+                drawingManager = createDrawingManager(map, radius);
+
+                // Polygon drawn
+                google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+
+                    // Set neighborhood
+                    neighborhood = event.overlay;
+
+                    var neighborhoodData = {
+                        type: "",
+                        coordinates: []
+                    };
+
+                    if (event.type == google.maps.drawing.OverlayType.CIRCLE) {
+
+                        neighborhoodData.type = "circle";
+
+                        var radius = event.overlay.getRadius();
+
+                        var circle = event.overlay;
+
+                        // Radius Changed
+                        google.maps.event.addListener(circle, 'radius_changed', function () {
+
+                            console.info("Radius has been changed: " + circle.getRadius());
+
+                            // Update Radius
+                            self.state.RADIUS = circle.getRadius();
+
+                        });
+
+                        // Drag End
+                        google.maps.event.addListener(circle, 'dragend', function () {
+
+                            console.info("Dragend: " + circle.getRadius());
+
+                            // Update Radius
+                            radius = circle.getRadius();
+
+                            // Todo: save new circle?
+                        });
+
+                        // Center Changed
+                        google.maps.event.addListener(circle, 'center_changed', function () {
+
+                            console.info("Center Changed: " + circle.getCenter());
+
+                            var center = circle.getCenter();
+
+                            // Todo: save new circle?
+                        });
+
+
+                    } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
+                        console.info("received event after polygon drawn: " + event);
+                        console.info("Coordinates must be: " + event.overlay.getPath().getArray());
+                        //var overlay = event.overlay;
+                        neighborhoodData.type = "polygon";
+                    }
+
+                    // Coordinates Array
+                    neighborhoodData.coordinates = event.overlay.getPath().getArray();
+
+                    //console.info("Neighborhood data: " + JSON.stringify(neighborhood));
+                    console.info("Neighborhood data: " + event.overlay);
+
+                    // Todo: add a button to save overall status, saving should be done explicitly
+                    // Todo: Ajax request to store neighborhood for user id
+
+                    // Call backend
+                    Utils.call("POST", "/user/" + window.uid, neighborhoodData);
+
+                    // Show remove button
+                    $('#remove-button').show();
+
+                    if (drawingManager) {
+                        // hide drawing panel
+                        drawingManager.setOptions({
+                            drawingControl: false
+                        });
+
+                        // Remove Map
+                        drawingManager.setMap(null);
+                    }
+
+                });
+            }
+
             // hide remove button
             $("#remove-button").hide();
         });
+    }
+
+    function setUid(uid) {
+        window.uid = uid;
+    }
+
+    function getUid() {
+        return window.uid;
+    }
+
+
+    function createDrawingManager(map, radius) {
+        var polyOptions = {
+            strokeWeight: 0,
+            fillOpacity: 0.45,
+            editable: true,
+            fillColor: '#1E90FF'
+        };
+
+        drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYGON,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT,
+                drawingModes: [
+                    google.maps.drawing.OverlayType.CIRCLE,
+                    google.maps.drawing.OverlayType.POLYGON
+                ]
+            },
+            circleOptions: {
+                radius: radius,    // in m
+                fillColor: '#004de8',
+                fillOpacity: 0.27,
+                editable: true,
+                strokeColor: '#004de8',
+                strokeOpacity: 0.62,
+                strokeWeight: 1
+            },
+            polygonOptions: polyOptions,
+            map: map
+        });
+
+        return drawingManager;
     }
 
 
@@ -82,7 +216,10 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             var params = Utils.getScriptParams("argScript");
 
+            console.log("type: " + params.type.toString());
+
             return {
+                type: params.type.toString(),
                 neighborhood: params.n,
                 uid: params.uid,
                 map: null,
@@ -91,6 +228,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 infowindow: new google.maps.InfoWindow(infoWindowOptions)
             }
         },
+
 
         componentWillMount: function () {
             // Load google maps
@@ -127,8 +265,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // resize the map whenever the window resizes
             $(window).resize(jQuery.proxy(this.resizeMap, this));
 
-            // Todo: Center Location must be center of my neighborhood
-
             var centerLocation = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
 
             // Define Map Options
@@ -157,19 +293,30 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
                 self.resizeMap();
 
+                if (self.state.type) {
+                    // Show remove button
+                    $('#remove-button').show();
+                }
+
                 // self.state.map.setCenter(centerLocation);
 
                 console.log("tilesloaded: Is it called again?");
             });
 
+            // add button remove
+            // Create the DIV to hold the control and
+            // call the RemoveControl() constructor passing
+            // in this DIV.
+
+            var removeControlDiv = document.createElement('div');
+            var removeControl = new RemoveControl(removeControlDiv, this.state.map);
+            removeControlDiv.index = 1;
+            this.state.map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
 
 
             // Check if user already has a neighborhood
             if (JSON.parse(this.state.neighborhood).length > 0) {
 
-                // Todo: check nighborhood type (circle / polygon)
-
-                var neighborhood;
                 var bounds = new google.maps.LatLngBounds();
                 var i;
                 var polygonCoords = [];
@@ -185,13 +332,15 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     bounds.extend(polygonCoords[i]);
                 }
 
-                if (this.state.neighborhood_type === "polygon") {
+
+                // Check type
+                if (this.state.type.indexOf("polygon")) {
                     // Construct the polygon.
                     neighborhood = new google.maps.Polygon({
                         paths: polygonCoords,
                         strokeWeight: 0,
                         fillOpacity: 0.45,
-                        editable: true,
+                        editable: false,
                         fillColor: '#1E90FF',
                         map: this.state.map
                     });
@@ -201,19 +350,20 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                         paths: polygonCoords,
                         strokeWeight: 0,
                         fillOpacity: 0.45,
-                        editable: true,
+                        editable: false,
                         fillColor: '#1E90FF',
                         map: this.state.map
                     });
-
                 }
-
 
                 // Recenter Map
                 this.state.map.setCenter(bounds.getCenter());
 
-            } else {
+                // Set uid
+                setUid(this.state.uid);
 
+            } else {
+                // Create Drawing Manager and assign it to the map
                 var polyOptions = {
                     strokeWeight: 0,
                     fillOpacity: 0.45,
@@ -245,29 +395,20 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 });
             }
 
-
-            // add button remove
-            // Create the DIV to hold the control and
-            // call the RemoveControl() constructor passing
-            // in this DIV.
-
-            var removeControlDiv = document.createElement('div');
-            var removeControl = new RemoveControl(removeControlDiv, this.state.map);
-            removeControlDiv.index = 1;
-            this.state.map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
-
-
-            // Polygon drawed
+            // Polygon drawn
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
-                var neighborhood = {
+                // Set neighborhood
+                neighborhood = event.overlay;
+
+                var neighborhoodData = {
                     type: "",
                     coordinates: []
                 };
 
                 if (event.type == google.maps.drawing.OverlayType.CIRCLE) {
 
-                    neighborhood.type = "circle";
+                    neighborhoodData.type = "circle";
 
                     var radius = event.overlay.getRadius();
 
@@ -311,14 +452,11 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     console.info("received event after polygon drawn: " + event);
                     console.info("Coordinates must be: " + event.overlay.getPath().getArray());
                     //var overlay = event.overlay;
-                    neighborhood.type = "polygon";
+                    neighborhoodData.type = "polygon";
                 }
 
-                // Set neighborhood
-                //neighborhood.coordinates = event.overlay;
-
                 // Coordinates Array
-                neighborhood.coordinates = event.overlay.getPath().getArray();
+                neighborhoodData.coordinates = event.overlay.getPath().getArray();
 
                 //console.info("Neighborhood data: " + JSON.stringify(neighborhood));
                 console.info("Neighborhood data: " + event.overlay);
@@ -327,7 +465,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 // Todo: Ajax request to store neighborhood for user id
 
                 // Call backend
-                Utils.call("POST", "/user/" + self.state.uid, neighborhood);
+                Utils.call("POST", "/user/" + self.state.uid, neighborhoodData);
 
                 // Show remove button
                 $('#remove-button').show();

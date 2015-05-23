@@ -14,7 +14,7 @@ module.exports = {
             user: req.user.id
         }, function (err, neighborhood) {
             if (!err) {
-                console.info("retrived neighborhood: " + JSON.stringify(neighborhood))
+                console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
                 req.user.neighborhoods = neighborhood;
                 return res.view();
             } else {

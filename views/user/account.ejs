@@ -27,7 +27,6 @@
         </div>
         <div class="panel-body" id="map-container">
             <div id="react" data-uid="<%= req.user.id %>"></div>
-            <%= JSON.stringify(req.user.neighborhoods) %>
         </div>
     </div>
 
@@ -56,7 +55,7 @@
         src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
 <% if(req.user.neighborhoods.length > 0){ %>
 <script id="argScript"
-        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>"></script>
+        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>"></script>
 <% }else{ %>
 <script id="argScript"
         src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>"></script>
