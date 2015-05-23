@@ -152,6 +152,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // hide remove button
             $("#remove-button").hide();
         });
+
     }
 
     function setUid(uid) {
@@ -216,10 +217,22 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             var params = Utils.getScriptParams("argScript");
 
-            console.log("type: " + params.type.toString());
+            // console.log("type: " + params.type.toString());
+
+            var type = "";
+            var page = "";
+
+            if (params.type) {
+                type = params.type.toString()
+            }
+
+            if (params.page) {
+                page = params.page;
+            }
 
             return {
-                type: params.type.toString(),
+                page: page,
+                type: type,
                 neighborhood: params.n,
                 uid: params.uid,
                 map: null,
@@ -464,9 +477,12 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 // Todo: add a button to save overall status, saving should be done explicitly
                 // Todo: Ajax request to store neighborhood for user id
 
-                // Call backend
-                Utils.call("POST", "/user/" + self.state.uid, neighborhoodData);
-
+                if (self.state.page.indexOf("create") < 0) {
+                    // Call backend
+                    Utils.call("POST", "/user/" + self.state.uid, neighborhoodData);
+                } else {
+                    window.selectedLocation = neighborhoodData;
+                }
                 // Show remove button
                 $('#remove-button').show();
 
