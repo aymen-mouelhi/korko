@@ -1,3 +1,5 @@
+<!-- Todo: Reactify View ! -->
+
 <div class="container">
     <% if (errors) { %>
     <% errors.forEach(function (error) { %>
@@ -25,8 +27,12 @@
             <!-- Todo: Add category -->
             <div class="form-group">
                 <label for="category">Category</label>
-                <input id="category" type="text" name="category" placeholder="category ..." autofocus="true"
-                       class="form-control">
+                <!-- <input id="category" type="text" name="category" placeholder="category ..." autofocus="true"  class="form-control"> -->
+                <select id="category">
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Barbecue</option>
+                </select>
             </div>
 
             <!--- Location -->
@@ -50,13 +56,12 @@
             <button type="submit" class="btn btn-primary">Create</button>
 
         </form>
-
     </div>
-
 </div>
 
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
+<link rel="stylesheet" href="/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css"/>
 <style>
 
     .dropzone.dz-clickable {
@@ -129,8 +134,51 @@
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 <script src="/bower_components/requirejs/require.js"></script>
 <script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="/bower_components/dropzone/dist/dropzone.js"></script>
 <script>
+    // Ajax Request without jquery
+    var ajax = {};
+    ajax.x = function () {
+        if (typeof XMLHttpRequest !== 'undefined') {
+            return new XMLHttpRequest();
+        }
+        var versions = [
+            "MSXML2.XmlHttp.5.0",
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0",
+            "MSXML2.XmlHttp.2.0",
+            "Microsoft.XmlHttp"
+        ];
+
+        var xhr;
+        for (var i = 0; i < versions.length; i++) {
+            try {
+                xhr = new ActiveXObject(versions[i]);
+                break;
+            } catch (e) {
+            }
+        }
+        return xhr;
+    };
+
+    ajax.send = function (url, method, data, sync, callback) {
+        var x = ajax.x();
+        x.open(method, url, sync);
+        x.onreadystatechange = function () {
+            if (x.readyState == 4) {
+                callback(x.responseText)
+            }
+        };
+
+        if (method == 'POST') {
+            x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        }
+
+        x.send(data);
+    };
+
+
     if (document.getElementById('dropzone')) {
         var Dropzone = new Dropzone("div#dropzone", {url: "/file/post"});
     }
@@ -143,34 +191,54 @@
             title: $("#title").val(),
             description: $("#description").val(),
             category: $("#category").val(),
-            location: window.selectedLocation
+            location: JSON.stringify(window.selectedLocation)
         };
 
-        $.ajax({
-            'type': "POST",
-            'async': false,
-            'global': false,
-            'data': data,
-            'url': "/pin/create",
-            'dataType': "json",
-            'success': function (data) {
-                console.info("User seems to be updated correctly: " + JSON.stringify(data))
-                //callback(null, data);
-            },
-            'error': function (error) {
-                console.info("Error occured: " + JSON.stringify(error))
-                //callback(error, null)
-            }
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+
+        ajax.send("/pin/create", "POST", query.join('&'), true, function () {
+
         });
+
+        /*
+         var request = new XMLHttpRequest();
+         request.open('POST', '/pin/create', true);
+         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+         request.send(data);
+         */
+
+        /*
+         $.ajax({
+         'type': "POST",
+         'async': false,
+         'global': false,
+         'data': data,
+         'url': "/pin/create",
+         'dataType': "json",
+         'success': function (data) {
+         console.info("User seems to be updated correctly: " + JSON.stringify(data))
+         //callback(null, data);
+         },
+         'error': function (error) {
+         console.info("Error occured: " + JSON.stringify(error))
+         //callback(error, null)
+         }
+         });
+         */
+
+
     });
 </script>
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
 <% if(req.user.neighborhoods.length > 0){ %>
 <script id="argScript"
-        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>&page=create"></script>
+        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>&page=create"></script>
 <% }else{ %>
 <script id="argScript"
-        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>&page=create"></script>
+        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>&page=create"></script>
 <%
 } %>

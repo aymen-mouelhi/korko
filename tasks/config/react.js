@@ -16,9 +16,9 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'assets/linker/js/',
+              cwd: 'assets/react/js/',
             src: ['**/*.jsx'],
-            dest: '.tmp/public/linker/js/',
+              dest: '.tmp/public/react/js/',
             ext: '.js'
           }, {
             expand: true,

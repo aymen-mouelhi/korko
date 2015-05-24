@@ -11,7 +11,7 @@
 module.exports = {
 
 
-    json: function(req, res){
+    json: function (req, res) {
 
         var repos = {
             "repos": [
@@ -21762,14 +21762,55 @@ module.exports = {
                     "id": 4832,
                     "followers_url": "https://api.github.com/users/zkwentz/followers"
                 }
-            ]};
+            ]
+        };
 
         res.json(repos);
     },
 
     create: function (req, res) {
-        return res.view({
-            errors: req.flash('error')
-        });
+        console.info("in PinController Create !");
+        if (req.method == "POST") {
+            console.log("location: " + req.body.location);
+            console.log("User Id: " + req.user.id);
+
+            var title = req.body.title;
+            var description = req.body.description;
+            var category = req.body.category;
+            var location = JSON.parse(req.body.location);
+
+            // Check if user exists
+            User.findOne({
+                id: req.user.id
+            }, function (err, user) {
+                if (err) return res.serverError(err);
+
+                // Todo: Find Category Id
+
+                // Todo: Create Pin
+                Pin.create({
+                    location: location,
+                    user: req.user.id,
+                    title: title,
+                    description: description
+                }, function (err, pin) {
+                    if (err) {
+                        console.info(err);
+                        return res.serverError(err);
+                    }
+                    console.info("user saved? " + JSON.stringify(pin));
+
+                    req.flash('success', 'Pin saved');
+                    return res.ok();
+
+                });
+            });
+
+
+        } else {
+            return res.view({
+                errors: req.flash('error')
+            });
+        }
     }
 };

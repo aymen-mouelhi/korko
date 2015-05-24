@@ -1,15 +1,19 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 11/05/2015.
  */
-var User = {
+var Pin = {
     // Enforce model schema in the case of schemaless databases
     schema: true,
 
     attributes: {
-        name: {type: 'string', unique: true},
-        last_name: {type: 'string'},
-        email: {type: 'email', unique: true}
+        title: {type: 'string'},
+        description: {type: 'string'},
+        // Todo: Category should be required
+        category: {model: 'Category', required: false},
+        location: {model: 'Location', required: true},
+        user: {model: 'User', required: true},
+        images: {type: 'json'}
     }
 };
 
-module.exports = User;
+module.exports = Pin;

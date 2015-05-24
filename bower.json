@@ -32,6 +32,7 @@
     "pure": "~0.6.0",
     "font-awsome": "~4.3.0",
     "react-bootstrap": "~0.21.2",
-    "dropzone": "~4.0.1"
+    "dropzone": "~4.0.1",
+    "bootstrap-select": "~1.7.1"
   }
 }

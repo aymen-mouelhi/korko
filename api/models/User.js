@@ -19,6 +19,7 @@ module.exports = {
         sessionTokens: {type: 'array'},
         passports: {collection: 'Passport', via: 'user'},
         neighborhoods: {collection: 'Neighborhood', via: 'user'},
+        pins: {collection: 'Pin', via: 'user'},
 
 
         /**

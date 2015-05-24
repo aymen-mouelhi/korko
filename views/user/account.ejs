@@ -55,10 +55,10 @@
         src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
 <% if(req.user.neighborhoods.length > 0){ %>
 <script id="argScript"
-        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>"></script>
+        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>"></script>
 <% }else{ %>
 <script id="argScript"
-        src="/linker/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>"></script>
+        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>"></script>
 <%
 } %>
 <style>
