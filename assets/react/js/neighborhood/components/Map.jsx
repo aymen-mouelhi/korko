@@ -9,7 +9,6 @@
 define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React, geolocator, jQuery, _, Utils) {
     'use strict';
 
-
     var drawingManager;
     var neighborhood;
     var radius = 100;
@@ -163,7 +162,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         return window.uid;
     }
 
-
     function createDrawingManager(map, radius) {
         var polyOptions = {
             strokeWeight: 0,
@@ -214,27 +212,35 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 content: pinString
             };
 
-
-            var params = Utils.getScriptParams("argScript");
-
-            // console.log("type: " + params.type.toString());
-
             var type = "";
             var page = "";
+            var neighborhoods = "{}";
+            var uid = 0;
 
-            if (params.type) {
-                type = params.type.toString()
-            }
+            if ($("#argScript") != null) {
+                var params = Utils.getScriptParams("argScript");
+                if (params.type != null) {
+                    type = params.type.toString();
+                }
 
-            if (params.page) {
-                page = params.page;
+                if (params.page != null) {
+                    page = params.page;
+                }
+
+                if (params.n != null) {
+                    neighborhoods = params.n;
+                }
+
+                if (params.uid != null) {
+                    uid = params.uid;
+                }
             }
 
             return {
                 page: page,
                 type: type,
-                neighborhood: params.n,
-                uid: params.uid,
+                neighborhood: neighborhoods,
+                uid: uid,
                 map: null,
                 RADIUS: 100,
                 EARTH_RADIUS: 6378137,
@@ -328,15 +334,16 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
 
             // Check if user already has a neighborhood
-            if (JSON.parse(this.state.neighborhood).length > 0) {
+            var nighborhoodJson = JSON.parse(this.state.neighborhood);
+            if (nighborhoodJson.length > 0) {
 
                 var bounds = new google.maps.LatLngBounds();
                 var i;
                 var polygonCoords = [];
 
                 // Get polygon coordinates
-                for (i = 0; i < JSON.parse(this.state.neighborhood).length; i++) {
-                    var item = JSON.parse(this.state.neighborhood)[i];
+                for (i = 0; i < nighborhoodJson.length; i++) {
+                    var item = nighborhoodJson[i];
                     polygonCoords.push(new google.maps.LatLng(item.A, item.F));
                 }
 
@@ -476,7 +483,10 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 // Todo: add a button to save overall status, saving should be done explicitly
                 // Todo: Ajax request to store neighborhood for user id
 
-                if (self.state.page.indexOf("create") < 0) {
+                //if (self.state.page.indexOf("create") < 0) {
+
+
+                if (self.props.page.indexOf("pin") < 0) {
                     // Call backend
                     Utils.call("POST", "/user/" + self.state.uid, neighborhoodData);
                 } else {
@@ -517,7 +527,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
          */
 
         // Todo: move method to utilities
-
         distance: function (pos1, pos2) {
             var p1Lat = pos1.lat();
             var p1Lng = pos1.lng();
@@ -552,7 +561,9 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
         render: function () {
             return (
-                <div id="map-canvas" className="map">
+                <div id="map-react">
+                    <div id="map-canvas" className="map">
+                    </div>
                 </div>
             );
         }

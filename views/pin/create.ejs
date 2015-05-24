@@ -1,64 +1,13 @@
-<!-- Todo: Reactify View ! -->
-
 <div class="container">
-    <% if (errors) { %>
-    <% errors.forEach(function (error) { %>
-    <%= __(error) %>
-    <% }) %>
-    <% } %>
-
-    <div class="block">
-
-        <form id="create" role="form" action="/pin/create" method="post">
-            <legend>Create new Pin</legend>
-
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input id="title" type="text" name="title" placeholder="title ..." autofocus="true"
-                       class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input id="description" type="text" name="description" placeholder="description ..." autofocus="true"
-                       class="form-control">
-            </div>
-
-            <!-- Todo: Add category -->
-            <div class="form-group">
-                <label for="category">Category</label>
-                <!-- <input id="category" type="text" name="category" placeholder="category ..." autofocus="true"  class="form-control"> -->
-                <select id="category">
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
-                </select>
-            </div>
-
-            <!--- Location -->
-            <!-- Todo: location: Pick a location: using polygons / circles / slider for radius -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Location</h3>
-                </div>
-                <div class="panel-body" id="map-container">
-                    <div id="react" data-uid="<%= req.user.id %>"></div>
-                </div>
-            </div>
-
-            <!-- Upload Images -->
-            <div class="form-group">
-                <label for="category">Images</label>
-
-                <div id="dropzone" class="dropzone dz-clickable"></div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create</button>
-
-        </form>
-    </div>
+    <div id="react"></div>
 </div>
 
+
+<script src="/bower_components/requirejs/require.js"></script>
+<script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
+<script id="argScript" src="/react/js/pin/main.js"></script>
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
 <link rel="stylesheet" href="/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css"/>
@@ -120,7 +69,7 @@
         background: #e9eaed;
     }
 
-    #react {
+    #map-react {
         width: 500px;
         height: 400px;
     }
@@ -132,11 +81,9 @@
 
 </style>
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-<script src="/bower_components/requirejs/require.js"></script>
-<script src="/bower_components/jquery/dist/jquery.js"></script>
-<script src="/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<link rel="stylesheet" href="/bower_components/react-select/dist/default.css"/>
 <script>
+    /*
     // Ajax Request without jquery
     var ajax = {};
     ajax.x = function () {
@@ -178,12 +125,14 @@
         x.send(data);
     };
 
-
+     */
     if (document.getElementById('dropzone')) {
         var Dropzone = new Dropzone("div#dropzone", {url: "/file/post"});
     }
 
-    $("#create").submit(function (event) {
+    /*
+
+     $("#create").submit(function (event) {
         console.info("Handler for .submit() called.");
         event.preventDefault();
 
@@ -228,17 +177,8 @@
          }
          });
          */
-
+    /*
 
     });
+     */
 </script>
-<script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
-<% if(req.user.neighborhoods.length > 0){ %>
-<script id="argScript"
-        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>&page=create"></script>
-<% }else{ %>
-<script id="argScript"
-        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>&page=create"></script>
-<%
-} %>
