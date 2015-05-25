@@ -5,6 +5,9 @@
 
 <script src="/bower_components/requirejs/require.js"></script>
 <script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<script>
+    window.Dropzone = Dropzone;
+</script>
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
 <script id="argScript" src="/react/js/pin/main.js"></script>
@@ -126,9 +129,11 @@
     };
 
      */
+    /*
     if (document.getElementById('dropzone')) {
         var Dropzone = new Dropzone("div#dropzone", {url: "/file/post"});
     }
+     */
 
     /*
 

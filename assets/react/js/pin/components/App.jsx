@@ -75,6 +75,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
         x.send(data);
     };
 
+    var Dropzone;
 
     var PinForm = React.createClass({
 
@@ -114,6 +115,21 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
         },
 
         componentDidMount: function () {
+            Dropzone = new window.Dropzone("div#dropzone", {url: "/file/post"});
+
+            Dropzone.options.DropZone = {
+                paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 2, // MB
+                autoProcessQueue: false,
+                accept: function (file, done) {
+                    if (file.name == "justinbieber.jpg") {
+                        done("Naha, you don't.");
+                    }
+                    else {
+                        done();
+                    }
+                }
+            };
         },
 
         submit: function (event) {
@@ -121,10 +137,12 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
             event.preventDefault();
 
 
+            console.log("Files to be Uploaded: " + Dropzone.files);
+
             var data = {
                 title: $("#title").val(),
                 description: $("#description").val(),
-                category: $("#category").val(),
+                category: $("#category").children(":selected").attr("id"),
                 location: JSON.stringify(window.selectedLocation)
             };
 
@@ -144,7 +162,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
                 selectOptions = this.state.categories.map(function (category, index) {
                     // Check Category
                     return (
-                        <option id={index}>{category.name}</option>
+                        <option id={category.id}>{category.title}</option>
                     );
                 });
             } else {

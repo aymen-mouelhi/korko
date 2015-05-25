@@ -21785,27 +21785,32 @@ module.exports = {
             }, function (err, user) {
                 if (err) return res.serverError(err);
 
-                // Todo: Find Category Id
+                // Check Category
+                Category.findOne({
+                    id: category
+                }, function (err, category) {
+                    if (err) return res.serverError(err);
 
-                // Todo: Create Pin
-                Pin.create({
-                    location: location,
-                    user: req.user.id,
-                    title: title,
-                    description: description
-                }, function (err, pin) {
-                    if (err) {
-                        console.info(err);
-                        return res.serverError(err);
-                    }
-                    console.info("user saved? " + JSON.stringify(pin));
+                    Pin.create({
+                        location: location,
+                        user: req.user.id,
+                        title: title,
+                        description: description,
+                        category: category
+                    }, function (err, pin) {
+                        if (err) {
+                            console.info(err);
+                            return res.serverError(err);
+                        }
+                        console.info("user saved? " + JSON.stringify(pin));
 
-                    req.flash('success', 'Pin saved');
-                    return res.ok();
+                        req.flash('success', 'Pin saved');
+                        return res.ok();
+
+                    });
 
                 });
             });
-
 
         } else {
             return res.view({
