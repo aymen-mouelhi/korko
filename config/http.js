@@ -10,7 +10,7 @@
  */
 
 var passport = require('passport');
-
+var multer = require('multer');
 module.exports.http = {
 
     /****************************************************************************
@@ -27,6 +27,7 @@ module.exports.http = {
 
         passportInit: require('passport').initialize(),
         passportSession: require('passport').session(),
+        multer: multer({dest: './uploads/'}),
 
         /***************************************************************************
          *                                                                          *
@@ -42,6 +43,7 @@ module.exports.http = {
             'passportInit',
             'passportSession',
             'myRequestLogger',
+            'multer',
             'bodyParser',
             'handleBodyParserError',
             'compress',
@@ -78,6 +80,7 @@ module.exports.http = {
          ***************************************************************************/
 
         // bodyParser: require('skipper')
+
 
     }
 

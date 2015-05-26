@@ -8,6 +8,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+
 module.exports = {
 
 
@@ -21802,10 +21803,11 @@ module.exports = {
                             console.info(err);
                             return res.serverError(err);
                         }
-                        console.info("user saved? " + JSON.stringify(pin));
+                        console.info("Pin saved: " + JSON.stringify(pin));
 
                         req.flash('success', 'Pin saved');
-                        return res.ok();
+                        //return res.ok();
+                        return res.json({id: pin.id})
 
                     });
 
@@ -21817,5 +21819,75 @@ module.exports = {
                 errors: req.flash('error')
             });
         }
+    },
+
+    update: function (req, res) {
+
+        // Update an existing Pin
+        var pinId = req.params.id;
+        var files = req.files;
+        var title = req.body.title;
+        var description = req.body.description;
+        var category = req.body.category;
+        var location;
+        if (req.body.location) {
+            location = JSON.parse(req.body.location);
+        }
+
+
+        console.log("received Images: " + JSON.stringify(files));
+        console.log("received Body: " + JSON.stringify(req.body));
+
+
+        // Find Pin
+        Pin.findOne({
+            id: pinId
+        }, function (err, pin) {
+
+            console.info("Found pin:" + JSON.stringify(pin));
+
+            // Title
+            if (title) {
+                pin.title = title;
+            }
+            // description
+            if (description) {
+                pin.description = description;
+            }
+
+            // category
+            if (category) {
+                pin.category = category;
+            }
+
+            // Todo: fix location issue when type: Circle
+            // location
+            if (location) {
+                pin.location = location;
+            }
+
+            // Images
+            if (files) {
+                if (!pin.images) {
+                    pin.images = [];
+                }
+                // Read Uploaded File
+                pin.images.push({
+                    name: req.files.image.originalname,
+                    path: req.files.image.path,
+                    mimetype: req.files.image.mimetype
+                });
+            }
+
+            // save pin
+            pin.save(function (err) {
+                if (err) {
+                    console.info(err);
+                    return res.serverError(err);
+                }
+                return res.json({id: pin.id})
+            });
+
+        });
     }
 };

@@ -80,6 +80,7 @@ module.exports.routes = {
 
     'get /pins': 'PinController.json',
     'post /pin/create': 'PinController.create',
+    'post /pin/:id': 'PinController.update',
 
     'get /reset/:token': {
         controller: 'PasswordReset',

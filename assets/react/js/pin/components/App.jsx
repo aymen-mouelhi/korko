@@ -115,10 +115,9 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
         },
 
         componentDidMount: function () {
-            Dropzone = new window.Dropzone("div#dropzone", {url: "/file/post"});
-
-            Dropzone.options.DropZone = {
-                paramName: "file", // The name that will be used to transfer the file
+            Dropzone = new window.Dropzone("div#images-dropzone", {
+                    url: "/file/post",
+                    paramName: "image", // The name that will be used to transfer the file
                 maxFilesize: 2, // MB
                 autoProcessQueue: false,
                 accept: function (file, done) {
@@ -129,15 +128,12 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
                         done();
                     }
                 }
-            };
+                }
+            );
         },
 
         submit: function (event) {
-            console.info("Handler for .submit() called.");
             event.preventDefault();
-
-
-            console.log("Files to be Uploaded: " + Dropzone.files);
 
             var data = {
                 title: $("#title").val(),
@@ -151,8 +147,12 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
                 query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
             }
 
-            ajax.send("/pin/create", "POST", query.join('&'), true, function () {
-
+            // send data
+            ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
+                // now upload images ! /pin/:id
+                var pinId = JSON.parse(data).id;
+                Dropzone.options.url = "/pin/" + pinId;
+                Dropzone.processQueue();
             });
         },
 
@@ -202,7 +202,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
 
                         <div className="form-group">
                             <label for="category">Images</label>
-                            <div id="dropzone" className="dropzone dz-clickable"></div>
+                            <div id="images-dropzone" className="dropzone dz-clickable"></div>
                         </div>
 
                         <button type="submit" onClick={this.submit} className="btn btn-primary">Create</button>
