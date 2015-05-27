@@ -393,6 +393,22 @@ module.exports = {
         return res.send(mock);
     },
 
+
+    get: function (req, res) {
+
+        // Find location
+        Location.findOne({
+            id: req.params.id
+        }, function (err, location) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            }
+            // Send location
+            res.json(location);
+        });
+    },
+
     /**
      * Overrides for the settings in `config/controllers.js`
      * (specific to LocationController)

@@ -8,6 +8,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var async = require("async");
 
 module.exports = {
 
@@ -21769,6 +21770,56 @@ module.exports = {
         res.json(repos);
     },
 
+
+    get: function (req, res) {
+        var pinArray = [];
+        Pin.find(function (err, pins) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            }
+
+
+            // Todo: create method toJson in Pin, and call pinArray.push(pin.toJson()): get user, category, location, comments ...
+            async.eachSeries(pins, function (pin, callback) {
+                // Get User Information
+                User.findOne({
+                    id: pin.user
+                }, function (err, user) {
+                    if (err) {
+                        console.info(err);
+                        return res.serverError(err);
+                    }
+                    // Update User
+                    pin.user = user;
+
+                    // Push to pins array
+                    pinArray.push(pin);
+
+                    callback();
+                });
+
+
+            }, function (err) {
+                if (err) {
+                    // One of the iterations produced an error.
+                    // All processing will now stop.
+                    return res.serverError(err);
+                } else {
+                    return res.json(pinArray);
+                }
+            });
+
+        });
+    },
+
+    // Todo: this should be the dashboard => update method name
+    pin: function (req, res) {
+        return res.view({
+            errors: req.flash('error')
+        });
+    },
+
     create: function (req, res) {
         console.info("in PinController Create !");
         if (req.method == "POST") {
@@ -21876,7 +21927,7 @@ module.exports = {
                     // Read Uploaded File
                     pin.images.push({
                         name: req.files.image.originalname,
-                        path: req.files.image.path,
+                        path: req.files.image.path.replace('/assets', ''),
                         mimetype: req.files.image.mimetype
                     });
                 }

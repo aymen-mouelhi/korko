@@ -37,7 +37,8 @@ module.exports.routes = {
     },
      */
 
-    'get /': 'HomeController.home',
+    //'get /': 'HomeController.home',
+    'get /': 'PinController.pin',
 
 
     /*
@@ -71,28 +72,26 @@ module.exports.routes = {
 
     'get /auth/:provider': 'AuthController.provider',
     'get /auth/:provider/callback': 'AuthController.callback',
-    'post /user/:id': 'UserController.update',
 
-    'post /reset': {
-        controller: 'PasswordReset',
-        action: 'create'
-    },
+    'post /reset': 'PasswordReset.create',
+
+    'post /user/:id': 'UserController.update',
+    'get /reset/:token': 'PasswordReset.check',
+    'post /reset/:token': 'PasswordReset.update',
+
 
     'get /pins': 'PinController.json',
+
+    'get /pin': 'PinController.get',
+    'get /pin/pin': 'PinController.pin',
     'post /pin/create': 'PinController.create',
     'get /pin/create': 'PinController.create',
     'post /pin/:id': 'PinController.update',
     'get /pin/:id': 'PinController.update',
 
-    'get /reset/:token': {
-        controller: 'PasswordReset',
-        action: 'check'
-    },
+    'get /location/:id': 'LocationController.get',
+    'get /category/:id': 'CategoryController.get',
 
-    'post /reset/:token': {
-        controller: 'PasswordReset',
-        action: 'update'
-    },
 
     'get /config': 'ConfigController.display'
 };

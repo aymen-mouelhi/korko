@@ -26,11 +26,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
         },
 
         componentWillMount: function () {
-            //this.load()
-            // Todo: Get Location
-
-            // Todo: Get Category
-
+            this.loadCategory(this.state.pin.category);
         },
 
 
@@ -54,6 +50,15 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
              }
              );
              */
+        },
+
+        loadCategory: function (categoryId) {
+            $.ajax({
+                url: "/category/" + categoryId,
+                success: function (data) {
+                    this.setState({category: data});
+                }.bind(this)
+            });
         },
 
         submit: function (event) {
@@ -81,24 +86,22 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
         },
 
         render: function () {
-
-
             var images;
-            if (this.state.pin.images.length) {
-                images = this.state.pin.images.map(function (image, index) {
-                    var path = "../" + image.path;
-                    return (
-                        <div className="col-xs-6 col-md-3">
-                            <a href="#" className="thumbnail">
-                                <img src={path} />
-                            </a>
-                        </div>
-                    );
-                });
+            if (this.state.pin.images) {
+                if (this.state.pin.images.length > 0) {
+                    images = this.state.pin.images.map(function (image, index) {
+                        var path = "../" + image.path;
+                        return (
+                            <div className="col-xs-6 col-md-3">
+                                <a href="#" className="thumbnail">
+                                    <img src={path} />
+                                </a>
+                            </div>
+                        );
+                    });
+                }
             }
 
-
-            // Todo: in map, remove panel if update not possible
             return (
                 <div className="block">
                     <form id="create">
@@ -111,7 +114,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
 
                         <div className="form-group">
                             <label for="category">Category</label>
-                            <p id="category" class="form-control-static">{this.state.pin.category}</p>
+                            <p id="category" class="form-control-static">{this.state.category.title}</p>
                         </div>
 
                         <div className="panel panel-default">
@@ -120,7 +123,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
                             </div>
                             <div className="wrapper">
                                 <div className="panel-body" id="map-container">
-                                    <Map page="pin" zone={this.state.pin.location} />
+                                    <Map page="pin" locationId={this.state.pin.location} />
                                 </div>
                             </div>
                         </div>

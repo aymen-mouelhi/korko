@@ -8,11 +8,12 @@ var Pin = {
     attributes: {
         title: {type: 'string'},
         description: {type: 'string'},
-        // Todo: Category should be required
-        category: {model: 'Category', required: false},
+        category: {model: 'Category', required: true},
         location: {model: 'Location', required: true},
         user: {model: 'User', required: true},
-        images: {type: 'json'}
+        images: {type: 'json'},
+        // Todo: Thread + messaging: check Flux Chat tutorial
+        thread: {model: 'Thread'}
     }
 };
 

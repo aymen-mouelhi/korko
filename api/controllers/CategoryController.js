@@ -8,4 +8,21 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-module.exports = {};
+module.exports = {
+
+    get: function (req, res) {
+        // Find Category
+        Category.findOne({
+            id: req.params.id
+        }, function (err, category) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            }
+            // Send category
+            res.json(category);
+        });
+    },
+
+
+};

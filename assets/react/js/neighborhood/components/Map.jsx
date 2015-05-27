@@ -238,22 +238,39 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 }
             }
 
+
             return {
                 page: page,
                 type: type,
                 neighborhood: neighborhoods,
                 uid: uid,
                 map: null,
+                zone: {},
                 RADIUS: 100,
                 EARTH_RADIUS: 6378137,
                 infowindow: new google.maps.InfoWindow(infoWindowOptions)
             }
         },
 
+        loadLocation: function (locationId) {
+            $.ajax({
+                url: "/location/" + locationId,
+                success: function (data) {
+                    // Todo: store whole json here
+                    this.setState({
+                        neighborhood: JSON.stringify(data.coordinates),
+                        type: data.type
+                    });
+                }.bind(this)
+            });
+        },
+
 
         componentWillMount: function () {
-            // Load google maps
-            //setTimeout(google.maps.event.addDomListener(window, 'load', jQuery.proxy(this.initialize, this)), 2000);
+            // Load Location
+            if (this.props.locationId) {
+                this.loadLocation(this.props.locationId);
+            }
         },
 
         // Handle responsive maps
@@ -326,7 +343,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // Create the DIV to hold the control and
             // call the RemoveControl() constructor passing
             // in this DIV.
-
+            // Todo: Remove button should be visible only if it is update page
             var removeControlDiv = document.createElement('div');
             var removeControl = new RemoveControl(removeControlDiv, this.state.map);
             removeControlDiv.index = 1;
@@ -335,11 +352,14 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             // Check if user already has a neighborhood
             var nighborhoodJson = JSON.parse(this.state.neighborhood);
-            if (nighborhoodJson.length > 0) {
+            if ((nighborhoodJson.length > 0) || (this.state.zone.length > 0)) {
 
                 var bounds = new google.maps.LatLngBounds();
                 var i;
                 var polygonCoords = [];
+                if (nighborhoodJson.length == 0) {
+                    nighborhoodJson = this.state.zone;
+                }
 
                 // Get polygon coordinates
                 for (i = 0; i < nighborhoodJson.length; i++) {
@@ -353,7 +373,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 }
 
                 // Check type
-                if (this.state.type.indexOf("polygon")) {
+                if (this.state.type == "polygon") {
                     // Construct the polygon.
                     neighborhood = new google.maps.Polygon({
                         paths: polygonCoords,

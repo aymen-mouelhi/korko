@@ -11,7 +11,11 @@ requirejs.config({
         'geolocator': '/bower_components/geolocator/src/geolocator.min',
         'app': '/react/js/dashboard/components',
         'utils': '/react/js/landing/utils/utils',
-        'showdown': '/bower_components/showdown/compressed/showdown'
+        'showdown': '/bower_components/showdown/compressed/showdown',
+        'imagesloaded': '/bower_components/imagesloaded/imagesloaded.pkgd.min',
+        'masonry': '/bower_components/masonry/dist/masonry.pkgd.min',
+        'moment': '/bower_components/moment/moment'
+
     },
     shim: {
         'underscore': {

@@ -35,6 +35,10 @@
     "dropzone": "~4.0.1",
     "bootstrap-select": "~1.7.1",
     "classnames": "~2.1.1",
-    "react-select": "~0.4.9"
+    "react-select": "~0.4.9",
+    "imagesloaded": "~3.1.8",
+    "masonry": "~3.3.0",
+    "bootplus": "~1.0.4",
+    "moment": "~2.10.3"
   }
 }

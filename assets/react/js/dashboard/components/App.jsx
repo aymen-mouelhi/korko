@@ -6,7 +6,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'app/Categories'], function (React, Categories) {
+define(['react', 'app/Pins'], function (React, Pins) {
     'use strict';
 
     // Todo: Loop over categories
@@ -16,7 +16,7 @@ define(['react', 'app/Categories'], function (React, Categories) {
         render: function () {
             return (
                 <div>
-                    <Categories url={'/categories'}/>
+                    <Pins />
                 </div>
             );
         }
