@@ -201,6 +201,8 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
         // Todo: Create Wrapper API for Maps / Location Manager
 
+        // Todo: Create props method
+
         getInitialState: function () {
             var pinString = '<div class="pin">' +
                 '<img src="https://s-media-cache-ak0.pinimg.com/736x/cc/3d/df/cc3ddf58be8e872615d828e77fa1829f.jpg" />' +
@@ -297,15 +299,13 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             // Create Map
             this.state.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-
             // Store a reference to the map
             document.getElementById('map-canvas').gMap = this.state.map;
 
-
             // Position should be fixed
             google.maps.event.addListener(this.state.map, 'tilesloaded', function () {
-
-                document.getElementById('map-canvas').style.position = 'fixed';
+                // Fix map floating issue
+                //document.getElementById('map-canvas').style.position = 'fixed';
 
                 // Fix Size Issue
                 //google.maps.event.trigger(self.state.map, "resize");

@@ -27,7 +27,7 @@ module.exports.http = {
 
         passportInit: require('passport').initialize(),
         passportSession: require('passport').session(),
-        multer: multer({dest: './uploads/'}),
+        multer: multer({dest: './assets/uploads/'}),
 
         /***************************************************************************
          *                                                                          *

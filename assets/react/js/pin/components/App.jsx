@@ -12,7 +12,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsrap, Map) {
+define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootstrap, Map) {
     'use strict';
 
     /*
@@ -22,7 +22,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootsr
      var NavItem = Bootsrap.NavItem;
      */
 
-    var button = Bootsrap.button;
+    var button = Bootstrap.button;
 
     var options = [
         {value: 'one', label: 'One'},

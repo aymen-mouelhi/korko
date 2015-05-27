@@ -22,12 +22,24 @@ requirejs.config({
     }
 });
 
-require(['react', 'app/App'],
-    function (React, App) {
+require(['react', 'app/App', 'app/Pin'],
+    function (React, App, Pin) {
 
-        React.render(
-            React.createElement(App),
-            document.getElementById('react')
-        );
+        if (document.getElementById('react')) {
+            if (document.getElementById('react').getAttribute("pin")) {
+                console.info("peeeeanuts: " + document.getElementById('react').getAttribute("pin"));
+                // Todo: Load Pin.jsx
+                React.render(
+                    React.createElement(Pin, {pin: document.getElementById('react').getAttribute("pin")}),
+                    document.getElementById('react')
+                );
+
+            } else {
+                React.render(
+                    React.createElement(App),
+                    document.getElementById('react')
+                );
+            }
+        }
 
     }); //require

@@ -21822,7 +21822,6 @@ module.exports = {
     },
 
     update: function (req, res) {
-
         // Update an existing Pin
         var pinId = req.params.id;
         var files = req.files;
@@ -21839,55 +21838,76 @@ module.exports = {
         console.log("received Body: " + JSON.stringify(req.body));
 
 
-        // Find Pin
-        Pin.findOne({
-            id: pinId
-        }, function (err, pin) {
+        if (req.method == "POST") {
+            // Todo: always check user, is it the owner of the pin
+            // Update Pin
+            // Find Pin
+            Pin.findOne({
+                id: pinId
+            }, function (err, pin) {
 
-            console.info("Found pin:" + JSON.stringify(pin));
+                console.info("Found pin:" + JSON.stringify(pin));
 
-            // Title
-            if (title) {
-                pin.title = title;
-            }
-            // description
-            if (description) {
-                pin.description = description;
-            }
-
-            // category
-            if (category) {
-                pin.category = category;
-            }
-
-            // Todo: fix location issue when type: Circle
-            // location
-            if (location) {
-                pin.location = location;
-            }
-
-            // Images
-            if (files) {
-                if (!pin.images) {
-                    pin.images = [];
+                // Title
+                if (title) {
+                    pin.title = title;
                 }
-                // Read Uploaded File
-                pin.images.push({
-                    name: req.files.image.originalname,
-                    path: req.files.image.path,
-                    mimetype: req.files.image.mimetype
-                });
-            }
+                // description
+                if (description) {
+                    pin.description = description;
+                }
 
-            // save pin
-            pin.save(function (err) {
+                // category
+                if (category) {
+                    pin.category = category;
+                }
+
+                // Todo: fix location issue when type: Circle
+                // location
+                if (location) {
+                    pin.location = location;
+                }
+
+                // Images
+                if (files) {
+                    if (!pin.images) {
+                        pin.images = [];
+                    }
+                    // Read Uploaded File
+                    pin.images.push({
+                        name: req.files.image.originalname,
+                        path: req.files.image.path,
+                        mimetype: req.files.image.mimetype
+                    });
+                }
+
+                // save pin
+                pin.save(function (err) {
+                    if (err) {
+                        console.info(err);
+                        return res.serverError(err);
+                    }
+                    return res.json({id: pin.id})
+                });
+
+            });
+        } else {
+            // Return view update for given pin
+            Pin.findOne({
+                id: pinId
+            }, function (err, pin) {
                 if (err) {
                     console.info(err);
                     return res.serverError(err);
                 }
-                return res.json({id: pin.id})
+                // Todo: allow update only if pin owner, otherwize show other details: messaging ..
+                // Todo; Node Roles / Authorizations !
+                // Todo: pin toJson (to remove extra fields)
+                return res.view({
+                    pin: JSON.stringify(pin),
+                    errors: req.flash('error')
+                });
             });
-
-        });
+        }
     }
 };
