@@ -13,7 +13,7 @@ module.exports = {
     home: function (req, res) {
         if (req.isAuthenticated()) {
             console.log("user is authenticated");
-            return res.view('dashboard/app');
+            return res.view('/');
         }
         console.log("user is not authenticated");
         return res.view({});

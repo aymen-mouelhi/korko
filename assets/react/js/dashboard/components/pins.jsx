@@ -6,7 +6,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React, $, imagesLoaded, masonry, moment) {
+define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], function (React, $, imagesLoaded, masonry, moment, Header) {
     'use strict';
 
     function randomIntFromInterval(min, max) {
@@ -16,18 +16,14 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React
     var Pins = React.createClass({
 
         getInitialState: function () {
-            // Todo: remove user name
             return {
-                pins: {},
-                user: {},
-                name: "",
-                picture: ""
+                pins: {}
             }
         },
 
 
         componentWillMount: function () {
-            this.getRandomUserImage();
+            this.getPins();
         },
 
 
@@ -43,31 +39,12 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React
 
         },
 
-        getRandomUserImage: function () {
-            $.ajax({
-                url: 'http://api.randomuser.me/',
-                dataType: 'json',
-                success: function (data) {
-                    //console.log("User Data: " + JSON.stringify(data));
-                    var name = data.results[0].user.name.first + " " + data.results[0].user.name.last;
-                    this.setState({
-                        user: data.results[0].user,
-                        name: name,
-                        picture: data.results[0].user.picture.thumbnail
-                    });
-                    // load pins
-                    this.getPins();
-                }.bind(this)
-            });
-        },
-
         // Load Pins
         getPins: function () {
             $.ajax({
                 url: "/pin",
                 success: function (data) {
                     this.setState({pins: data});
-                    console.log("User Name: " + this.state.name);
                 }.bind(this)
             });
         },
@@ -77,35 +54,58 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React
             window.location.href = "/pin/" + pinId;
         },
 
+
         // Todo: Add like / comment in pin model + new thread / message model
 
         // Add a like
         like: function (pinId) {
             console.log("item is liked ! " + pinId);
+
+            $.ajax({
+                url: "/like/" + pinId,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                }.bind(this)
+            });
         },
 
         // Comment
         comment: function (pinId) {
             console.log("item is commented ! " + pinId);
+            $.ajax({
+                url: "/comment/" + pinId,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                }.bind(this)
+            });
         },
 
         // Share
         share: function (pinId) {
             console.log("item is shared ! " + pinId);
+            $.ajax({
+                url: "/share/" + pinId,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                }.bind(this)
+            });
         },
 
         render: function () {
 
             var pins;
             var self = this;
-
-            var name = "";
-
             var imgSrc = "/bower_components/bootplus/docs/assets/img/cover" + randomIntFromInterval(1, 4) + ".jpg";
 
             if (this.state.pins.length > 0) {
 
-                pins = this.state.pins.map(function (pin, index) {
+                pins = this.state.pins.reverse().map(function (pin, index) {
                     var image = <img src={imgSrc} />;
                     var path;
                     if (pin.images) {
@@ -124,13 +124,15 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React
 
                     var published = moment(pin.createdAt).fromNow();
 
+                    var name = pin.user.firstName + " " + pin.user.lastName;
+
                     return (
                         <div className="col-md-4 col-sm-6 item" >
                             <div className="card">
                                 <div className="card-heading image">
-                                    <img src={self.state.picture} alt=""/>
+                                    <img src={pin.user.avatar} alt=""/>
                                     <div className="card-heading-header">
-                                        <h3>{self.state.name}</h3>
+                                        <h3>{name}</h3>
                                         <span>{published}</span>
                                     </div>
                                 </div>
@@ -154,8 +156,11 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment'], function (React
                 });
             }
             return (
-                <div className="row masonry-container">
+                <div>
+                    <Header />
+                    <div className="row masonry-container">
                 {pins}
+                    </div>
                 </div>
             );
         }

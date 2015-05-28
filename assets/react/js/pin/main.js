@@ -9,7 +9,9 @@ requirejs.config({
         'underscore': '/bower_components/underscore/underscore-min',
         'utils': '/react/js/map/utils/utils',
         'neighborhood': '/react/js/neighborhood/components',
-        'app': '/react/js/pin/components',
+        'app': '/react/js/dashboard/components',
+        'local-app': '/react/js/pin/components',
+        'dashboard': '/react/js/dashboard/components',
         'geolocator': '/bower_components/geolocator/src/geolocator.min'
     },
     shim: {
@@ -22,7 +24,7 @@ requirejs.config({
     }
 });
 
-require(['react', 'app/App', 'app/Pin'],
+require(['react', 'local-app/App', 'local-app/Pin'],
     function (React, App, Pin) {
 
         if (document.getElementById('react')) {

@@ -12,7 +12,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootstrap, Map) {
+define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], function (React, Bootstrap, Header, Map) {
     'use strict';
 
     /*
@@ -171,6 +171,8 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
 
             return (
                 <div className="block">
+                    <Header />
+
                     <form id="create">
                         <legend>Create new Pin</legend>
 

@@ -89,6 +89,9 @@ module.exports.routes = {
     'post /pin/:id': 'PinController.update',
     'get /pin/:id': 'PinController.update',
 
+
+    'get /notification': 'NotificationController.get',
+
     'get /location/:id': 'LocationController.get',
     'get /category/:id': 'CategoryController.get',
 

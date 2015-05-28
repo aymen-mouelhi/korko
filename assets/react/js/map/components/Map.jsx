@@ -202,7 +202,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 center: centerLocation
             });
 
-            // Todo: Add drawing tools
+
             var polyOptions = {
                 strokeWeight: 0,
                 fillOpacity: 0.45,

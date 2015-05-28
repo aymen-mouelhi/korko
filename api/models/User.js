@@ -1,5 +1,3 @@
-// Todo: Update User Model from: https://github.com/aymen-mouelhi/sails-starter-app/blob/master/api/models/User.js
-
 var bcrypt = require('bcryptjs'),
     uuid = require("node-uuid"),
     _ = require("lodash");
@@ -13,6 +11,7 @@ module.exports = {
         firstName: {type: 'string'},
         lastName: {type: 'string'},
         email: {type: 'email', unique: true},
+        avatar: {type: 'string'},
         birthday: {type: 'date'},
         resetPasswordToken: {type: 'string'},
         resetPasswordExpires: {type: 'int'},
@@ -20,6 +19,7 @@ module.exports = {
         passports: {collection: 'Passport', via: 'user'},
         neighborhoods: {collection: 'Neighborhood', via: 'user'},
         pins: {collection: 'Pin', via: 'user'},
+        threads: {collection: 'Thread', via: 'user'},
 
 
         /**

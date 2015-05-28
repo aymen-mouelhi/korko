@@ -8,7 +8,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootstrap, Map) {
+define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], function (React, Bootstrap, Header, Map) {
     'use strict';
 
     var button = Bootstrap.button;
@@ -31,25 +31,7 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
 
 
         componentDidMount: function () {
-
             console.info("React props: " + this.props.pin);
-            /*
-             Dropzone = new window.Dropzone("div#images-dropzone", {
-             url: "/file/post",
-             paramName: "image", // The name that will be used to transfer the file
-             maxFilesize: 2, // MB
-             autoProcessQueue: false,
-             accept: function (file, done) {
-             if (file.name == "justinbieber.jpg") {
-             done("Naha, you don't.");
-             }
-             else {
-             done();
-             }
-             }
-             }
-             );
-             */
         },
 
         loadCategory: function (categoryId) {
@@ -102,8 +84,13 @@ define(['react', 'react-bootstrap', 'neighborhood/Map'], function (React, Bootst
                 }
             }
 
+            var page = "create";
+
             return (
                 <div className="block">
+
+                    <Header page={page}/>
+
                     <form id="create">
                         <p id="title" class="form-control-static">{this.state.pin.title}</p>
 

@@ -12,8 +12,12 @@ var Pin = {
         location: {model: 'Location', required: true},
         user: {model: 'User', required: true},
         images: {type: 'json'},
-        // Todo: Thread + messaging: check Flux Chat tutorial
-        thread: {model: 'Thread'}
+        threads: {collection: 'Thread', via: 'pin'}
+    },
+
+
+    toJSON: function () {
+
     }
 };
 

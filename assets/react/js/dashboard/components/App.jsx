@@ -9,8 +9,6 @@
 define(['react', 'app/Pins'], function (React, Pins) {
     'use strict';
 
-    // Todo: Loop over categories
-
     var Dashboard = React.createClass({
 
         render: function () {

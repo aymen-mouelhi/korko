@@ -9,8 +9,6 @@
 define(['../../../../bower_components/react/react'], function (React) {
     'use strict';
 
-    // Todo: Loop over categories
-
     var Footer = React.createClass({
 
         render: function () {

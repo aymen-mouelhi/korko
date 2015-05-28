@@ -209,7 +209,6 @@ var AuthController = {
                 req.user = user.toJSON();
 
                 // find neighborhhods of user
-                // Todo: retrieve neighborhoods
 
                 req.user.neighborhoods = [];
 
@@ -217,7 +216,7 @@ var AuthController = {
                     user: user.id
                 }, function (err, neighborhood) {
                     if (!err) {
-                        console.info("retrived neighborhood: " + JSON.stringify(neighborhood))
+                        console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
                         req.user.neighborhoods = neighborhood;
                     } else {
                         console.info("Error while retrieeing neigborhood: " + err);

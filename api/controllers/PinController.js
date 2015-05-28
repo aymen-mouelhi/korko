@@ -21779,7 +21779,6 @@ module.exports = {
                 return res.serverError(err);
             }
 
-
             // Todo: create method toJson in Pin, and call pinArray.push(pin.toJson()): get user, category, location, comments ...
             async.eachSeries(pins, function (pin, callback) {
                 // Get User Information
@@ -21790,6 +21789,7 @@ module.exports = {
                         console.info(err);
                         return res.serverError(err);
                     }
+
                     // Update User
                     pin.user = user;
 
@@ -21797,8 +21797,8 @@ module.exports = {
                     pinArray.push(pin);
 
                     callback();
-                });
 
+                });
 
             }, function (err) {
                 if (err) {
@@ -21927,7 +21927,7 @@ module.exports = {
                     // Read Uploaded File
                     pin.images.push({
                         name: req.files.image.originalname,
-                        path: req.files.image.path.replace('/assets', ''),
+                        path: req.files.image.path.replace('assets', ''),
                         mimetype: req.files.image.mimetype
                     });
                 }

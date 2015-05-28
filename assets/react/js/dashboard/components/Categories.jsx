@@ -11,7 +11,6 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
     var converter = new Showdown.converter();
 
-    // Todo: Loop over categories
 
     var Category = React.createClass({
 
@@ -32,7 +31,6 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
 
         //could be optimized to render changes instead of pulling everything
         loadPins: function () {
-            // Todo: Load Data from Server
             $.ajax({
                 url: this.props.url,
                 success: function (data) {
@@ -55,7 +53,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
             var that = this;
 
             var pinNodes = this.state.data.map(function (repo, index) {
-                // Todo: Change this with correct object
+
                 var pin = repo.repo;
                 var image = "http://netflix.github.io/assets/" + pin.metadata.boxArt;
 
@@ -123,7 +121,6 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                 "display": "none"
             };
 
-            // Todo: List of notifications: same as Account links
 
             return (
                 <div className="notification-wrapper">
@@ -423,7 +420,7 @@ define(['react', 'showdown', 'jquery'], function (React, Showdown, $) {
                 }
             ];
 
-            // Todo: Load Data from Server
+
             /*
              $.ajax({
              url: this.props.url,
