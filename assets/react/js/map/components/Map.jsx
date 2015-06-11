@@ -385,31 +385,57 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         },
 
         /**
+         * Get Center of polygon
+         * @param polygonCoords
+         */
+        getCenter: function (coordinates) {
+            var bounds = new google.maps.LatLngBounds();
+
+            var polygonCoords = [];
+
+            for (i = 0; i < coordinates.length; i++) {
+                var item = coordinates[i];
+                polygonCoords.push(new google.maps.LatLng(item.A, item.F));
+            }
+
+            for (var i = 0; i < polygonCoords.length; i++) {
+                bounds.extend(polygonCoords[i]);
+            }
+
+            return bounds.getCenter();
+        },
+
+        /**
          * Search for items near the specified search area
          */
         nearbySearch: function () {
+            var self = this;
 
-            var that = this;
-
-            var url = '/location/data';
+            var url = '/pin';
 
             var xhr = $.get(url, function (pins) {
                 // Remove All Markers
-                that.removeAllMarkers();
+                self.removeAllMarkers();
 
                 //that.state.markers = [];
                 // Loop over items in locations.json
                 _.each(pins, function (pin) {
+                    if (pin.location) {
+                        // Get Center of location neighborhood
 
-                    var location = new google.maps.LatLng(pin.location.location.lat, pin.location.location.long);
+                        var center = self.getCenter(pin.location.coordinates);
+                        console.debug("Center location: " + center);
 
-                    console.log("Search Area: " + that.state.searchArea);
-                    console.log("RADIUS: " + that.state.RADIUS);
-                    // check Distance
-                    if (that.distance(location, that.state.searchArea) <= that.state.RADIUS) {
-                        that.createCustomMarker(location);
+                        var location = new google.maps.LatLng(center.lat, center.long);
+
+                        console.log("Search Area: " + self.state.searchArea);
+                        console.log("RADIUS: " + self.state.RADIUS);
+                        // check Distance
+                        if (self.distance(location, self.state.searchArea) <= self.state.RADIUS) {
+                            self.createCustomMarker(location);
+                        }
+
                     }
-
                 });
             }, 'json').fail(function (error) {
                 console.log("error occured: " + error);

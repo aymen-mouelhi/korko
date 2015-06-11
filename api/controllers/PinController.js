@@ -15,45 +15,16 @@ module.exports = {
 
     get: function (req, res) {
         var pinArray = [];
-        Pin.find(function (err, pins) {
-            if (err) {
-                console.info(err);
-                return res.serverError(err);
-            }
-            // Todo: use populate instead of async
+        Pin.find()
+            .populate('location')
+            .populate('user')
+            .populate('category')
+            .populate('threads')
+            .then(function (pins) {
 
-            // Todo: create method toJson in Pin, and call pinArray.push(pin.toJson()): get user, category, location, comments ...
-            async.eachSeries(pins, function (pin, callback) {
-                // Get User Information
-                User.findOne({
-                    id: pin.user
-                }, function (err, user) {
-                    if (err) {
-                        console.info(err);
-                        return res.serverError(err);
-                    }
+                return res.json(pins);
 
-                    // Update User
-                    pin.user = user;
-
-                    // Push to pins array
-                    pinArray.push(pin);
-
-                    callback();
-
-                });
-
-            }, function (err) {
-                if (err) {
-                    // One of the iterations produced an error.
-                    // All processing will now stop.
-                    return res.serverError(err);
-                } else {
-                    return res.json(pinArray);
-                }
             });
-
-        });
     },
 
     // Todo: this should be the dashboard => update method name
@@ -218,10 +189,10 @@ module.exports = {
         var location = req.body.location;
 
 
-        if(!location){
+        if (!location) {
             console.info('Query: ' + query);
-            this.searchByKeyboard(query, function(err, pins){
-                if(err){
+            this.searchByKeyword(query, function (err, pins) {
+                if (err) {
                     console.info(err);
                     return res.serverError(err);
                 }
@@ -235,8 +206,8 @@ module.exports = {
     },
 
 
-    searchByKeyboard: function (query, callback) {
+    searchByKeyword: function (query, callback) {
         // Todo: check fix for sails js issue regarding string index: https://github.com/balderdashy/waterline
-        Pin.find({ $text : { $search : query }  }, callback);
+        Pin.find({$text: {$search: query}}, callback);
     }
 };

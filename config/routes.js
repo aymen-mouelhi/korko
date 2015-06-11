@@ -83,9 +83,7 @@ module.exports.routes = {
     'get /reset/:token': 'PasswordReset.check',
     'post /reset/:token': 'PasswordReset.update',
 
-
-    'get /pins': 'PinController.json',
-
+    'get /pin': 'PinController.get',
     'get /pin': 'PinController.get',
     'get /pin/pin': 'PinController.pin',
     'post /pin/create': 'PinController.create',

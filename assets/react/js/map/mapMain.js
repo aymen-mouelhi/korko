@@ -6,7 +6,10 @@ requirejs.config({
         'geolocator': '/bower_components/geolocator/src/geolocator.min',
         'app': '/react/js/map/components',
         'geo-suggest': '/bower_components/react-geosuggest/dist/react-geosuggest.min',
-        'utils': '/react/js/map/utils/utils'
+        'utils': '/react/js/map/utils/utils',
+        'imagesloaded': '/bower_components/imagesloaded/imagesloaded.pkgd.min',
+        'masonry': '/bower_components/masonry/dist/masonry.pkgd.min',
+        'moment': '/bower_components/moment/moment'
     },
     shim: {
         'geolocator': {
