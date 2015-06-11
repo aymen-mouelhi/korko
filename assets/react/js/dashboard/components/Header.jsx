@@ -57,7 +57,30 @@ define(['react', 'app/Notifications', 'app/UserMenu'], function (React, Notifica
         },
 
 
+        handleSubmit: function (event) {
+            // Prevent Default Behavior
+            event.preventDefault();
+
+            // Get query
+            var query = $('#search').val();
+
+            $.ajax({
+                url: "/search?q=" + query,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                }.bind(this)
+            });
+        },
+
+
         render: function () {
+
+            var searchStyle = {
+                "margin-top": "12px"
+            };
+
             return (
 
                 <div className="navbar">
@@ -75,11 +98,14 @@ define(['react', 'app/Notifications', 'app/UserMenu'], function (React, Notifica
                             </li>
                         </ul>
 
+                        {/* Search Part */}
+                        <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left" style={searchStyle}  >
+                            <input id="search" type="text" className="search-query" placeholder="Search" />
+                        </form>
+
                         <ul className="nav pull-right">
                             {/* Notifications Part */}
                             <Notifications />
-
-                            {/* Search Part */}
 
                             {/* User Part: is it needed? */}
                             <UserMenu />

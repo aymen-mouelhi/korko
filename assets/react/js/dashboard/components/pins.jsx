@@ -6,7 +6,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], function (React, $, imagesLoaded, masonry, moment, Header) {
+define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Notifications', 'app/UserMenu'], function (React, $, imagesLoaded, masonry, moment, Notifications, UserMenu) {
     'use strict';
 
     function randomIntFromInterval(min, max) {
@@ -17,7 +17,10 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], f
 
         getInitialState: function () {
             return {
-                pins: {}
+                pins: {},
+                homeClass: "",
+                createClass: "",
+                mapClass: ""
             }
         },
 
@@ -35,8 +38,54 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], f
                     columnWidth: '.item',
                     itemSelector: '.item'
                 });
-            })
+            });
 
+
+            var homeClass;
+            var createClass;
+            var mapClass;
+
+            switch (this.props.page) {
+                case "home":
+                    homeClass = "active";
+                    break;
+                case "create":
+                    createClass = "active";
+                    break;
+                case "map":
+                    mapClass = "active";
+                    break;
+                default:
+                    homeClass = "active";
+                    break;
+            }
+
+            this.setState({
+                homeClass: homeClass,
+                createClass: createClass,
+                mapClass: mapClass
+            });
+
+        },
+
+
+        handleSubmit: function (event) {
+            // Prevent Default Behavior
+            event.preventDefault();
+
+            // Get query
+            var query = $('#search').val();
+
+            if(query.length > 0){
+                $.ajax({
+                    url: "/search/" + query,
+                    method: "GET",
+                    success: function (data) {
+                        // Update count
+                        this.setState({pins: data});
+                    }.bind(this)
+                });
+            }
         },
 
         // Load Pins
@@ -103,6 +152,10 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], f
             var self = this;
             var imgSrc = "/bower_components/bootplus/docs/assets/img/cover" + randomIntFromInterval(1, 4) + ".jpg";
 
+            var searchStyle = {
+                "margin-top": "12px"
+            };
+
             if (this.state.pins.length > 0) {
 
                 pins = this.state.pins.reverse().map(function (pin, index) {
@@ -157,7 +210,38 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Header'], f
             }
             return (
                 <div>
-                    <Header />
+                {/* <Header /> */}
+                    <div className="navbar">
+                        <div className="navbar-inner">
+                            <a className="brand" href="#">Korko</a>
+                            <ul className="nav">
+                                <li className={this.state.homeClass}>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li className={this.state.createClass}>
+                                    <a href="/pin/create">Add</a>
+                                </li>
+                                <li className={this.state.mapClass}>
+                                    <a href="/map">Browse</a>
+                                </li>
+                            </ul>
+
+                        {/* Search Part */}
+                            <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left" style={searchStyle}  >
+                                <input id="search" type="text" className="search-query" placeholder="Search" />
+                            </form>
+
+                            <ul className="nav pull-right">
+                            {/* Notifications Part */}
+                                <Notifications />
+
+                            {/* User Part: is it needed? */}
+                                <UserMenu />
+                            </ul>
+
+                        </div>
+
+                    </div>
                     <div className="row masonry-container">
                 {pins}
                     </div>

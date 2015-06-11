@@ -47,6 +47,10 @@ module.exports.routes = {
     },
      */
 
+    '/map': {
+        view: '/map/app'
+    },
+
     '/air': {
         view: 'airbnb'
     },
@@ -88,6 +92,8 @@ module.exports.routes = {
     'get /pin/create': 'PinController.create',
     'post /pin/:id': 'PinController.update',
     'get /pin/:id': 'PinController.update',
+
+    'get /search/:query': 'PinController.search',
 
 
     'get /notification': 'NotificationController.get',

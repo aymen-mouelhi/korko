@@ -240,7 +240,7 @@ var AuthController = {
                         res.cookie('remember_me', token, {path: '/', httpOnly: true, maxAge: 60 * 60 * 24 * 30});
                         // ... and return user data as JSON
 
-                        res.redirect('/dashboard/app');
+                        res.redirect('/');
                         //res.send(user.toJSON());
                     });
                 }

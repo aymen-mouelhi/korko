@@ -38,7 +38,8 @@ define(['react'], function (React) {
             if (!this.state.canLoadMore) {
                 return console.error('Got a request to load more, but there was no more')
             }
-            var url = '/location/data';
+            // Todo: send current user location
+            var url = '/pin';
             var xhr = $.get(url, this.gotData, 'json').fail(this.failed);
             this.setState({error: false, loading: true, xhr: xhr});
         },
