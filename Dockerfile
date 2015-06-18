@@ -8,7 +8,7 @@ COPY . /var/www/korko
 WORKDIR /var/www/korko
 
 # Install app dependencies
-RUN npm install
+RUN npm install; npm install multer
 
 EXPOSE  1337
 
