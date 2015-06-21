@@ -209,6 +209,25 @@ module.exports = {
 
     searchByKeyword: function (query, callback) {
         // Todo: check fix for sails js issue regarding string index: https://github.com/balderdashy/waterline
-        Pin.find({$text: {$search: query}}, callback);
+        //Pin.find({$text: {$search: query}}, callback);
+
+        Pin.find()
+            .where({
+                or: [
+                    {title: { contains: query }},
+                    {description: { contains: query }}
+                ]
+
+            })
+            .populate('location')
+            .populate('user')
+            .populate('category')
+            .populate('threads')
+            .exec(function(err, pins){
+                if (err){
+                    callback(err, null);
+                }
+                callback(null, pins);
+            });
     }
 };
