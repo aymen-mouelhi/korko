@@ -98,7 +98,7 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
                         <div className="panel panel-default">
 
                             <div className="panel-heading">
-                                <h3 className="panel-title">Pictures</h3>
+                                <h3 className="panel-title">Information</h3>
                             </div>
                             <div className="panel-body">
 

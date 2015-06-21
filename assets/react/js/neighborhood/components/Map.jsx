@@ -264,6 +264,9 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             $.ajax({
                 url: "/location/" + locationId,
                 success: function (data) {
+
+                    console.debug("Received location: " + JSON.stringify(data));
+
                     // Todo: store whole json here
                     this.setState({
                         neighborhood: JSON.stringify(data.coordinates),
@@ -277,6 +280,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
         componentWillMount: function () {
             // Load Location
             if (this.props.locationId) {
+
                 this.loadLocation(this.props.locationId);
             }
         },
@@ -360,28 +364,33 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             // Check if user already has a neighborhood
             var nighborhoodJson = JSON.parse(this.state.neighborhood);
-            if ((nighborhoodJson.length > 0) || (this.state.zone.length > 0)) {
 
-                var bounds = new google.maps.LatLngBounds();
-                var i;
-                var polygonCoords = [];
-                if (nighborhoodJson.length == 0) {
-                    nighborhoodJson = this.state.zone;
-                }
 
-                // Get polygon coordinates
-                for (i = 0; i < nighborhoodJson.length; i++) {
-                    var item = nighborhoodJson[i];
-                    polygonCoords.push(new google.maps.LatLng(item.A, item.F));
-                }
-
-                // Extend bounds
-                for (i = 0; i < polygonCoords.length; i++) {
-                    bounds.extend(polygonCoords[i]);
-                }
+            //if ((nighborhoodJson.length > 0) || (this.state.zone.length > 0)) {
+            if (nighborhoodJson) {
 
                 // Check type
                 if (this.state.type == "polygon") {
+
+                    var bounds = new google.maps.LatLngBounds();
+                    var i;
+                    var polygonCoords = [];
+                    if (nighborhoodJson.length == 0) {
+                        nighborhoodJson = this.state.zone;
+                    }
+
+                    // Get polygon coordinates
+                    for (i = 0; i < nighborhoodJson.length; i++) {
+                        var item = nighborhoodJson[i];
+                        polygonCoords.push(new google.maps.LatLng(item.A, item.F));
+                    }
+
+                    // Extend bounds
+                    for (i = 0; i < polygonCoords.length; i++) {
+                        bounds.extend(polygonCoords[i]);
+                    }
+
+
                     // Construct the polygon.
                     neighborhood = new google.maps.Polygon({
                         paths: polygonCoords,
@@ -391,20 +400,30 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                         fillColor: '#1E90FF',
                         map: this.state.map
                     });
+
+                    // Recenter Map
+                    this.state.map.setCenter(bounds.getCenter());
+
                 } else {
+
+                    var center = new google.maps.LatLng(nighborhoodJson.center.A, nighborhoodJson.center.F);
+
                     // Center
                     neighborhood = new google.maps.Circle({
-                        paths: polygonCoords,
+                        radius: nighborhoodJson.radius,    // in m
                         strokeWeight: 0,
                         fillOpacity: 0.45,
                         editable: false,
                         fillColor: '#1E90FF',
+                        center: center,
                         map: this.state.map
                     });
+
+                    // Recenter Map
+                    this.state.map.setCenter(center);
+
                 }
 
-                // Recenter Map
-                this.state.map.setCenter(bounds.getCenter());
 
                 // Set uid
                 setUid(this.state.uid);
