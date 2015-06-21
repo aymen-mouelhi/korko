@@ -6,7 +6,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'app/Filters', 'app/Map', 'app/PinCollection'], function (React, Filters, Map, PinCollection) {
+define(['react', 'local-app/Filters', 'local-app/Map', 'local-app/PinCollection', 'dashboard/Header'], function (React, Filters, Map, PinCollection, Header) {
     'use strict';
 
 
@@ -15,11 +15,15 @@ define(['react', 'app/Filters', 'app/Map', 'app/PinCollection'], function (React
         render: function () {
             return (
                 <div>
-                    <div id="sidebar">
-                        <Filters />
-                        <PinCollection />
+                    <div className="block">
+                        <Header />
+
+                        <div id="sidebar">
+                    {/*   <Filters /> */}
+                            <PinCollection />
+                        </div>
+                        <Map />
                     </div>
-                    <Map />
                 </div>
             );
         }

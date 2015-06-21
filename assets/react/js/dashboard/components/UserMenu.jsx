@@ -62,7 +62,7 @@ define(['react'], function (React) {
 
                     <ul className="dropdown-menu dropdown-notifications">
                         <li>
-                            <span className="title">My Profil</span>
+                            <span className="title"><a href="/user/account">My Profil</a></span>
                         </li>
                         <li>
                             <span className="title">My Pins</span>

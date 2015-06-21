@@ -7,6 +7,7 @@ requirejs.config({
         'jquery': '/bower_components/jquery/dist/jquery.min',
         'react-bootstrap': '/bower_components/react-bootstrap/react-bootstrap.min',
         'underscore': '/bower_components/underscore/underscore-min',
+        'validator': '/bower_components/bootstrap-validator/dist/validator.min',
         'utils': '/react/js/map/utils/utils',
         'neighborhood': '/react/js/neighborhood/components',
         'app': '/react/js/dashboard/components',

@@ -367,7 +367,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
 
             //if ((nighborhoodJson.length > 0) || (this.state.zone.length > 0)) {
-            if (nighborhoodJson) {
+            if (nighborhoodJson.length > 0) {
 
                 // Check type
                 if (this.state.type == "polygon") {

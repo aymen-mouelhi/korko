@@ -558,7 +558,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             // Show Info Window
             google.maps.event.addListener(marker, 'click', function () {
-                
+
                 var content = "";
 
                 if(pin.images){

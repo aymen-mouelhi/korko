@@ -12,7 +12,7 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], function (React, Bootstrap, Header, Map) {
+define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator'], function (React, Bootstrap, Header, Map, Validator) {
     'use strict';
 
     /*
@@ -115,6 +115,9 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
         },
 
         componentDidMount: function () {
+            // Resize map to fix issue regarind grey area
+            Map.resizeMap();
+
             Dropzone = new window.Dropzone("div#images-dropzone", {
                     url: "/file/post",
                     paramName: "image", // The name that will be used to transfer the file
@@ -130,44 +133,50 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
                     }
                 }
             );
+
+            // Enable Form Validation
+            $('#create').validator();
         },
 
         submit: function (event) {
 
             var self = this;
-
             event.preventDefault();
 
-            var data = {
-                title: $("#title").val(),
-                description: $("#description").val(),
-                category: $("#category").children(":selected").attr("id"),
-                location: JSON.stringify(window.selectedLocation)
-            };
+            // Todo: better form validation
 
-            var query = [];
-            for (var key in data) {
-                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-            }
+            if ($("#title").val() != "" && window.selectedLocation != {}) {
+                var data = {
+                    title: $("#title").val(),
+                    description: $("#description").val(),
+                    category: $("#category").children(":selected").attr("id"),
+                    location: JSON.stringify(window.selectedLocation)
+                };
 
-            // send data
-            ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
-                // now upload images ! /pin/:id
-                var pinId = JSON.parse(data).id;
-                Dropzone.options.url = "/pin/" + pinId;
-                Dropzone.processQueue();
-                Dropzone.on('complete', function(file){
-                    // Upload is now completed
-                    self.showSuccessMessage();
+                var query = [];
+                for (var key in data) {
+                    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+                }
+
+                // send data
+                ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
+                    // now upload images ! /pin/:id
+                    var pinId = JSON.parse(data).id;
+                    Dropzone.options.url = "/pin/" + pinId;
+                    Dropzone.processQueue();
+                    Dropzone.on('complete', function (file) {
+                        // Upload is now completed
+                        self.showSuccessMessage();
+                    });
                 });
-            });
+            }
         },
 
-        showSuccessMessage: function(){
+        showSuccessMessage: function () {
             var message = '<div class="alert alert-success">Pin created successfully !</div>';
             $('#create').before(message);
             // Todo: Redirect To home Page
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.replace("/");
             }, 2000);
         },
@@ -189,17 +198,17 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
                 <div className="block">
                     <Header />
 
-                    <form id="create">
+                    <form id="create" role="form">
                         <legend>Create new Pin</legend>
 
                         <div className="form-group">
                             <label for="title">Title</label>
-                            <input id="title" type="text" name="title" placeholder="title ..." autofocus="true" className="form-control" />
+                            <input id="title" type="text" name="title" placeholder="title ..." autofocus="true" className="form-control" required />
                         </div>
 
                         <div className="form-group">
                             <label for="description">Description</label>
-                            <input id="description" type="text" name="description" placeholder="description ..." autofocus="true" className="form-control" />
+                            <input id="description" type="text" name="description" placeholder="description ..." autofocus="true" className="form-control" required />
                         </div>
 
                         <div className="form-group">
