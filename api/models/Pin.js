@@ -14,6 +14,7 @@ var Pin = {
             type: 'string',
             index: true
         },
+        status: {type: 'string'},
         category: {model: 'Category', required: true},
         location: {model: 'Location', required: true},
         user: {model: 'User', required: true},
