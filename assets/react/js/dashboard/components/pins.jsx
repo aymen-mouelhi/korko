@@ -222,7 +222,7 @@ define(['react', 'jquery', 'imagesloaded', 'masonry', 'moment', 'app/Notificatio
                                     <a href="/pin/create">Add</a>
                                 </li>
                                 <li className={this.state.mapClass}>
-                                    <a href="/map">Browse</a>
+                                    <a href="/map/app">Browse</a>
                                 </li>
                             </ul>
 

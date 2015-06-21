@@ -85,16 +85,16 @@ define(['react', 'app/Notifications', 'app/UserMenu'], function (React, Notifica
 
                 <div className="navbar">
                     <div className="navbar-inner">
-                        <a className="brand" href="#">Korko</a>
+                        <a className="brand" href="/">Korko</a>
                         <ul className="nav">
-                            <li className={this.state.homeClass}>
+                            <li>
                                 <a href="/">Home</a>
                             </li>
-                            <li className={this.state.createClass}>
+                            <li className="active">
                                 <a href="/pin/create">Add</a>
                             </li>
-                            <li className={this.state.mapClass}>
-                                <a href="/map">Browse</a>
+                            <li className="">
+                                <a href="/map/app">Browse</a>
                             </li>
                         </ul>
 

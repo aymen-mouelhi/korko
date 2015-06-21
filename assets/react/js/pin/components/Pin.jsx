@@ -13,6 +13,8 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
 
     var button = Bootstrap.button;
 
+    // Todo: Remove LoadCategory, location, user ..
+
 
     var PinForm = React.createClass({
 
@@ -92,16 +94,30 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
                     <Header page={page}/>
 
                     <form id="create">
-                        <p id="title" class="form-control-static">{this.state.pin.title}</p>
 
-                        <div className="form-group">
-                            <label for="description">Description</label>
-                            <p id="description" class="form-control-static">{this.state.pin.description}</p>
-                        </div>
+                        <div className="panel panel-default">
 
-                        <div className="form-group">
-                            <label for="category">Category</label>
-                            <p id="category" class="form-control-static">{this.state.category.title}</p>
+                            <div className="panel-heading">
+                                <h3 className="panel-title">Pictures</h3>
+                            </div>
+                            <div className="panel-body">
+
+                                <div className="form-group">
+                                    <label for="title">Title</label>
+                                    <p id="title" class="form-control-static">{this.state.pin.title}</p>
+                                </div>
+
+                                <div className="form-group">
+                                    <label for="description">Description</label>
+                                    <p id="description" class="form-control-static">{this.state.pin.description}</p>
+                                </div>
+
+                                <div className="form-group">
+                                    <label for="category">Category</label>
+                                    <p id="category" class="form-control-static">{this.state.category.title}</p>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div className="panel panel-default">

@@ -113,15 +113,23 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                         });
 
 
+                        // Todo: store center + radius
+                        neighborhoodData.coordinates = {
+                            center: event.overlay.getCenter(),
+                            radius: event.overlay.getRadius()
+                        };
+
                     } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
                         console.info("received event after polygon drawn: " + event);
                         console.info("Coordinates must be: " + event.overlay.getPath().getArray());
                         //var overlay = event.overlay;
                         neighborhoodData.type = "polygon";
+
+                        // Coordinates Array in case polygon
+                        neighborhoodData.coordinates = event.overlay.getPath().getArray();
                     }
 
-                    // Coordinates Array
-                    neighborhoodData.coordinates = event.overlay.getPath().getArray();
+
 
                     //console.info("Neighborhood data: " + JSON.stringify(neighborhood));
                     console.info("Neighborhood data: " + event.overlay);
@@ -487,18 +495,21 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                         // Todo: save new circle?
                     });
 
+                    // Todo: store center + radius
+                    neighborhoodData.coordinates = {
+                        center: event.overlay.getCenter(),
+                        radius: event.overlay.getRadius()
+                    };
+
+
                 } else if (event.type == google.maps.drawing.OverlayType.POLYGON) {
                     console.info("received event after polygon drawn: " + event);
                     console.info("Coordinates must be: " + event.overlay.getPath().getArray());
                     //var overlay = event.overlay;
                     neighborhoodData.type = "polygon";
+                    // Coordinates Array
+                    neighborhoodData.coordinates = event.overlay.getPath().getArray();
                 }
-
-                // Coordinates Array
-                neighborhoodData.coordinates = event.overlay.getPath().getArray();
-
-                //console.info("Neighborhood data: " + JSON.stringify(neighborhood));
-                console.info("Neighborhood data: " + event.overlay);
 
                 // Todo: add a button to save overall status, saving should be done explicitly
                 // Todo: Ajax request to store neighborhood for user id

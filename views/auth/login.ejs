@@ -33,8 +33,14 @@
     <% if (Object.keys(providers).length) { %>
     <h4>You can also use one of these...</h4>
 
-    <% Object.keys(providers).forEach(function (key) { %>
+    <% Object.keys(providers).forEach(function (key) {
+    if(providers[key].name){
+    %>
     <a href="/auth/<%= providers[key].slug %>" role="button"><%= providers[key].name %></a>
-    <% }) %>
+    <% }}) %>
     <% } %>
+
+    <h4>Don't have an account? <a href="/register">Sign up</a></h4>
+    <a href="/reset" className="forgot-password pull-right">Forgot password?</a>
+
 </div>

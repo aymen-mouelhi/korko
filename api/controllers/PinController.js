@@ -174,6 +174,7 @@ module.exports = {
                 // Todo: allow update only if pin owner, otherwize show other details: messaging ..
                 // Todo; Node Roles / Authorizations !
                 // Todo: pin toJson (to remove extra fields)
+                // Todo: Populate category, location, user and other data
                 return res.view({
                     pin: JSON.stringify(pin),
                     errors: req.flash('error')
