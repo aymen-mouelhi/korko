@@ -370,7 +370,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             if (nighborhoodJson.length > 0) {
 
                 // Check type
-                if (this.state.type == "polygon") {
+                if (this.state.type.indexOf("polygon") > 0) {
 
                     var bounds = new google.maps.LatLngBounds();
                     var i;
@@ -404,7 +404,7 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                     // Recenter Map
                     this.state.map.setCenter(bounds.getCenter());
 
-                } else {
+                } else if (this.state.type.indexOf("circle") > 0 ) {
 
                     var center = new google.maps.LatLng(nighborhoodJson.center.A, nighborhoodJson.center.F);
 
