@@ -29,7 +29,6 @@ require(['react', 'local-app/App', 'local-app/Pin'],
 
         if (document.getElementById('react')) {
             if (document.getElementById('react').getAttribute("pin")) {
-                console.info("peeeeanuts: " + document.getElementById('react').getAttribute("pin"));
                 // Todo: Load Pin.jsx
                 React.render(
                     React.createElement(Pin, {pin: document.getElementById('react').getAttribute("pin")}),

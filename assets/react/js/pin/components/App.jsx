@@ -1,5 +1,5 @@
 /**
- * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 24/05/2015.
+ * Created by Aymen Mouelhi (aymen.mouelhi) on 24/05/2015.
  */
 
 // var Select = require('react-select');
@@ -118,21 +118,24 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
             Dropzone = new window.Dropzone("div#images-dropzone", {
                     url: "/file/post",
                     paramName: "image", // The name that will be used to transfer the file
-                maxFilesize: 2, // MB
-                autoProcessQueue: false,
-                accept: function (file, done) {
-                    if (file.name == "justinbieber.jpg") {
-                        done("Naha, you don't.");
+                    maxFilesize: 2, // MB
+                    autoProcessQueue: false,
+                    accept: function (file, done) {
+                        if (file.name == "justinbieber.jpg") {
+                            done("Naha, you don't.");
+                        }
+                        else {
+                            done();
+                        }
                     }
-                    else {
-                        done();
-                    }
-                }
                 }
             );
         },
 
         submit: function (event) {
+
+            var self = this;
+
             event.preventDefault();
 
             var data = {
@@ -153,7 +156,20 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map'], fun
                 var pinId = JSON.parse(data).id;
                 Dropzone.options.url = "/pin/" + pinId;
                 Dropzone.processQueue();
+                Dropzone.on('complete', function(file){
+                    // Upload is now completed
+                    self.showSuccessMessage();
+                });
             });
+        },
+
+        showSuccessMessage: function(){
+            var message = '<div class="alert alert-success">Pin created successfully !</div>';
+            $('#create').before(message);
+            // Todo: Redirect To home Page
+            setTimeout(function(){
+                window.location.replace("/");
+            }, 2000);
         },
 
         render: function () {
