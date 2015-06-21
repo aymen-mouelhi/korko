@@ -421,7 +421,6 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
                     // Recenter Map
                     this.state.map.setCenter(center);
-
                 }
 
 

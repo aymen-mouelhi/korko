@@ -421,18 +421,27 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
                 // Loop over items in locations.json
                 _.each(pins, function (pin) {
                     if (pin.location) {
-                        // Get Center of location neighborhood
 
-                        var center = self.getCenter(pin.location.coordinates);
+                        var center;
+
+                        if (pin.location.type === "circle") {
+
+                            center = pin.location.coordinates.center;
+                        } else {
+                            // Get Center of location neighborhood
+                            center = self.getCenter(pin.location.coordinates);
+                        }
+
                         console.debug("Center location: " + center);
 
-                        var location = new google.maps.LatLng(center.lat, center.long);
+                        var location = new google.maps.LatLng(center.A, center.F);
 
                         console.log("Search Area: " + self.state.searchArea);
                         console.log("RADIUS: " + self.state.RADIUS);
+
                         // check Distance
                         if (self.distance(location, self.state.searchArea) <= self.state.RADIUS) {
-                            self.createCustomMarker(location);
+                            self.createCustomMarker(location, pin);
                         }
 
                     }
@@ -498,8 +507,12 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
             this.state.markers = [];
         },
 
-// Create markers
-        createCustomMarker: function (place) {
+        /**
+         * Create markers
+         * @param place
+         * @param pin
+         */
+        createCustomMarker: function (place, pin) {
 
             var that = this;
 
@@ -545,8 +558,21 @@ define(['react', 'geolocator', 'jquery', 'underscore', 'utils'], function (React
 
             // Show Info Window
             google.maps.event.addListener(marker, 'click', function () {
+                
+                var content = "";
+
+                if(pin.images){
+                    image = pin.images[0].path;
+
+                    content = '<div class="pin"><img src="' + image + '" /><p><a href="/pin/' + pin.id + '">' + pin.title + '</a></p></div>';
+                }else{
+                    content = '<div class="pin"><p><a href="/pin/' + pin.id + '">' + pin.title + '</a></p></div>';
+                }
+
                 //var contentStr = '<strong>' + place.name + '</strong><br />';
-                //infowindow.setContent(contentStr);
+
+                that.state.infowindow.setContent(content);
+
                 that.state.infowindow.open(that.state.map, marker);
             });
         },
