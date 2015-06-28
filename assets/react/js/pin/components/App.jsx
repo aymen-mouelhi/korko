@@ -12,7 +12,8 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator'], function (React, Bootstrap, Header, Map, Validator) {
+define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator'],
+    function (React, Bootstrap, Header, Map, Validator) {
     'use strict';
 
     /*
@@ -181,13 +182,26 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
             }, 2000);
         },
 
+        changeCategory: function () {
+            var categoryId = $("#category").children(":selected").attr("id");
+            var category = $("#category").children(":selected").attr("value");
+
+            console.debug("Selected Category: " + $("#category").children(":selected").attr("value"));
+
+            if (category.indexOf('Sharing') > -1) {
+                // Display Calendar
+
+            }
+
+        },
+
         render: function () {
             var selectOptions;
             if (this.state.categories.length) {
                 selectOptions = this.state.categories.map(function (category, index) {
                     // Check Category
                     return (
-                        <option id={category.id}>{category.title}</option>
+                        <option id={category.id} value={category.title}>{category.title}</option>
                     );
                 });
             } else {
@@ -197,6 +211,7 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
             return (
                 <div className="block">
                     <Header />
+
 
                     <form id="create" role="form">
                         <legend>Create new Pin</legend>
@@ -213,7 +228,7 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
 
                         <div className="form-group">
                             <label for="category">Category</label>
-                            <select id="category" className="form-control">
+                            <select id="category" className="form-control" onChange={this.changeCategory}>
                             {selectOptions}
                             </select>
                         </div>
@@ -235,6 +250,7 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
                         <button type="submit" onClick={this.submit} className="btn btn-primary">Create</button>
 
                     </form>
+
                 </div>
             );
         }

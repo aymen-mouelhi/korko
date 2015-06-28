@@ -40,6 +40,8 @@
     "masonry": "~3.3.0",
     "bootplus": "~1.0.4",
     "moment": "~2.10.3",
-    "bootstrap-validator": "~0.8.1"
+    "bootstrap-validator": "~0.8.1",
+    "moment-range": "~2.0.2",
+    "react-daterange-picker": "https://github.com/onefinestay/react-daterange-picker.git#0.9.0"
   }
 }
