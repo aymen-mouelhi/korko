@@ -13,7 +13,10 @@ requirejs.config({
         'app': '/react/js/dashboard/components',
         'local-app': '/react/js/pin/components',
         'dashboard': '/react/js/dashboard/components',
-        'geolocator': '/bower_components/geolocator/src/geolocator.min'
+        'geolocator': '/bower_components/geolocator/src/geolocator.min',
+        'moment': '/bower_components/moment/min/moment.min',
+        'moment-range': '/bower_components/moment-range/dist/moment-range',
+        'react-daterange-picker': '/bower_components/react-daterange-picker/dist/DateRangePicker'
     },
     shim: {
         'geolocator': {
@@ -21,6 +24,12 @@ requirejs.config({
         },
         'underscore': {
             exports: '_'
+        },
+        'moment-range': {
+            exports: 'DateRange'
+        },
+        'react-daterange-picker': {
+            exports: 'DateRangePicker'
         }
     }
 });
