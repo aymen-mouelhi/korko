@@ -2,14 +2,22 @@
 
 FROM    luis/sails:latest
 
-# Bundle app source
-COPY . /var/www/korko
+# Add the source code
+# ADD . /var/www/korko
 
+# Define working directory
 WORKDIR /var/www/korko
 
+# http://anandmanisankar.com/posts/docker-container-nginx-node-redis-example/
+# Provides cached layer for node_modules
+# ADD package.json /tmp/package.json
+# RUN mkdir -p /var/www/korko/ && cp -a /tmp/node_modules /var/www/korko/
+
+
 # Install app dependencies
-RUN npm install; npm install multer
+# RUN npm install; npm install multer; GIT_DIR=/var/www/korko bower install --config.interactive=false --allow-root
+# RUN npm install && npm install multer
 
 EXPOSE  1337
 
-CMD ["/var/www/korko/deployment/run.sh"]
+# CMD ["/var/www/korko/deployment/run.sh"]
