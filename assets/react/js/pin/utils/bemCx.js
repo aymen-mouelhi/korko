@@ -1,8 +1,16 @@
 define(function () {
     'use strict';
 
-    var bemCx = function(options={}) {
-        let {block, element, namespace, modifiers, states} = options;
+    var bemCx = function (options) {
+        options = {};
+        let block = options.block;
+        let element = options.element;
+        let namespace = options.namespace;
+        let modifiers = options.modifiers;
+        let states = options.states;
+        // let {block, element, namespace, modifiers, states} = options;
+
+
         let bemClasses = [];
         let baseClassName;
 
@@ -24,24 +32,28 @@ define(function () {
 
         if (states) {
             if (typeof states === 'object') {
-                states = Object.keys(states).filter(s => states[s]);
+                states = Object.keys(states).filter(function(s){
+                    return states[s];
+                });
             }
 
-            states.forEach(function(state) {
+            states.forEach(function (state) {
                 bemClasses.push(`${ baseClassName }--is-${ state }`);
             });
         }
 
         if (modifiers) {
             if (typeof modifiers === 'object') {
-                modifiers = Object.keys(modifiers).filter(m => modifiers[m]);
+                modifiers = Object.keys(modifiers).filter(function(m){
+                 return modifiers[m];
+                });
             }
 
-            modifiers.forEach(function(modifier) {
+            modifiers.forEach(function (modifier) {
                 bemClasses.push(`${ baseClassName }--${ modifier }`);
 
                 if (states) {
-                    states.forEach(function(state) {
+                    states.forEach(function (state) {
                         bemClasses.push(`${ baseClassName }--${ modifier }--is-${ state }`);
                     });
                 }

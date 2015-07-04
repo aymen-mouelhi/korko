@@ -1,5 +1,5 @@
 
-define(['utils/shallowEqual'], function (shallowEqual) {
+define(['local-utils/shallowEqual'], function (shallowEqual) {
     'use strict';
 
     var PureRenderMixin = {

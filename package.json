@@ -68,5 +68,8 @@
     "url": "git://github.com/aymen-mouelhi/korko.git"
   },
   "author": "aymen.mouelhi@gmail.com",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "grunt-browserify": "^3.8.0"
+  }
 }

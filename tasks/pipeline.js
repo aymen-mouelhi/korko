@@ -9,6 +9,7 @@
  */
 
 
+//module.exports.browserifyMainFile = '.tmp/public/react/pin/components/Calendar.js';
 
 // CSS files to inject in order
 //

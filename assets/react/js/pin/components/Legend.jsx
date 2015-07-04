@@ -1,7 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'utils/BemMixin'], function (React, BemMixin) {
+define(['react', 'local-utils/BemMixin'], function (React, BemMixin) {
     'use strict';
 
     const PureRenderMixin = React.addons.PureRenderMixin;
@@ -11,11 +11,12 @@ define(['react', 'utils/BemMixin'], function (React, BemMixin) {
 
         propTypes: {
             selectedLabel: React.PropTypes.string.isRequired,
-            stateDefinitions: React.PropTypes.object.isRequired,
+            stateDefinitions: React.PropTypes.object.isRequired
         },
 
         render() {
-            let {selectedLabel, stateDefinitions} = this.props;
+            let selectedLabel = this.props.selectedLabel;
+            let stateDefinitions = this.props.stateDefinitions;
             let items = [];
             let name;
             let def;
@@ -25,7 +26,7 @@ define(['react', 'utils/BemMixin'], function (React, BemMixin) {
                 def = stateDefinitions[name];
                 if (def.label && def.color) {
                     style = {
-                        backgroundColor: def.color,
+                        backgroundColor: def.color
                     };
                     items.push(
                         <li className={this.cx({element: 'LegendItem'})} key={name}>

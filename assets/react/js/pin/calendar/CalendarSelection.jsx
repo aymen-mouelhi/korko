@@ -1,7 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'utils/BemMixin', 'utils/PureRenderMixin'], function (React, BemMixin, PureRenderMixin) {
+define(['react', 'local-utils/BemMixin', 'local-utils/PureRenderMixin'], function (React, BemMixin, PureRenderMixin) {
     'use strict';
 
 
@@ -10,12 +10,13 @@ define(['react', 'utils/BemMixin', 'utils/PureRenderMixin'], function (React, Be
 
         propTypes: {
             modifier: React.PropTypes.string,
-            pending: React.PropTypes.bool.isRequired,
+            pending: React.PropTypes.bool.isRequired
         },
 
         render() {
-            let {modifier, pending} = this.props;
-            let modifiers = {[modifier]: true};
+            let modifier = this.props.modifier;
+            let pending = this.props.pending;
+            let modifiers = {modifier: true};
             let states = {
                 pending
             };

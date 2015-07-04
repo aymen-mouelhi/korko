@@ -12,8 +12,8 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator'],
-    function (React, Bootstrap, Header, Map, Validator) {
+define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator', 'local-app/Calendar'],
+    function (React, Bootstrap, Header, Map, Validator, Calendar) {
     'use strict';
 
     /*
@@ -189,7 +189,7 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
             console.debug("Selected Category: " + $("#category").children(":selected").attr("value"));
 
             if (category.indexOf('Sharing') > -1) {
-                // Display Calendar
+                // Todo Display Calendar
 
             }
 
@@ -212,9 +212,10 @@ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'val
                 <div className="block">
                     <Header />
 
+                    <Calendar />
 
                     <form id="create" role="form">
-                        <legend>Create new Pin</legend>
+                        <legend>Create New Pin</legend>
 
                         <div className="form-group">
                             <label for="title">Title</label>

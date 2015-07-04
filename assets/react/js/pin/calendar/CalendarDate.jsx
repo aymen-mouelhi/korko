@@ -1,7 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'immutable', 'utils/BemMixin', 'utils/CustomPropTypes', 'utils/PureRenderMixin', 'utils/lightenDarkenColor', 'app-local/calendar/CalendarDatePeriod', 'app-local/calendar/CalendarHighlight', 'app-local/calendar/CalendarSelection'],
+define(['react', 'immutable', 'local-utils/BemMixin', 'local-utils/CustomPropTypes', 'local-utils/PureRenderMixin', 'local-utils/lightenDarkenColor', 'local-calendar/CalendarDatePeriod', 'local-calendar/CalendarHighlight', 'local-calendar/CalendarSelection'],
     function (React, Immutable, BemMixin, CustomPropTypes, PureRenderMixin, lightenDarkenColor, CalendarDatePeriod, CalendarHighlight, CalendarSelection) {
         'use strict';
 
@@ -94,7 +94,10 @@ define(['react', 'immutable', 'utils/BemMixin', 'utils/CustomPropTypes', 'utils/
             },
 
             getBemModifiers() {
-                let {date, firstOfMonth, isToday: today} = this.props;
+                //let {date, firstOfMonth, isToday: today} = this.props;
+                let date = this.props.date;
+                let firstOfMonth = this.props.firstOfMonth;
+                let isToday = this.props.today;
 
                 let otherMonth = false;
                 let weekend = false;
@@ -107,36 +110,58 @@ define(['react', 'immutable', 'utils/BemMixin', 'utils/CustomPropTypes', 'utils/
                     weekend = true;
                 }
 
-                return {today, weekend, otherMonth};
+                return {isToday, weekend, otherMonth};
             },
 
             getBemStates() {
-                let {
-                    isSelectedDate,
-                    isInSelectedRange,
-                    isInHighlightedRange,
-                    isHighlightedDate: highlighted,
-                    isDisabled: disabled,
-                    } = this.props;
+
+                /*let {
+                 isSelectedDate,
+                 isInSelectedRange,
+                 isInHighlightedRange,
+                 isHighlightedDate: highlighted,
+                 isDisabled: disabled,
+                 } = this.props;
+                 */
+
+                let isSelectedDate = this.props.isSelectedDate;
+                let isInSelectedRange = this.props.isInSelectedRange;
+                let isInHighlightedRange = this.props.isInHighlightedRange;
+                let isHighlightedDate = this.props.highlighted;
+                let isDisabled = this.props.disabled;
 
                 let selected = isSelectedDate || isInSelectedRange || isInHighlightedRange;
 
-                return {disabled, highlighted, selected};
+                return {isDisabled, highlighted, selected};
             },
 
             render() {
-                let {
-                    date,
-                    dateRangesForDate,
-                    isSelectedDate,
-                    isSelectedRangeStart,
-                    isSelectedRangeEnd,
-                    isInSelectedRange,
-                    isHighlightedDate,
-                    isHighlightedRangeStart,
-                    isHighlightedRangeEnd,
-                    isInHighlightedRange,
-                    } = this.props;
+                /*
+                 let {
+                 date,
+                 dateRangesForDate,
+                 isSelectedDate,
+                 isSelectedRangeStart,
+                 isSelectedRangeEnd,
+                 isInSelectedRange,
+                 isHighlightedDate,
+                 isHighlightedRangeStart,
+                 isHighlightedRangeEnd,
+                 isInHighlightedRange,
+                 } = this.props;
+                 */
+
+                let date = this.props.date;
+                let dateRangesForDate = this.props.dateRangesForDate;
+                let isSelectedDate = this.props.isSelectedDate;
+                let isSelectedRangeStart = this.props.isSelectedRangeStart;
+                let isSelectedRangeEnd = this.props.isSelectedRangeEnd;
+                let isInSelectedRange = this.props.isInSelectedRange;
+                let isHighlightedDate = this.props.isHighlightedDate;
+                let isHighlightedRangeStart = this.props.isHighlightedRangeStart;
+                let isHighlightedRangeEnd = this.props.isHighlightedRangeEnd;
+                let isInHighlightedRange = this.props.isInHighlightedRange;
+
 
                 let bemModifiers = this.getBemModifiers();
                 let bemStates = this.getBemStates();

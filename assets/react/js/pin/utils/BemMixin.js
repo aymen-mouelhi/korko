@@ -1,8 +1,4 @@
-import React from 'react';
-import bemCx from './bemCx';
-
-
-define(['react', 'utils/bemCx'], function (React, bemCx) {
+define(['react', 'local-utils/bemCx'], function (React, bemCx) {
     'use strict';
 
     const BemMixin = {
@@ -48,14 +44,15 @@ define(['react', 'utils/bemCx'], function (React, bemCx) {
             return null;
         },
 
-        cx(options={}) {
+        cx(options) {
+            options = {};
             let opts = {
                 namespace: this.getBemNamespace(),
                 element: this.constructor.displayName,
                 block: this.getBemBlock()
             };
 
-            Object.assign(opts, options);
+            //Object.assign(opts, options);
             return bemCx(opts);
         }
     };

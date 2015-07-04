@@ -1,7 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'utils/BemMixin', 'utils/PureRenderMixin'], function (React, BemMixin, PureRenderMixin) {
+define(['react', 'local-utils/BemMixin', 'local-utils/PureRenderMixin'], function (React, BemMixin, PureRenderMixin) {
     'use strict';
 
 
@@ -14,8 +14,9 @@ define(['react', 'utils/BemMixin', 'utils/PureRenderMixin'], function (React, Be
         },
 
         render() {
-            let {color, period} = this.props;
-            let modifiers = {[period]: true};
+            let color = this.props.color;
+            let period = this.props.period;
+            let modifiers = {period: true};
             let style;
 
             if (color) {

@@ -10,7 +10,8 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPropTypes', 'app-local/Legend', 'app-local/calendar/CalendarMonth', 'app-local/calendar/CalendarDate', 'PaginationArrow', 'utils/isMomentRange'], function (React, moment, Immutable, BemMixin, CustomPropTypes, Legend, CalendarMonth, CalendarDate, PaginationArrow, isMomentRange) {
+define(['react', 'moment', 'immutable', 'calendar', 'local-utils/BemMixin', 'local-utils/CustomPropTypes', 'local-app/Legend', 'local-calendar/CalendarMonth', 'local-calendar/CalendarDate', 'local-app/PaginationArrow', 'local-utils/isMomentRange'],
+    function (React, moment, Immutable, Calendar, BemMixin, CustomPropTypes, Legend, CalendarMonth, CalendarDate, PaginationArrowComponent, isMomentRange) {
     'use strict';
 
     const PureRenderMixin = React.addons.PureRenderMixin;
@@ -78,8 +79,8 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
                 defaultState: '__default',
                 dateStates: [],
                 showLegend: false,
-                onSelect: noop,
-                paginationArrowComponent: PaginationArrow
+                onSelect: function(){},
+                paginationArrowComponent: PaginationArrowComponent
             };
         },
 
@@ -194,15 +195,22 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         isDateSelectable(date) {
-            return this.dateRangesForDate(date).some(r => r.get('selectable'));
+            //return this.dateRangesForDate(date).some(r => r.get('selectable'));
+            return this.dateRangesForDate(date).some(function (r) {
+                return r.get('selectable');
+            });
         },
 
         nonSelectableStateRanges() {
-            return this.state.dateStates.filter(d => !d.get('selectable'));
+            return this.state.dateStates.filter(function (d) {
+                return !d.get('selectable');
+            });
         },
 
         dateRangesForDate(date) {
-            return this.state.dateStates.filter(d => d.get('range').contains(date));
+            return this.state.dateStates.filter(function (d) {
+                return d.get('range').contains(date);
+            });
         },
 
         sanitizeRange(range, forwards) {
@@ -210,17 +218,23 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
              * with a non-selectable state. Using forwards to determine
              * which direction to work
              */
-            let blockedRanges = this.nonSelectableStateRanges().map(r => r.get('range'));
+            let blockedRanges = this.nonSelectableStateRanges().map(function (r) {
+                return r.get('range');
+            });
             let intersect;
 
             if (forwards) {
-                intersect = blockedRanges.find(r => range.intersect(r));
+                intersect = blockedRanges.find(function (r) {
+                    return range.intersect(r);
+                });
                 if (intersect) {
                     return moment.range(range.start, intersect.start);
                 }
 
             } else {
-                intersect = blockedRanges.findLast(r => range.intersect(r));
+                intersect = blockedRanges.findLast(function (r) {
+                    return range.intersect(r);
+                });
 
                 if (intersect) {
                     return moment.range(intersect.end, range.end);
@@ -255,8 +269,8 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         onSelectDate(date) {
-            let {selectionType} = this.props;
-            let {selectedStartDate} = this.state;
+            var selectionType = this.props;
+            var selectedStartDate = this.state;
 
             if (selectionType === 'range') {
                 if (selectedStartDate) {
@@ -276,8 +290,8 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         onHighlightDate(date) {
-            let {selectionType} = this.props;
-            let {selectedStartDate} = this.state;
+            var selectionType = this.props;
+            var selectedStartDate = this.state;
 
             let datePair;
             let range;
@@ -285,7 +299,9 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
 
             if (selectionType === 'range') {
                 if (selectedStartDate) {
-                    datePair = Immutable.List.of(selectedStartDate, date).sortBy(d => d.unix());
+                    datePair = Immutable.List.of(selectedStartDate, date).sortBy(function (d) {
+                        return d.unix();
+                    });
                     range = moment.range(datePair.get(0), datePair.get(1));
                     forwards = (range.start.unix() === selectedStartDate.unix());
                     range = this.sanitizeRange(range, forwards);
@@ -311,14 +327,22 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         statesForDate(date) {
-            return this.state.dateStates.filter(d => date.within(d.get('range'))).map(d => d.get('state'));
+            return this.state.dateStates.filter(function (d) {
+                return date.within(d.get('range'));
+            }).map(function (d) {
+                return d.get('state');
+            });
         },
 
         statesForRange(range) {
             if (range.start.isSame(range.end)) {
                 return this.statesForDate(range.start);
             }
-            return this.state.dateStates.filter(d => d.get('range').intersect(range)).map(d => d.get('state'));
+            return this.state.dateStates.filter(function (d) {
+                return d.get('range').intersect(range);
+            }).map(function (d) {
+                return d.get('state');
+            });
         },
 
         completeSelection() {
@@ -412,7 +436,8 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         changeYear(year) {
-            let {enabledRange, month} = this.state;
+            var enabledRange = this.state.enabledRange;
+            var month = this.state.month;
 
             if (moment({years: year, months: month, date: 1}).unix() < enabledRange.start.unix()) {
                 month = enabledRange.start.month();
@@ -435,22 +460,18 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         renderCalendar(index) {
-            let {
-                bemBlock,
-                bemNamespace,
-                firstOfWeek,
-                numberOfCalendars,
-                selectionType,
-                value
-                } = this.props;
+            var bemBlock = this.props.bemBlock;
+            var bemNamespace = this.props.bemNamespace;
+            var firstOfWeek = this.props.firstOfWeek;
+            var numberOfCalendars = this.props.numberOfCalendars;
+            var selectionType = this.props.selectionType;
+            var value = this.props.value;
 
-            let {
-                dateStates,
-                enabledRange,
-                hideSelection,
-                highlightedDate,
-                highlightedRange
-                } = this.state;
+            var dateStates = this.state.dateStates;
+            var enabledRange = this.state.enabledRange;
+            var hideSelection = this.state.hideSelection;
+            var highlightedDate = this.state.highlightedDate;
+            var highlightedRange = this.state.highlightedRange;
 
             let monthDate = this.getMonthDate();
             let year = monthDate.year();
@@ -460,7 +481,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
 
             monthDate.add(index, 'months');
 
-            let cal = new calendar.Calendar(firstOfWeek);
+            let cal = new Calendar(firstOfWeek);
             let monthDates = Immutable.fromJS(cal.monthDates(monthDate.year(), monthDate.month()));
             let monthStart = monthDates.first().first();
             let monthEnd = monthDates.last().last();
@@ -512,7 +533,12 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         },
 
         render: function () {
-            let {paginationArrowComponent: PaginationArrowComponent, numberOfCalendars, stateDefinitions, selectedLabel, showLegend} = this.props;
+            var paginationArrowComponent = this.props.PaginationArrowComponent;
+            var numberOfCalendars = this.props.numberOfCalendars;
+            var stateDefinitions = this.props.stateDefinitions;
+            var selectedLabel = this.props.selectedLabel;
+            var showLegend = this.props.showLegend;
+            // var {paginationArrowComponent: PaginationArrowComponent, numberOfCalendars, stateDefinitions, selectedLabel, showLegend} = this.props;
 
             let calendars = Immutable.Range(0, numberOfCalendars).map(this.renderCalendar);
 
@@ -524,7 +550,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
         {showLegend ? <Legend stateDefinitions={stateDefinitions} selectedLabel={selectedLabel} /> : null}
                 </div>
             );
-        },
+        }
     });
 
 

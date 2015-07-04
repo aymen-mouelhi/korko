@@ -1,7 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'utils/BemMixin'], function (React, BemMixin) {
+define(['react', 'local-utils/BemMixin'], function (React, BemMixin) {
     'use strict';
 
     const PureRenderMixin = React.addons.PureRenderMixin;
@@ -26,7 +26,7 @@ define(['react', 'utils/BemMixin'], function (React, BemMixin) {
             var direction = this.props.direction;
             var props = this.props;
 
-            let modifiers = {[direction]: true};
+            let modifiers = {direction: true};
             let states = {disabled};
 
             let elementOpts = {

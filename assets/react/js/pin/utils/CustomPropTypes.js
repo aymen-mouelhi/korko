@@ -1,4 +1,4 @@
-define(['moment-range', 'utils/isMomentRange'], function (moment, isMomentRange) {
+define(['moment-range', 'local-utils/isMomentRange'], function (moment, isMomentRange) {
     'use strict';
 
     var CustomPropTypes = {

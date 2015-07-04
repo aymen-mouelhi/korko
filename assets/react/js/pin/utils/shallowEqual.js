@@ -1,4 +1,4 @@
-define(['moment-range', 'utils/areMomentRangesEqual', 'utils/isMomentRange'], function (moment, areMomentRangesEqual, isMomentRange) {
+define(['moment-range', 'local-utils/areMomentRangesEqual', 'local-utils/isMomentRange'], function (moment, areMomentRangesEqual, isMomentRange) {
     'use strict';
 
     var shallowEqual = function(objA, objB) {

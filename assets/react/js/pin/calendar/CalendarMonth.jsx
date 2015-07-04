@@ -1,8 +1,8 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 29/06/2015.
  */
-define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPropTypes', 'utils/PureRenderMixin', 'utils/isMomentRange', 'local-app/calendar/CalendarDate'],
-    function (React, moment, Immutable, BemMixin, CustomPropTypes, PureRenderMixin, isMomentRange, CalendarDate) {
+define(['react', 'moment', 'calendar', 'immutable', 'local-utils/BemMixin', 'local-utils/CustomPropTypes', 'local-utils/PureRenderMixin', 'local-utils/isMomentRange', 'local-calendar/CalendarDate'],
+    function (React, moment, Calendar, Immutable, BemMixin, CustomPropTypes, PureRenderMixin, isMomentRange, CalendarDate) {
         'use strict';
 
         const lang = moment().localeData();
@@ -29,7 +29,14 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderDay: function (date, i) {
-                let {dateComponent: CalendarDate, value, highlightedDate, highlightedRange, hideSelection, enabledRange} = this.props;
+                //let {dateComponent: CalendarDate, value, highlightedDate, highlightedRange, hideSelection, enabledRange} = this.props;
+
+                let dateComponent = this.props.CalendarDate;
+                let value = this.props.value;
+                let highlightedDate = this.props.highlightedDate;
+                let highlightedRange = this.props.highlightedRange;
+                let hideSelection = this.props.hideSelection;
+                let enabledRange = this.props.enabledRange;
                 let d = moment(date);
 
                 let isInSelectedRange;
@@ -60,7 +67,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
                         isSelectedRangeEnd={isSelectedRangeEnd}
                         isInSelectedRange={isInSelectedRange}
                         date={d}
-        {...props} />
+        {...this.props} />
                 );
             },
 
@@ -72,7 +79,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderDayHeaders: function () {
-                let {firstOfWeek} = this.props;
+                let firstOfWeek = this.props.firstOfWeek;
                 let indices = Immutable.Range(firstOfWeek, 7).concat(Immutable.Range(0, firstOfWeek));
 
                 let headers = indices.map(function (index) {
@@ -94,7 +101,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderYearChoice: function (year) {
-                let {enabledRange} = this.props;
+                let enabledRange = this.props.enabledRange;
 
                 if (year < enabledRange.start.year()) {
                     return null;
@@ -110,7 +117,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderHeaderYear: function () {
-                let {firstOfMonth} = this.props;
+                let firstOfMonth = this.props.firstOfMonth;
                 let y = firstOfMonth.year();
                 let years = Immutable.Range(y - 5, y).concat(Immutable.Range(y, y + 10));
                 let choices = years.map(this.renderYearChoice);
@@ -129,7 +136,8 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderMonthChoice: function (month, i) {
-                let {firstOfMonth, enabledRange} = this.props;
+                let firstOfMonth = this.props.firstOfMonth;
+                let enabledRange = this.props.enabledRange;
                 let disabled = false;
                 let year = firstOfMonth.year();
 
@@ -147,7 +155,7 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             renderHeaderMonth: function () {
-                let {firstOfMonth} = this.props;
+                let firstOfMonth = this.props.firstOfMonth;
                 let choices = MONTHS.map(this.renderMonthChoice);
                 let modifiers = {month: true};
 
@@ -168,9 +176,10 @@ define(['react', 'moment-range', 'immutable', 'utils/BemMixin', 'utils/CustomPro
             },
 
             render: function () {
-                let {firstOfWeek, firstOfMonth} = this.props;
+                let firstOfWeek = this.props.firstOfWeek;
+                let firstOfMonth = this.props.firstOfMonth;
 
-                let cal = new calendar.Calendar(firstOfWeek);
+                let cal = new Calendar(firstOfWeek);
                 let monthDates = Immutable.fromJS(cal.monthDates(firstOfMonth.year(), firstOfMonth.month()));
                 let weeks = monthDates.map(this.renderWeek);
 

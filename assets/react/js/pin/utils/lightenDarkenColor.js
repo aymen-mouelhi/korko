@@ -1,8 +1,6 @@
 define(function () {
     'use strict';
 
-    const PureRenderMixin = React.addons.PureRenderMixin;
-
     var lightenDarkenColor = function (col, amt) {
         let usePound = false;
         let num;
