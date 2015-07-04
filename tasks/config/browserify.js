@@ -15,14 +15,16 @@
 module.exports = function(grunt) {
 
     var version = grunt.file.readJSON('package.json').version;
+    var pipeline = require('../pipeline');
 
     grunt.config.set('browserify', {
         js: {
-            src : require('../pipeline').browserifyMainFile,
+            src : pipeline.browserifyMainFile,
             dest: '.tmp/public/browserify/debug.' + version + '.js'
         },
         options: {
-            transform: [require('grunt-react').browserify]
+            transform: [require('grunt-react').browserify],
+            basedir: pipeline.appRootDir
         }
     });
 
