@@ -1,19 +1,19 @@
 .example-enter {
-  opacity: 0.01;
-  transition: opacity .5s ease-in;
+    opacity: 0.01;
+    transition: opacity .5s ease-in;
 }
 
 .example-enter.example-enter-active {
-  opacity: 1;
+    opacity: 1;
 }
 
 .example-leave {
-  opacity: 1;
-  transition: opacity .5s ease-in;
+    opacity: 1;
+    transition: opacity .5s ease-in;
 }
 
 .example-leave.example-leave-active {
-  opacity: 0.01;
+    opacity: 0.01;
 }
 
 body {
@@ -26,6 +26,14 @@ body {
     max-width: 1100px;
     min-width: 800px;
     margin: 50px auto;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
 }
 
 #columns {
@@ -146,3 +154,137 @@ html, body {
     -webkit-overflow-scrolling: touch;
     background: #e9eaed;
 }
+
+#hero {
+    z-index: -1;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+#pretzel-video {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+#slideshow li.active {
+    display: block;
+    z-index: 100;
+}
+
+#slideshow
+li
+img {
+    position: absolute;
+    bottom: 0;
+}
+
+img {
+    vertical-align: middle;
+}
+
+/*
+.header {
+    background: transparent;
+    border-bottom: none;
+    z-index: 1000;
+    top: 20px;
+    width: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+}
+
+.header .dropdown-trigger .dropdown-menu {
+    display: none;
+    top: 46px;
+    right: 0;
+    left: auto;
+    max-width: none;
+}
+
+.header .icon-caret-down {
+    position: relative;
+    top: 1px;
+}
+
+.text-light-gray, .icon-light-gray {
+    color: #cacccd;
+}
+
+.icon {
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 3000;
+    max-width: 280px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    top: 0;
+    left: 0;
+}
+
+.header .dropdown-trigger .dropdown-menu.help-dropdown {
+    width: 280px;
+}
+
+.dropdown-menu .menu-item {
+    display: block;
+    padding: 6px 15px;
+    clear: both;
+    line-height: 18px;
+}
+
+.header .nav {
+    margin: 0;
+    height: 46px;
+}
+
+.header .nav>li{
+    line-height: 46px;
+    height: 46px;
+}
+
+.header .dropdown-trigger .dropdown-menu>li {
+    white-space: nowrap;
+}
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+a {
+    color: #ff5a5f;
+    text-decoration: none;
+}
+
+
+.list-unstyled, .list-layout, .subnav-list, .sidenav-list {
+    padding-left: 0;
+    list-style: none;
+}
+
+ul, ol {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-left: 25px;
+}
+*/

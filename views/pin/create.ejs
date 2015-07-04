@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/bower_components/dropzone/dist/dropzone.css"/>
+<link rel="stylesheet" href="/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css"/>
+<!-- Bootplus -->
+<link href="/bower_components/bootplus/docs/assets/css/bootplus.css" rel="stylesheet" media="screen">
+<link href="/bower_components/bootplus/docs/assets/css/bootplus-responsive.css" rel="stylesheet" media="screen">
+<!--[if IE 7]>
+<link rel="stylesheet" href="/bower_components/bootplus/docs/assets/css/bootplus-ie7.min.css">
+<![endif]-->
+
+
+<div class="container">
+    <div id="react"></div>
+</div>
+
+
+<script src="/bower_components/requirejs/require.js"></script>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/dropzone/dist/dropzone.js"></script>
+<script src="/bower_components/bootplus/docs/assets/js/bootstrap.min.js"></script>
+<script src="/bower_components/bootstrap-validator/dist/validator.min.js"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
+<script id="argScript" src="/react/js/pin/main.js"></script>
+
+<style>
+
+    .dropzone.dz-clickable {
+        cursor: pointer;
+    }
+
+    .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        background: white;
+    }
+
+    .item {
+        color: #333;
+        float: left;
+        font-size: 12px;
+        /*
+        width: 165px;
+        */
+        padding-left: 5px;
+        margin: 0;
+    }
+
+    .itemContent {
+        padding-left: 0;
+        color: #9197a3;
+        /*
+        font-weight: bold;
+        width: 445px;
+        */
+        margin-left: 175px;
+
+        font-size: 12px;
+    }
+
+    .row {
+        border-width: 0;
+        border-color: #e9eaed;
+        border-style: solid;
+    }
+
+    .list {
+        border-bottom: 1px solid #aaa;
+        border-top: 1px solid #aaa;
+        list-style-type: none;
+        word-wrap: break-word;
+        padding: 0 20px;
+        /*
+        width: 759px;
+        */
+        margin-right: 0;
+    }
+
+    html, body {
+        height: 100%;
+        background: #e9eaed;
+    }
+
+    #map-react {
+        width: 500px;
+        height: 400px;
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
+    }
+
+</style>

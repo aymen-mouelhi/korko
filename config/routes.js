@@ -22,28 +22,83 @@
 
 module.exports.routes = {
 
-  /***************************************************************************
-  *                                                                          *
-  * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
-  * etc. depending on your default view engine) your home page.              *
-  *                                                                          *
-  * (Alternatively, remove this and add an `index.html` file in your         *
-  * `assets` directory)                                                      *
-  *                                                                          *
-  ***************************************************************************/
+    /***************************************************************************
+     *                                                                          *
+     * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
+     * etc. depending on your default view engine) your home page.              *
+     *                                                                          *
+     * (Alternatively, remove this and add an `index.html` file in your         *
+     * `assets` directory)                                                      *
+     *                                                                          *
+     ***************************************************************************/
+    /*
+    '/': {
+     view: 'home/home'
+    },
+     */
 
-  '/': {
-    view: 'homepage'
-  }
+    //'get /': 'HomeController.home',
+    'get /': 'PinController.pin',
 
-  /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  *  If a request to a URL doesn't match any of the custom routes above, it  *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
 
+    /*
+    '/home': {
+        view: 'dashboard/app'
+    },
+     */
+
+    '/map': {
+        view: '/map/app'
+    },
+
+    '/air': {
+        view: 'airbnb'
+    },
+
+    /***************************************************************************
+     *                                                                          *
+     * Custom routes here...                                                    *
+     *                                                                          *
+     *  If a request to a URL doesn't match any of the custom routes above, it  *
+     * is matched against Sails route blueprints. See `config/blueprints.js`    *
+     * for configuration options and examples.                                  *
+     *                                                                          *
+     ***************************************************************************/
+
+    'get /login': 'AuthController.login',
+    'get /logout': 'AuthController.logout',
+    'get /register': 'AuthController.register',
+    'get /reset': 'AuthController.reset',
+    'get /update/:token': 'AuthController.update',
+
+    'post /auth/local': 'AuthController.callback',
+    'post /auth/local/:action': 'AuthController.callback',
+
+    'get /auth/:provider': 'AuthController.provider',
+    'get /auth/:provider/callback': 'AuthController.callback',
+
+    'post /reset': 'PasswordReset.create',
+
+    'post /user/:id': 'UserController.update',
+    'get /reset/:token': 'PasswordReset.check',
+    'post /reset/:token': 'PasswordReset.update',
+
+    'get /pin': 'PinController.get',
+    'get /pin': 'PinController.get',
+    'get /pin/pin': 'PinController.pin',
+    'post /pin/create': 'PinController.create',
+    'get /pin/create': 'PinController.create',
+    'post /pin/:id': 'PinController.update',
+    'get /pin/:id': 'PinController.update',
+
+    'get /search/:query': 'PinController.search',
+
+
+    'get /notification': 'NotificationController.get',
+
+    'get /location/:id': 'LocationController.get',
+    'get /category/:id': 'CategoryController.get',
+
+
+    'get /config': 'ConfigController.display'
 };

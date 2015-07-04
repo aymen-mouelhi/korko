@@ -15,13 +15,16 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+    /*
     'bower_components/pure/pure-min.css',
 
     'bower_components/pure/grids-responsive-min.css',
 
     'bower_components/pure/font-awesome/css/font-awesome.css',
+    */
+    // Only keep bootstrap
+    //'bower_components/bootstrap/dist/css/bootstrap.min.css'
 
-    'styles/**/*.css'
 ];
 
 
@@ -34,7 +37,7 @@ var jsFilesToInject = [
 
     // file loading is handled by requirejs
     'bower_components/requirejs/require.js',
-
+    'bower_components/react/react-with-addons',
 
     // All of the rest of your client-side js files
     // will be injected here in no particular order.

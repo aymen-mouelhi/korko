@@ -1,5 +1,5 @@
 /**
- * Created by I060307 on 06/05/2015.
+ * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 06/05/2015.
  */
 /**
  * LocationController
@@ -391,6 +391,22 @@ module.exports = {
         ];
 
         return res.send(mock);
+    },
+
+
+    get: function (req, res) {
+
+        // Find location
+        Location.findOne({
+            id: req.params.id
+        }, function (err, location) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            }
+            // Send location
+            res.json(location);
+        });
     },
 
     /**
