@@ -1,6 +1,7 @@
 /**
  * Created by Aymen Mouelhi (aymen.mouelhi) on 24/05/2015.
  */
+'use strict';
 
 // var Select = require('react-select');
 
@@ -13,14 +14,21 @@
 /*jshint newcap: false */
 /*global React */
 
-'use strict';
-
 var React = require('react');
+var $ = require('jquery');
+
 var Bootstrap = require('react-bootstrap');
-var Header = require('../../dashboard/components/Header.jsx');
-var Map = require('../../neighborhood/components/Map.jsx');
+var Header = require('./Header.jsx');
+//var Map = require('../neighborhood/components/Map');
 var Validator = require('validator');
 
+
+/*
+ var Navbar = Bootsrap.Navbar;
+ var CollapsibleNav = Bootsrap.CollapsibleNav;
+ var Nav = Bootsrap.Nav;
+ var NavItem = Bootsrap.NavItem;
+ */
 
 var button = Bootstrap.button;
 
@@ -209,9 +217,8 @@ var PinForm = React.createClass({
 
         return (
             <div className="block">
-                <Header />
 
-                <div id="calendar" />
+                <Header />
 
                 <form id="create" role="form">
                     <legend>Create New Pin</legend>
@@ -233,15 +240,6 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
-                    <div className="panel panel-default">
-                        <div className="panel-heading">
-                            <h3 className="panel-title">Location</h3>
-                        </div>
-                        <div className="panel-body" id="map-container">
-                            <Map page="pin" />
-                        </div>
-                    </div>
-
                     <div className="form-group">
                         <label for="category">Images</label>
                         <div id="images-dropzone" className="dropzone dz-clickable"></div>
@@ -256,9 +254,18 @@ var PinForm = React.createClass({
     }
 });
 
+//module.exports = PinForm;
+
+
 React.render(
     <PinForm />,
-    document.getElementById('react')
+    document.getElementById('form')
 );
+/*
+ define(['react', 'react-bootstrap', 'dashboard/Header', 'neighborhood/Map', 'validator'],
+ function (React, Bootstrap, Header, Map, Validator) {
 
-module.exports =  PinForm;
+
+ return PinForm;
+ });
+ */

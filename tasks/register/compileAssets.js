@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 		'less:dev',
 		'copy:dev',
         'browserify',
-		'coffee:dev'
+		'coffee:dev',
+        'react:dev'
 	]);
 };

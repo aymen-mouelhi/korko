@@ -8,7 +8,6 @@ var moment = require('moment');
 require('moment-range');
 
 
-
 var stateDefinitions = {
     available: {
         color: null,
@@ -76,5 +75,5 @@ var DatePicker = React.createClass({
 
 React.render(
     <DatePicker />,
-    document.getElementById('app')
+    document.getElementById('calendar')
 );
