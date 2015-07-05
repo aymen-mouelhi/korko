@@ -47,6 +47,10 @@ module.exports.routes = {
     },
      */
 
+    '/test': {
+        view: 'browserify'
+    },
+
     '/map': {
         view: '/map/app'
     },

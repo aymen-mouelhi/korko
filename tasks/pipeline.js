@@ -11,6 +11,14 @@
 
 //module.exports.browserifyMainFile = '.tmp/public/react/pin/components/Calendar.js';
 
+// BROWSERIFY main file path
+// Browserify task work before copying the files in the .tmp folder
+// so the path should be something like .tmp/public/js/app.js
+// just change assets/ for .tmp/public/ and then the same path as always
+var browserifyMainFile = 'assets/js/app.js';
+
+var appRootDir = browserifyMainFile.substring(0, browserifyMainFile.lastIndexOf('/'));
+
 // CSS files to inject in order
 //
 // (if you're using LESS with the built-in default config, you'll want
@@ -39,6 +47,7 @@ var jsFilesToInject = [
     // file loading is handled by requirejs
     'bower_components/requirejs/require.js',
     'bower_components/react/react-with-addons',
+    'bower_components/geolocator/src/geolocator.min.js',
 
     // All of the rest of your client-side js files
     // will be injected here in no particular order.
@@ -72,3 +81,7 @@ module.exports.jsFilesToInject = jsFilesToInject.map(function (path) {
 module.exports.templateFilesToInject = templateFilesToInject.map(function (path) {
     return 'assets/' + path;
 });
+
+// Browserify main file path
+module.exports.browserifyMainFile = browserifyMainFile;
+module.exports.appRootDir = appRootDir;

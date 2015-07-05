@@ -7,29 +7,23 @@
  * sails project.
  *
  * For usage docs see:
- * 		https://github.com/gruntjs/grunt-react
+ *        https://github.com/gruntjs/grunt-react
  */
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-	grunt.config.set('react', {
-      dev: {
-        files: [
-          {
-            expand: true,
-              cwd: 'assets/react/js/',
-            src: ['**/*.jsx'],
-              dest: '.tmp/public/react/js/',
-            ext: '.js'
-          }, {
-            expand: true,
-            cwd: 'assets/js/',
-            src: ['**/*.jsx'],
-            dest: '.tmp/public/js/',
-            ext: '.js'
-          }
-        ]
-      }
+    grunt.config.set('react', {
+        dev: {
+            files: [
+                {
+                    expand: true,
+                    cwd: 'assets/react/js/',
+                    src: ['**/*.jsx'],
+                    dest: '.tmp/public/react/js/',
+                    ext: '.js'
+                }
+            ]
+        }
     });
 
-	grunt.loadNpmTasks('grunt-react');
+    grunt.loadNpmTasks('grunt-react');
 };
