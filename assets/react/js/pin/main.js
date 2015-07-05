@@ -14,13 +14,12 @@ requirejs.config({
         'local-app': '/react/js/pin/components',
         'local-calendar': '/react/js/pin/calendar',
         'local-utils': '/react/js/pin/utils',
-        'calendar': '/js/dependencies/calendar',
         'dashboard': '/react/js/dashboard/components',
         'geolocator': '/bower_components/geolocator/src/geolocator.min',
         'moment': '/bower_components/moment/min/moment.min',
         'moment-range': 'https://cdnjs.cloudflare.com/ajax/libs/moment-range/2.0.2/moment-range.min',
-        'react-daterange-picker': '../node_modules/react-daterange-picker/dist/DateRangePicker',
-        'immutable': 'https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.4/immutable'
+        // 'dateRangePicker': '/bower_components//jquery-date-range-picker/jquery.daterangepicker'
+        'dateRangePicker': '/bower_components/bootstrap-daterangepicker/daterangepicker'
     },
     shim: {
         'geolocator': {
@@ -28,12 +27,6 @@ requirejs.config({
         },
         'underscore': {
             exports: '_'
-        },
-        'calendar': {
-            exports: 'Calendar'
-        },
-        'react-daterange-picker': {
-            exports: 'DateRangePicker'
         }
     }
 });
