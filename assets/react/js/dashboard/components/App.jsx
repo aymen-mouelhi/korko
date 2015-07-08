@@ -6,21 +6,21 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
+define(['react', 'app/Pins'], function (React, Pins) {
+    'use strict';
 
-'use strict';
+    // Todo: Loop over categories
 
-var React = require('react');
-var Pins = require('./pins.jsx');
+    var Dashboard = React.createClass({
 
-var Dashboard = React.createClass({
+        render: function () {
+            return (
+                <div>
+                    <Pins />
+                </div>
+            );
+        }
+    });
 
-    render: function () {
-        return (
-            <div>
-                <Pins />
-            </div>
-        );
-    }
+    return Dashboard;
 });
-
-module.exports = Dashboard;

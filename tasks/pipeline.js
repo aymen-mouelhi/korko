@@ -45,9 +45,7 @@ var jsFilesToInject = [
     //'js/dependencies/**/*.js',
 
     // file loading is handled by requirejs
-    'bower_components/requirejs/require.js',
-    'bower_components/react/react-with-addons',
-    'bower_components/geolocator/src/geolocator.min.js',
+    'bower_components/requirejs/require.js'
 
     // All of the rest of your client-side js files
     // will be injected here in no particular order.
