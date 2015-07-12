@@ -6,19 +6,19 @@
 /*jshint trailing: false */
 /*jshint newcap: false */
 /*global React */
-define(['../../../../bower_components/react/react'], function (React) {
-    'use strict';
 
-    var Footer = React.createClass({
 
-        render: function () {
-            return (
-                <div>
-                    Footer Section
-                </div>
-            );
-        }
-    });
+var React = require('react');
 
-    return Footer;
+var Footer = React.createClass({
+
+    render: function () {
+        return (
+            <div>
+                Footer Section
+            </div>
+        );
+    }
 });
+
+module.exports =  Footer;

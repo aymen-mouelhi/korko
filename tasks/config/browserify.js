@@ -16,7 +16,7 @@
 module.exports = function (grunt) {
 
     grunt.config.set('reactify', {
-        '.tmp/public/browserify': 'assets/react/js/browserify/*.jsx'
+        '.tmp/public': 'assets/react/js/**/*.jsx'
     });
 
     grunt.loadNpmTasks('grunt-reactify');

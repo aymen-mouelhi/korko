@@ -228,7 +228,7 @@ var AuthController = {
 
                 // Just return user JSON if remember me was not specified
                 if (!req.body.remember) {
-                    res.redirect('/dashboard/app');
+                    res.redirect('/');
                 } else {
                     // If remember me option was specified, issue a session token
                     user.issueSessionToken(user, function (err, token) {
