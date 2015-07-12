@@ -1,4 +1,7 @@
 /**
+ * Created by Aymen Mouelhi (aymen.mouelhi@gmail.com) on 09/07/2015.
+ */
+/**
  * React Module
  *
  * ---------------------------------------------------------------
@@ -10,8 +13,11 @@
  *        https://github.com/gruntjs/grunt-react
  */
 module.exports = function (grunt) {
+    // Todo: change name to list
+    // Todo; loop over all files and do a console.log
+    // http://javascriptplayground.com/blog/2014/01/creating-your-first-grunt-plugin/
 
-    grunt.config.set('react', {
+    grunt.config.set('path', {
         dev: {
             files: [
                 {
@@ -26,5 +32,6 @@ module.exports = function (grunt) {
 
     });
 
+    // Todo: load custom grunt module
     grunt.loadNpmTasks('grunt-react');
 };
