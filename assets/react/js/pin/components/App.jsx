@@ -21,6 +21,9 @@ var Header = require('../../dashboard/components/Header.jsx');
 var Map = require('../../neighborhood/components/Map.jsx');
 var Calendar = require('./Calendar.jsx');
 var Validator = require('validator');
+// Todo: Must be global to work
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 
 
 var button = Bootstrap.button;
@@ -34,7 +37,6 @@ function logChange(val) {
     console.log("Selected: " + val);
 }
 
-// Todo: Define a new RequireJS Module: Ajax / use jQuery
 // Ajax Request without jquery
 var ajax = {};
 ajax.x = function () {
@@ -84,7 +86,8 @@ var PinForm = React.createClass({
         return {
             categories: {},
             error: false,
-            xhr: null
+            xhr: null,
+            showCalendar: false
         }
     },
 
@@ -117,7 +120,8 @@ var PinForm = React.createClass({
 
     componentDidMount: function () {
         // Resize map to fix issue regarind grey area
-        Map.resizeMap();
+        // Todo: expose method resizeMap => use event emitter
+        // Map.resizeMap();
 
         Dropzone = new window.Dropzone("div#images-dropzone", {
                 url: "/file/post",
@@ -137,6 +141,11 @@ var PinForm = React.createClass({
 
         // Enable Form Validation
         $('#create').validator();
+
+        // Listen for range updates
+        eventEmitter.on('rangeUpdated', function (range) {
+            console.debug("Selected range: " + range);
+        });
     },
 
     submit: function (event) {
@@ -176,7 +185,7 @@ var PinForm = React.createClass({
     showSuccessMessage: function () {
         var message = '<div class="alert alert-success">Pin created successfully !</div>';
         $('#create').before(message);
-        // Todo: Redirect To home Page
+        // Redirect To home Page
         setTimeout(function () {
             window.location.replace("/");
         }, 2000);
@@ -189,11 +198,15 @@ var PinForm = React.createClass({
         console.debug("Selected Category: " + $("#category").children(":selected").attr("value"));
 
         if (category.indexOf('Sharing') > -1) {
-            // Todo Display Calendar
-
+            // Display Calendar
+            this.setState({showCalendar: true});
+        } else {
+            // Hide Calendar
+            this.setState({showCalendar: false});
         }
 
     },
+
 
     render: function () {
         var selectOptions;
@@ -217,12 +230,14 @@ var PinForm = React.createClass({
 
                     <div className="form-group">
                         <label for="title">Title</label>
-                        <input id="title" type="text" name="title" placeholder="title ..." autofocus="true" className="form-control" required />
+                        <input id="title" type="text" name="title" placeholder="title ..." autofocus="true"
+                               className="form-control" required/>
                     </div>
 
                     <div className="form-group">
                         <label for="description">Description</label>
-                        <input id="description" type="text" name="description" placeholder="description ..." autofocus="true" className="form-control" required />
+                        <input id="description" type="text" name="description" placeholder="description ..."
+                               autofocus="true" className="form-control" required/>
                     </div>
 
                     <div className="form-group">
@@ -232,20 +247,20 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
-                    <Calendar />
-
+                    { this.state.showCalendar ? <Calendar /> : null }
 
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <h3 className="panel-title">Location</h3>
                         </div>
                         <div className="panel-body" id="map-container">
-                            <Map page="pin" />
+                            <Map page="pin"/>
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label for="category">Images</label>
+
                         <div id="images-dropzone" className="dropzone dz-clickable"></div>
                     </div>
 
@@ -259,4 +274,4 @@ var PinForm = React.createClass({
 });
 
 
-module.exports =  PinForm;
+module.exports = PinForm;

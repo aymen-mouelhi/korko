@@ -3,10 +3,13 @@
  */
 var React = require('react');
 var DateRangePicker = require('react-daterange-picker');
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+
 /*
-var moment = require('moment');
-require('moment-range');
-*/
+ var moment = require('moment');
+ require('moment-range');
+ */
 
 var stateDefinitions = {
     available: {
@@ -42,20 +45,23 @@ var dateRanges = [
 ];
 
 var DatePicker = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             value: null
         };
     },
-    handleSelect: function(range, states) {
+    handleSelect: function (range, states) {
         // range is a moment-range object
         this.setState({
             value: range,
             states: states
         });
+        // Raise event range updated
+        //window.range = range;
+        eventEmitter.emit('rangeUpdated', range);
     },
 
-    render: function() {
+    render: function () {
         return (
             <DateRangePicker
                 firstOfWeek={1}
@@ -67,7 +73,7 @@ var DatePicker = React.createClass({
                 defaultState="available"
                 showLegend={true}
                 value={this.state.value}
-                onSelect={this.handleSelect} />
+                onSelect={this.handleSelect}/>
         );
     }
 });
