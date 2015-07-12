@@ -232,6 +232,8 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
+                    <Calendar />
+
 
                     <div className="panel panel-default">
                         <div className="panel-heading">
@@ -256,9 +258,5 @@ var PinForm = React.createClass({
     }
 });
 
-React.render(
-    <PinForm />,
-    document.getElementById('react')
-);
 
 module.exports =  PinForm;

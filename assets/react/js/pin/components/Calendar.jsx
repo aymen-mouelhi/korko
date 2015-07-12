@@ -3,8 +3,10 @@
  */
 var React = require('react');
 var DateRangePicker = require('react-daterange-picker');
+/*
 var moment = require('moment');
 require('moment-range');
+*/
 
 var stateDefinitions = {
     available: {
@@ -49,7 +51,7 @@ var DatePicker = React.createClass({
         // range is a moment-range object
         this.setState({
             value: range,
-            states: states,
+            states: states
         });
     },
 
@@ -69,3 +71,5 @@ var DatePicker = React.createClass({
         );
     }
 });
+
+module.exports = DatePicker;

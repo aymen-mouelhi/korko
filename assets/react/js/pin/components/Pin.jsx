@@ -125,6 +125,8 @@ var PinForm = React.createClass({
 
                     </div>
 
+                    <Calendar />
+
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <h3 className="panel-title">Location</h3>

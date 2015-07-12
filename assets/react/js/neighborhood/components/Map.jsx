@@ -253,8 +253,6 @@ var Map = React.createClass({
             }
         }
 
-
-
         return {
             page: page,
             type: type,

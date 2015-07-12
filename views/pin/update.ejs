@@ -5,16 +5,20 @@
 <!--[if IE 7]>
 <link rel="stylesheet" href="/bower_components/bootplus/docs/assets/css/bootplus-ie7.min.css">
 <![endif]-->
+<link rel="stylesheet" href="http://onefinestay.github.io/react-daterange-picker/css/react-calendar.css">
 
 <div class="container">
     <div id="react" pin="<%= pin %>"></div>
 </div>
-<script src="/bower_components/requirejs/require.js"></script>
-
-<script src="/bower_components/requirejs/require.js"></script>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/moment/min/moment.min.js"></script>
+<script src="/bower_components/moment-range/dist/moment-range.js"></script>
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
+<script src="/bower_components/geolocator/src/geolocator.js"></script>
+<script>
+    window.geolocator = geolocator;
+</script>
 <script src="/bower_components/bootplus/docs/assets/js/bootstrap.min.js"></script>
 <script id="argScript" src="/react/js/pin/main.js"></script>
 
