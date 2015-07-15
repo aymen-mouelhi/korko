@@ -199,12 +199,17 @@ var PinForm = React.createClass({
             ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
                 // now upload images ! /pin/:id
                 var pinId = JSON.parse(data).id;
-                Dropzone.options.url = "/pin/" + pinId;
-                Dropzone.processQueue();
-                Dropzone.on('complete', function (file) {
-                    // Upload is now completed
-                    self.showSuccessMessage();
-                });
+                if(pinId){
+                    Dropzone.options.url = "/pin/" + pinId;
+                    Dropzone.processQueue();
+                    Dropzone.on('complete', function (file) {
+                        // Upload is now completed
+                        self.showSuccessMessage();
+                    });
+                }else{
+                    // Todo: display error message
+                    console.debug("Pin couldn't be created");
+                }
             });
         }
     },

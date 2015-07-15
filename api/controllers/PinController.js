@@ -44,7 +44,12 @@ module.exports = {
             var description = req.body.description;
             var category = req.body.category;
             var location = JSON.parse(req.body.location);
-            var range = JSON.parse(req.body.range);
+            var range = 0;
+
+            if (req.body.range) {
+                range = JSON.parse(req.body.range);
+            }
+
 
             // Check if user exists
             User.findOne({
@@ -120,7 +125,7 @@ module.exports = {
 
                 console.info("Found pin:" + JSON.stringify(pin));
 
-                if(!err){
+                if (!err) {
                     // Title
                     if (title) {
                         pin.title = title;
@@ -146,10 +151,23 @@ module.exports = {
                         if (!pin.images) {
                             pin.images = [];
                         }
+
+                        console.log("Image path: " + req.files.image.path);
+
+                        var path = req.files.image.path;
+                        /*
+                        path.replace("/.tmp/public", "");
+                        path.replace("\\.tmp\\public", "");
+                        path.replace('assets', '');
+                        */
+                        path = path.substring(path.indexOf("uploads"), path.length);
+
+                        console.log("image path: " + path);
+
                         // Read Uploaded File
                         pin.images.push({
                             name: req.files.image.originalname,
-                            path: req.files.image.path.replace('assets', ''),
+                            path: path,
                             mimetype: req.files.image.mimetype
                         });
                     }
@@ -162,7 +180,7 @@ module.exports = {
                         }
                         return res.json({id: pin.id})
                     });
-                }else{
+                } else {
                     console.info(err);
                     return res.serverError(err);
                 }
@@ -220,8 +238,8 @@ module.exports = {
         Pin.find()
             .where({
                 or: [
-                    {title: { contains: query }},
-                    {description: { contains: query }}
+                    {title: {contains: query}},
+                    {description: {contains: query}}
                 ]
 
             })
@@ -229,8 +247,8 @@ module.exports = {
             .populate('user')
             .populate('category')
             .populate('threads')
-            .exec(function(err, pins){
-                if (err){
+            .exec(function (err, pins) {
+                if (err) {
                     callback(err, null);
                 }
                 callback(null, pins);

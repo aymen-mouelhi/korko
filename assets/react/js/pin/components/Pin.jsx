@@ -15,6 +15,7 @@ var React = require('react');
 var Bootstrap = require('react-bootstrap');
 var Header = require('../../dashboard/components/Header.jsx');
 var Map = require('../../neighborhood/components/Map.jsx');
+var Calendar = require('./Calendar.jsx');
 
 var button = Bootstrap.button;
 

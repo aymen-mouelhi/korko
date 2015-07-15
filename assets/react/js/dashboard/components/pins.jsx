@@ -172,6 +172,9 @@ var Pins = React.createClass({
                 if (pin.images) {
                     if (pin.images.length > 0) {
                         path = "../" + pin.images[0].path;
+                        path.replace("/.tmp/public", "");
+                        path.replace("\\.tmp\\public", "");
+                        console.debug("Image path: " + path);
                         image = <img src={path} />
                     }
                 }

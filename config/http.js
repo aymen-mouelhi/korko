@@ -27,7 +27,8 @@ module.exports.http = {
 
         passportInit: require('passport').initialize(),
         passportSession: require('passport').session(),
-        multer: multer({dest: './assets/uploads/'}),
+        //multer: multer({dest: './assets/uploads/'}),
+        multer: multer({dest: './.tmp/public/uploads/'}),
 
         /***************************************************************************
          *                                                                          *
@@ -64,7 +65,7 @@ module.exports.http = {
          ****************************************************************************/
 
         myRequestLogger: function (req, res, next) {
-            console.log("Requested :: ", req.method, req.url);
+            console.log("Requested : ", req.method, req.url);
             return next();
         }
 
