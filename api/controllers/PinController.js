@@ -120,47 +120,52 @@ module.exports = {
 
                 console.info("Found pin:" + JSON.stringify(pin));
 
-                // Title
-                if (title) {
-                    pin.title = title;
-                }
-                // description
-                if (description) {
-                    pin.description = description;
-                }
-
-                // category
-                if (category) {
-                    pin.category = category;
-                }
-
-                // Todo: fix location issue when type: Circle
-                // location
-                if (location) {
-                    pin.location = location;
-                }
-
-                // Images
-                if (files) {
-                    if (!pin.images) {
-                        pin.images = [];
+                if(!err){
+                    // Title
+                    if (title) {
+                        pin.title = title;
                     }
-                    // Read Uploaded File
-                    pin.images.push({
-                        name: req.files.image.originalname,
-                        path: req.files.image.path.replace('assets', ''),
-                        mimetype: req.files.image.mimetype
+                    // description
+                    if (description) {
+                        pin.description = description;
+                    }
+
+                    // category
+                    if (category) {
+                        pin.category = category;
+                    }
+
+                    // Todo: fix location issue when type: Circle
+                    // location
+                    if (location) {
+                        pin.location = location;
+                    }
+
+                    // Images
+                    if (files) {
+                        if (!pin.images) {
+                            pin.images = [];
+                        }
+                        // Read Uploaded File
+                        pin.images.push({
+                            name: req.files.image.originalname,
+                            path: req.files.image.path.replace('assets', ''),
+                            mimetype: req.files.image.mimetype
+                        });
+                    }
+
+                    // save pin
+                    pin.save(function (err) {
+                        if (err) {
+                            console.info(err);
+                            return res.serverError(err);
+                        }
+                        return res.json({id: pin.id})
                     });
+                }else{
+                    console.info(err);
+                    return res.serverError(err);
                 }
-
-                // save pin
-                pin.save(function (err) {
-                    if (err) {
-                        console.info(err);
-                        return res.serverError(err);
-                    }
-                    return res.json({id: pin.id})
-                });
 
             });
         } else {
