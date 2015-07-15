@@ -3,13 +3,8 @@
  */
 var React = require('react');
 var DateRangePicker = require('react-daterange-picker');
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
+var eventEmitter = require('central-event');
 
-/*
- var moment = require('moment');
- require('moment-range');
- */
 
 var stateDefinitions = {
     available: {
@@ -26,7 +21,8 @@ var stateDefinitions = {
         label: 'Unavailable'
     }
 };
-
+/*
+// Todo: Update dateRanges with info from the pin history
 var dateRanges = [
     {
         state: 'enquire',
@@ -43,11 +39,15 @@ var dateRanges = [
         )
     }
 ];
+*/
 
 var DatePicker = React.createClass({
     getInitialState: function () {
+        // Todo: dateRanges / stateDefinitions
         return {
-            value: null
+            value: null,
+            stateDefinitions: stateDefinitions,
+            dateRanges: []
         };
     },
     handleSelect: function (range, states) {
@@ -56,9 +56,13 @@ var DatePicker = React.createClass({
             value: range,
             states: states
         });
+
         // Raise event range updated
-        //window.range = range;
         eventEmitter.emit('rangeUpdated', range);
+    },
+
+    componentDidMount: function () {
+        console.log("stateDefinitions: " + this.props.stateDefinitions);
     },
 
     render: function () {
@@ -68,8 +72,8 @@ var DatePicker = React.createClass({
                 numberOfCalendars={2}
                 selectionType='range'
                 earliestDate={new Date()}
-                stateDefinitions={stateDefinitions}
-                dateStates={dateRanges}
+                stateDefinitions={this.state.stateDefinitions}
+                dateStates={this.state.dateRanges}
                 defaultState="available"
                 showLegend={true}
                 value={this.state.value}

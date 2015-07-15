@@ -21,10 +21,7 @@ var Header = require('../../dashboard/components/Header.jsx');
 var Map = require('../../neighborhood/components/Map.jsx');
 var Calendar = require('./Calendar.jsx');
 var Validator = require('validator');
-// Todo: Must be global to work
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
-
+var eventEmitter = require('central-event');
 
 var button = Bootstrap.button;
 
@@ -87,7 +84,10 @@ var PinForm = React.createClass({
             categories: {},
             error: false,
             xhr: null,
-            showCalendar: false
+            showCalendar: false,
+            dateStates: [],
+            stateDefinitions: [],
+            range: 0
         }
     },
 
@@ -119,9 +119,10 @@ var PinForm = React.createClass({
     },
 
     componentDidMount: function () {
+        var self = this;
         // Resize map to fix issue regarind grey area
-        // Todo: expose method resizeMap => use event emitter
-        // Map.resizeMap();
+        // Raise event range updated
+        eventEmitter.emit('resizeMap');
 
         Dropzone = new window.Dropzone("div#images-dropzone", {
                 url: "/file/post",
@@ -144,24 +145,50 @@ var PinForm = React.createClass({
 
         // Listen for range updates
         eventEmitter.on('rangeUpdated', function (range) {
-            console.debug("Selected range: " + range);
+            console.debug("Selected range in App.jsx: " + range);
+            console.debug("Selected range in App.jsx: " + range.toString());
+
+            self.setState({
+                range: range
+            });
         });
     },
 
     submit: function (event) {
 
         var self = this;
+        var data = {};
         event.preventDefault();
 
         // Todo: better form validation
 
         if ($("#title").val() != "" && window.selectedLocation != {}) {
-            var data = {
-                title: $("#title").val(),
-                description: $("#description").val(),
-                category: $("#category").children(":selected").attr("id"),
-                location: JSON.stringify(window.selectedLocation)
-            };
+
+            // Sharing Category
+            if (this.state.showCalendar) {
+                if (this.state.range != 0) {
+
+                    data = {
+                        title: $("#title").val(),
+                        description: $("#description").val(),
+                        category: $("#category").children(":selected").attr("id"),
+                        location: JSON.stringify(window.selectedLocation),
+                        range: this.state.range
+                    };
+
+                } else {
+                    // Error: range is not selected
+                    // Todo: show error + stop submission
+                }
+            } else {
+                data = {
+                    title: $("#title").val(),
+                    description: $("#description").val(),
+                    category: $("#category").children(":selected").attr("id"),
+                    location: JSON.stringify(window.selectedLocation)
+                };
+            }
+
 
             var query = [];
             for (var key in data) {
@@ -247,7 +274,9 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
-                    { this.state.showCalendar ? <Calendar /> : null }
+                    { this.state.showCalendar ? <Calendar stateDefinitions={this.state.stateDefinitions}
+                                                          dateStates={this.state.dateStates}
+                        /> : null }
 
                     <div className="panel panel-default">
                         <div className="panel-heading">

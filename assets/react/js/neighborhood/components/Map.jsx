@@ -14,6 +14,7 @@ var jQuery = require('jquery');
 var _ = require('underscore');
 var Utils = require('../../map/utils/utils');
 //var geolocator = require('geolocator');
+var eventEmitter = require('central-event');
 
 
 var drawingManager;
@@ -185,7 +186,8 @@ function createDrawingManager(map, radius) {
     };
 
     drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        drawingMode: null,
+        //drawingMode: google.maps.drawing.OverlayType.POLYGON,
         drawingControl: true,
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_LEFT,
@@ -443,7 +445,8 @@ var Map = React.createClass({
             };
 
             drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingMode: null,
+                //drawingMode: google.maps.drawing.OverlayType.POLYGON,
                 drawingControl: true,
                 drawingControlOptions: {
                     position: google.maps.ControlPosition.TOP_LEFT,
@@ -560,6 +563,12 @@ var Map = React.createClass({
                 drawingManager.setMap(null);
             }
 
+        });
+
+        // listen to event resizeMap
+        eventEmitter.on('resizeMap', function () {
+            console.debug("resizing map");
+            self.resizeMap();
         });
 
     },

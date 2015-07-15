@@ -44,6 +44,7 @@ module.exports = {
             var description = req.body.description;
             var category = req.body.category;
             var location = JSON.parse(req.body.location);
+            var range = JSON.parse(req.body.range);
 
             // Check if user exists
             User.findOne({
@@ -62,7 +63,8 @@ module.exports = {
                         user: req.user.id,
                         title: title,
                         description: description,
-                        category: category
+                        category: category,
+                        range: range
                     }, function (err, pin) {
                         if (err) {
                             console.info(err);
@@ -75,7 +77,6 @@ module.exports = {
                         return res.json({id: pin.id})
 
                     });
-
                 });
             });
 
