@@ -37,8 +37,8 @@ module.exports.routes = {
     },
      */
 
-    //'get /': 'HomeController.home',
-    'get /': 'PinController.pin',
+    'get /': 'HomeController.home',
+    //'get /': 'PinController.pin',
 
 
     /*

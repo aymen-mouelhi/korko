@@ -13,7 +13,7 @@ module.exports = {
     home: function (req, res) {
         if (req.isAuthenticated()) {
             console.log("user is authenticated");
-            return res.view('/');
+            return res.view('pin/pin', {});
         }
         console.log("user is not authenticated");
         return res.view({});
