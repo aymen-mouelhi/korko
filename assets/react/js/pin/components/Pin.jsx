@@ -107,9 +107,9 @@ var PinForm = React.createClass({
         var page = "create";
         var range;
         var dateRanges = [];
+
         if (this.state.pin.range) {
             range = moment.range(this.state.pin.range);
-            console.log(range);
 
             dateRanges = [{
                     state: 'enquire',
@@ -156,7 +156,7 @@ var PinForm = React.createClass({
                         </div>
                         <div className="wrapper">
                             <div className="panel-body" id="map-container">
-                                <Map page="pin" locationId={this.state.pin.location}/>
+                                <Map page="pin" location={this.state.pin.location} showRemove={false}/>
                             </div>
                         </div>
                     </div>

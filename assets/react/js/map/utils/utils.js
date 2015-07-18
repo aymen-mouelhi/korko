@@ -111,6 +111,20 @@ var Utils = {
                 //callback(error, null)
             }
         });
+    },
+
+    /**
+     * Check JSON is empty or not
+     * @param obj
+     * @returns {boolean}
+     */
+    isEmpty: function (obj) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop))
+                return false;
+        }
+
+        return true;
     }
 };
 

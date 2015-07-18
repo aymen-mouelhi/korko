@@ -171,6 +171,7 @@ var Map = React.createClass({
         // Point where to search
         this.state.searchArea = centerLocation;
 
+        // Fix bug in Google Maps API v3: tilesloaded event not raised
         google.maps.event.addListenerOnce(this.state.map, 'idle', function () {
             // do something only the first time the map is loaded
             console.debug("Event listener for Idle");
