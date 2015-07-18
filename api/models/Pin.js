@@ -14,6 +14,8 @@ var Pin = {
             type: 'string',
             index: true
         },
+        range: {type: 'string'},
+        price: {type: 'string'},
         status: {type: 'string'},
         category: {model: 'Category', required: true},
         location: {model: 'Location', required: true},

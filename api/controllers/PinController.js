@@ -42,14 +42,19 @@ module.exports = {
 
             var title = req.body.title;
             var description = req.body.description;
+            var price = req.body.price;
             var category = req.body.category;
             var location = JSON.parse(req.body.location);
-            var range = 0;
+            var range = "";
 
-            if (req.body.range) {
-                range = JSON.parse(req.body.range);
+            if (price) {
+                price = parseFloat(price);
             }
 
+            // Get Range
+            if (req.body.range) {
+                range = req.body.range;
+            }
 
             // Check if user exists
             User.findOne({
@@ -69,6 +74,7 @@ module.exports = {
                         title: title,
                         description: description,
                         category: category,
+                        price: price,
                         range: range
                     }, function (err, pin) {
                         if (err) {
@@ -76,7 +82,6 @@ module.exports = {
                             return res.serverError(err);
                         }
                         console.info("Pin saved: " + JSON.stringify(pin));
-
                         req.flash('success', 'Pin saved');
                         //return res.ok();
                         return res.json({id: pin.id})

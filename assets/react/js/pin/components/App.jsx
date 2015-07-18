@@ -162,7 +162,7 @@ var PinForm = React.createClass({
 
         // Todo: better form validation
 
-        if ($("#title").val() != "" && window.selectedLocation != {}) {
+        if ($("#title").val() != "" && window.selectedLocation != {} != $("#price").val() != "") {
 
             // Sharing Category
             if (this.state.showCalendar) {
@@ -172,8 +172,9 @@ var PinForm = React.createClass({
                         title: $("#title").val(),
                         description: $("#description").val(),
                         category: $("#category").children(":selected").attr("id"),
+                        price: $("#price").val(),
                         location: JSON.stringify(window.selectedLocation),
-                        range: this.state.range
+                        range: this.state.range.toString()
                     };
 
                 } else {
@@ -185,6 +186,7 @@ var PinForm = React.createClass({
                     title: $("#title").val(),
                     description: $("#description").val(),
                     category: $("#category").children(":selected").attr("id"),
+                    price: $("#price").val(),
                     location: JSON.stringify(window.selectedLocation)
                 };
             }
@@ -279,9 +281,16 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
-                    { this.state.showCalendar ? <Calendar stateDefinitions={this.state.stateDefinitions}
+                    { this.state.showCalendar ? <Calendar defaultState="available"
+                                                          stateDefinitions={this.state.stateDefinitions}
                                                           dateStates={this.state.dateStates}
                         /> : null }
+
+                    <div className="form-group">
+                        <label for="price">Price</label>
+                        <input id="price" type="text" name="price" placeholder="price ..."
+                               autofocus="true" className="form-control" required/>
+                    </div>
 
                     <div className="panel panel-default">
                         <div className="panel-heading">

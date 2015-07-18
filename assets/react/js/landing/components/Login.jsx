@@ -35,7 +35,7 @@ var Login = React.createClass({
 
                                 <a href="/auth/facebook"
                                    className="fb-button fb-blue btn icon-btn btn-block btn-large row-space-1 btn-facebook"
-                                   data-populate_uri="" data-redirect_uri="https://www.airbnb.com/authenticate">
+                                   data-populate_uri="">
                                         <span className="icon-container">
                                             <i className="icon icon-facebook"></i>
                                         </span>
@@ -45,7 +45,7 @@ var Login = React.createClass({
                                 </a>
 
 
-                                <a href="/oauth_connect?service=google&amp;from=google_signup"
+                                <a href="/auth/google"
                                    className="btn icon-btn btn-block btn-large row-space-1 btn-google">
                                         <span className="icon-container">
                                             <i className="icon icon-google-plus"></i>

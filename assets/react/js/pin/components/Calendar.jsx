@@ -17,7 +17,8 @@ var stateDefinitions = {
     },
     unavailable: {
         selectable: false,
-        color: '#78818b',
+        //color: '#78818b',
+        color: null,
         label: 'Unavailable'
     }
 };
@@ -73,9 +74,9 @@ var DatePicker = React.createClass({
                 selectionType='range'
                 earliestDate={new Date()}
                 stateDefinitions={this.state.stateDefinitions}
-                dateStates={this.state.dateRanges}
-                defaultState="available"
-                showLegend={true}
+                dateStates={this.props.dateRanges}
+                defaultState={this.props.defaultState}
+                showLegend={false}
                 value={this.state.value}
                 onSelect={this.handleSelect}/>
         );
