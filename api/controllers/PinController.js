@@ -161,10 +161,10 @@ module.exports = {
 
                         var path = req.files.image.path;
                         /*
-                        path.replace("/.tmp/public", "");
-                        path.replace("\\.tmp\\public", "");
-                        path.replace('assets', '');
-                        */
+                         path.replace("/.tmp/public", "");
+                         path.replace("\\.tmp\\public", "");
+                         path.replace('assets', '');
+                         */
                         path = path.substring(path.indexOf("uploads"), path.length);
 
                         console.log("image path: " + path);
@@ -195,20 +195,22 @@ module.exports = {
             // Return view update for given pin
             Pin.findOne({
                 id: pinId
-            }, function (err, pin) {
-                if (err) {
-                    console.info(err);
-                    return res.serverError(err);
-                }
-                // Todo: allow update only if pin owner, otherwize show other details: messaging ..
-                // Todo; Node Roles / Authorizations !
-                // Todo: pin toJson (to remove extra fields)
-                // Todo: Populate category, location, user and other data
-                return res.view({
-                    pin: JSON.stringify(pin),
-                    errors: req.flash('error')
+            }).populate('location')
+                .populate('user')
+                .populate('category')
+                .populate('threads')
+                .then(function (pin) {
+                    if (!pin) {
+                        return res.serverError("Pin is not found");
+                    }
+                    // Todo: allow update only if pin owner, otherwize show other details: messaging ..
+                    // Todo; Node Roles / Authorizations !
+                    // Todo: pin toJson (to remove extra fields)
+                    return res.view({
+                        pin: JSON.stringify(pin),
+                        errors: req.flash('error')
+                    });
                 });
-            });
         }
     },
 

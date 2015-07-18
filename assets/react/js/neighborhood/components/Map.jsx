@@ -231,65 +231,24 @@ var Map = React.createClass({
         };
 
         var type = "";
+        // Todo: update page
         var page = "";
         var neighborhoods = "{}";
         var uid = 0;
 
-
-        if ($("#argScript") != null) {
-            var params = Utils.getScriptParams("argScript");
-            if (params.type != null) {
-                type = params.type.toString();
-            }
-
-            if (params.page != null) {
-                page = params.page;
-            }
-
-            if (params.n != null) {
-                neighborhoods = params.n;
-            }
-
-            if (params.uid != null) {
-                uid = params.uid;
-            }
-        }
+        // Todo: get info from props
+        console.log("Try to read provided location:" + this.props.location);
 
         return {
             page: page,
-            type: type,
-            neighborhood: neighborhoods,
+            type: this.props.location.type,
+            neighborhood: this.props.location.coordinates,
             uid: uid,
             map: null,
             zone: {},
             RADIUS: 100,
             EARTH_RADIUS: 6378137,
             infowindow: new google.maps.InfoWindow(infoWindowOptions)
-        }
-    },
-
-    loadLocation: function (locationId) {
-        $.ajax({
-            url: "/location/" + locationId,
-            success: function (data) {
-
-                console.debug("Received location: " + JSON.stringify(data));
-
-                // Todo: store whole json here
-                this.setState({
-                    neighborhood: JSON.stringify(data.coordinates),
-                    type: data.type
-                });
-            }.bind(this)
-        });
-    },
-
-
-    componentWillMount: function () {
-        // Load Location
-        if (this.props.locationId) {
-
-            this.loadLocation(this.props.locationId);
         }
     },
 
@@ -359,33 +318,36 @@ var Map = React.createClass({
             console.log("tilesloaded: Is it called again?");
         });
 
-        // add button remove
-        // Create the DIV to hold the control and
-        // call the RemoveControl() constructor passing
-        // in this DIV.
-        // Todo: Remove button should be visible only if it is update page
-        var removeControlDiv = document.createElement('div');
-        var removeControl = new RemoveControl(removeControlDiv, this.state.map);
-        removeControlDiv.index = 1;
-        this.state.map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
+        // Todo: check if current user is the owner of the pin
+        if(this.props.showRemove){
+            // add button remove
+            // Create the DIV to hold the control and
+            // call the RemoveControl() constructor passing
+            // in this DIV.
+            // Todo: Remove button should be visible only if it is update page
+            var removeControlDiv = document.createElement('div');
+            var removeControl = new RemoveControl(removeControlDiv, this.state.map);
+            removeControlDiv.index = 1;
+
+            this.state.map.controls[google.maps.ControlPosition.TOP_LEFT].push(removeControlDiv);
+        }
 
 
-        // Check if user already has a neighborhood
-        var nighborhoodJson = JSON.parse(this.state.neighborhood);
+        var nighborhoodJson = this.state.neighborhood;
 
-
-        //if ((nighborhoodJson.length > 0) || (this.state.zone.length > 0)) {
-        if (nighborhoodJson.length > 0) {
+        if (!Utils.isEmpty(nighborhoodJson)) {
 
             // Check type
-            if (this.state.type.indexOf("polygon") > 0) {
+            if (this.state.type.valueOf() === "polygon") {
 
                 var bounds = new google.maps.LatLngBounds();
                 var i;
                 var polygonCoords = [];
-                if (nighborhoodJson.length == 0) {
-                    nighborhoodJson = this.state.zone;
+                /*
+                if (this.state.neighborhood.length == 0) {
+                    this.state.neighborhood = this.state.zone;
                 }
+                */
 
                 // Get polygon coordinates
                 for (i = 0; i < nighborhoodJson.length; i++) {
@@ -412,7 +374,7 @@ var Map = React.createClass({
                 // Recenter Map
                 this.state.map.setCenter(bounds.getCenter());
 
-            } else if (this.state.type.indexOf("circle") > 0) {
+            } else if (this.state.type.valueOf() === "circle") {
 
                 var center = new google.maps.LatLng(nighborhoodJson.center.A, nighborhoodJson.center.F);
 
