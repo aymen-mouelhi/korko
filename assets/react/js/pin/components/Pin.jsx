@@ -26,42 +26,28 @@ var PinForm = React.createClass({
 
     getInitialState: function () {
         var pin = JSON.parse(this.props.pin);
+        var showCalendar = false;
+
+        if (pin.category) {
+            // check category
+            if (pin.category.title.indexOf('Sharing') > -1) {
+                // Display Calendar
+                showCalendar = true;
+            }
+        }
+
         return {
             pin: pin,
             location: {},
-            category: {},
-            showCalendar: false
+            category: pin.category,
+            showCalendar: showCalendar
         }
     },
-
-    componentWillMount: function () {
-        this.loadCategory(this.state.pin.category);
-    },
-
 
     componentDidMount: function () {
         console.info("React props: " + this.props.pin);
     },
 
-    loadCategory: function (categoryId) {
-        // Todo: Performance Issue => populate directly from server
-        $.ajax({
-            url: "/category/" + categoryId,
-            success: function (data) {
-                this.setState({category: data});
-                if (data) {
-                    // check category
-                    if (data.title.indexOf('Sharing') > -1) {
-                        // Display Calendar
-                        this.setState({showCalendar: true});
-                    } else {
-                        // Hide Calendar
-                        this.setState({showCalendar: false});
-                    }
-                }
-            }.bind(this)
-        });
-    },
 
     submit: function (event) {
         event.preventDefault();
@@ -112,9 +98,9 @@ var PinForm = React.createClass({
             range = moment.range(this.state.pin.range);
 
             dateRanges = [{
-                    state: 'enquire',
-                    range: range
-                }];
+                state: 'enquire',
+                range: range
+            }];
         }
 
         return (
@@ -122,33 +108,52 @@ var PinForm = React.createClass({
 
                 <Header page={page}/>
 
-                <form id="create" role="form">
+                <form id="create">
 
-                    <div className="form-group">
-                        <label for="title">Title</label>
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3 className="panel-title">Pin Information</h3>
+                        </div>
 
-                        <p id="title" class="form-control-static">{this.state.pin.title}</p>
+                        <div className="panel-body">
+                            <div className="form-group">
+                                <label for="title">Title</label>
+
+                                <p id="title" class="form-control-static">{this.state.pin.title}</p>
+                            </div>
+
+                            <div className="form-group">
+                                <label for="description">Description</label>
+
+                                <p id="description" class="form-control-static">{this.state.pin.description}</p>
+                            </div>
+
+                            <div className="form-group">
+                                <label for="category">Category</label>
+
+                                <p id="category" class="form-control-static">{this.state.category.title}</p>
+                            </div>
+
+                            <div className="form-group">
+                                <label for="price">Price</label>
+
+                                <p id="category" class="form-control-static">{this.state.price}</p>
+                            </div>
+
+
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <label for="description">Description</label>
-
-                        <p id="description" class="form-control-static">{this.state.pin.description}</p>
-                    </div>
-
-                    <div className="form-group">
-                        <label for="category">Category</label>
-
-                        <p id="category" class="form-control-static">{this.state.category.title}</p>
-                    </div>
-
-                    <div className="form-group">
-                        <label for="price">Price</label>
-
-                        <p id="category" class="form-control-static">{this.state.category.price}</p>
-                    </div>
-
-                    { this.state.showCalendar ? <Calendar dateRanges={dateRanges} defaultState="unavailable"/> : null }
+                    { this.state.showCalendar ? <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3 className="panel-title">Availability</h3>
+                        </div>
+                        <div className="wrapper">
+                            <div className="panel-body">
+                                <Calendar dateRanges={dateRanges} defaultState="unavailable"/>
+                            </div>
+                        </div>
+                    </div> : null }
 
                     <div className="panel panel-default">
                         <div className="panel-heading">
@@ -156,7 +161,7 @@ var PinForm = React.createClass({
                         </div>
                         <div className="wrapper">
                             <div className="panel-body" id="map-container">
-                                <Map page="pin" location={this.state.pin.location} showRemove={false}/>
+                                <Map page="home" location={this.state.pin.location} showRemove={false}/>
                             </div>
                         </div>
                     </div>

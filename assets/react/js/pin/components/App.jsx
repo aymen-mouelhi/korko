@@ -201,14 +201,14 @@ var PinForm = React.createClass({
             ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
                 // now upload images ! /pin/:id
                 var pinId = JSON.parse(data).id;
-                if(pinId){
+                if (pinId) {
                     Dropzone.options.url = "/pin/" + pinId;
                     Dropzone.processQueue();
                     Dropzone.on('complete', function (file) {
                         // Upload is now completed
                         self.showSuccessMessage();
                     });
-                }else{
+                } else {
                     // Todo: display error message
                     console.debug("Pin couldn't be created");
                 }
@@ -281,10 +281,20 @@ var PinForm = React.createClass({
                         </select>
                     </div>
 
-                    { this.state.showCalendar ? <Calendar defaultState="available"
-                                                          stateDefinitions={this.state.stateDefinitions}
-                                                          dateStates={this.state.dateStates}
-                        /> : null }
+
+                    { this.state.showCalendar ? <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3 className="panel-title">Availability</h3>
+                        </div>
+                        <div className="wrapper">
+                            <div className="panel-body">
+                                <Calendar defaultState="available"
+                                          stateDefinitions={this.state.stateDefinitions}
+                                          dateStates={this.state.dateStates}
+                                    />
+                            </div>
+                        </div>
+                    </div> : null }
 
                     <div className="form-group">
                         <label for="price">Price</label>
@@ -297,7 +307,7 @@ var PinForm = React.createClass({
                             <h3 className="panel-title">Location</h3>
                         </div>
                         <div className="panel-body" id="map-container">
-                            <Map page="pin"/>
+                            <Map page="pin" showRemove={false}/>
                         </div>
                     </div>
 

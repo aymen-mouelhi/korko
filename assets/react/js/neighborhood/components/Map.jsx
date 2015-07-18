@@ -230,10 +230,17 @@ var Map = React.createClass({
             content: pinString
         };
 
+        var location = this.props.location;
+        var neighborhood;
         var type = "";
+
+        if(location){
+            neighborhood = this.props.location.coordinates;
+            type = this.props.location.type;
+        }
+
         // Todo: update page
-        var page = "";
-        var neighborhoods = "{}";
+        var page = this.props.page;
         var uid = 0;
 
         // Todo: get info from props
@@ -241,8 +248,8 @@ var Map = React.createClass({
 
         return {
             page: page,
-            type: this.props.location.type,
-            neighborhood: this.props.location.coordinates,
+            type: type,
+            neighborhood: neighborhood,
             uid: uid,
             map: null,
             zone: {},
