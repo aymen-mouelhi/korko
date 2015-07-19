@@ -125,6 +125,7 @@ var PinForm = React.createClass({
                 url: "/file/post",
                 paramName: "image", // The name that will be used to transfer the file
                 maxFilesize: 2, // MB
+                addRemoveLinks: true,
                 autoProcessQueue: false,
                 accept: function (file, done) {
                     if (file.name == "justinbieber.jpg") {
@@ -157,7 +158,6 @@ var PinForm = React.createClass({
             });
         });
     },
-
 
 
     submit: function (event) {
