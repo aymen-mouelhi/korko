@@ -84,7 +84,7 @@ var Pins = React.createClass({
         // Get query
         var query = $('#search').val();
 
-        if(query.length > 0){
+        if (query.length > 0) {
             $.ajax({
                 url: "/search/" + query,
                 method: "GET",
@@ -115,11 +115,13 @@ var Pins = React.createClass({
     // Todo: Add like / comment in pin model + new thread / message model
 
     // Add a like
-    like: function (pinId) {
-        console.log("item is liked ! " + pinId);
+    like: function (pinId, action) {
+        console.log("item is " + action + "d ! " + pinId);
+        console.log("action:  " + action);
 
         $.ajax({
-            url: "/like/" + pinId,
+            //url: "/like/" + pinId,
+            url: "/action/" + action + "/" + pinId,
             method: "POST",
             success: function (data) {
                 // Update count
@@ -132,7 +134,7 @@ var Pins = React.createClass({
     comment: function (pinId) {
         console.log("item is commented ! " + pinId);
         $.ajax({
-            url: "/comment/" + pinId,
+            url: "/action/comment/" + pinId,
             method: "POST",
             success: function (data) {
                 // Update count
@@ -167,7 +169,7 @@ var Pins = React.createClass({
         if (this.state.pins.length > 0) {
 
             pins = this.state.pins.reverse().map(function (pin, index) {
-                var image = <img src={imgSrc} />;
+                var image = <img src={imgSrc}/>;
                 var path;
                 if (pin.images) {
                     if (pin.images.length > 0) {
@@ -175,8 +177,19 @@ var Pins = React.createClass({
                         path.replace("/.tmp/public", "");
                         path.replace("\\.tmp\\public", "");
                         console.debug("Image path: " + path);
-                        image = <img src={path} />
+                        image = <img src={path}/>
                     }
+                }
+
+                var likeText = "Like";
+
+                switch (pin.category.title) {
+                    case 'Sharing':
+                        likeText = "Reserve";
+                        break;
+                    default :
+                        likeText = "Like";
+                        break;
                 }
 
                 // Todo: add location information
@@ -191,10 +204,11 @@ var Pins = React.createClass({
                 var name = pin.user.firstName + " " + pin.user.lastName;
 
                 return (
-                    <div className="col-md-4 col-sm-6 item" >
+                    <div className="col-md-4 col-sm-6 item">
                         <div className="card">
                             <div className="card-heading image">
                                 <img src={pin.user.avatar} alt=""/>
+
                                 <div className="card-heading-header">
                                     <h3>{name}</h3>
                                     <span>{published}</span>
@@ -202,6 +216,7 @@ var Pins = React.createClass({
                             </div>
                             <div className="card-body">
                                 <p>{pin.title}</p>
+
                                 <p>{pin.description}</p>
                             </div>
                             <div className="card-media" onClick={self.goToPin.bind(self, pin.id)}>
@@ -210,8 +225,11 @@ var Pins = React.createClass({
                                 </a>
                             </div>
                             <div className="card-actions">
-                                <button className="btn" style={marginLeft} onClick={self.like.bind(self, pin.id)}>Like</button>
-                                <button className="btn" style={marginLeft} onClick={self.comment.bind(self, pin.id)}>Comment</button>
+                                <button className="btn" style={marginLeft}
+                                        onClick={self.like.bind(self, pin.id, likeText.toLowerCase())}>{likeText}</button>
+                                <button className="btn" style={marginLeft} onClick={self.comment.bind(self, pin.id)}>
+                                    Comment
+                                </button>
                                 <button className="btn" onClick={self.share.bind(self, pin.id)}>Share</button>
                             </div>
                         </div>
@@ -238,8 +256,9 @@ var Pins = React.createClass({
                         </ul>
 
                         {/* Search Part */}
-                        <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left" style={searchStyle}  >
-                            <input id="search" type="text" className="search-query" placeholder="Search" />
+                        <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left"
+                              style={searchStyle}>
+                            <input id="search" type="text" className="search-query" placeholder="Search"/>
                         </form>
 
                         <ul className="nav pull-right">

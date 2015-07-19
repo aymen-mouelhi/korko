@@ -243,20 +243,33 @@ module.exports = {
         var query = req.params.query;
         var location = req.body.location;
 
-
+        // Todo: search via location
         if (!location) {
             console.info('Query: ' + query);
-            this.searchByKeyword(query, function (err, pins) {
-                if (err) {
-                    console.info(err);
-                    return res.serverError(err);
-                }
+            if (query) {
+                this.searchByKeyword(query, function (err, pins) {
+                    if (err) {
+                        console.info(err);
+                        return res.serverError(err);
+                    }
 
-                console.info("Found Pins: " + JSON.stringify(pins));
+                    console.info("Found Pins: " + JSON.stringify(pins));
 
-                // Return matched pins
-                res.json(pins);
-            });
+                    // Return matched pins
+                    res.json(pins);
+                });
+            } else {
+                // return all pins
+                Pin.find()
+                    .populate('location')
+                    .populate('user')
+                    .populate('category')
+                    .populate('threads')
+                    .then(function (pins) {
+                        return res.json(pins);
+                    });
+            }
+
         }
     },
 

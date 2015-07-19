@@ -21,7 +21,9 @@ var Pin = {
         location: {model: 'Location', required: true},
         user: {model: 'User', required: true},
         images: {type: 'json'},
-        threads: {collection: 'Thread', via: 'pin'}
+        threads: {collection: 'Thread', via: 'pin'},
+        likes: {collection: 'Like', via: 'pin'},
+        reservations: {collection: 'Reservation', via: 'pin'}
     },
 
 

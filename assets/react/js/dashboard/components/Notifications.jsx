@@ -40,12 +40,14 @@ var Dashboard = React.createClass({
 
     },
 
-    setRead: function (notifId) {
+    setRead: function (notifId, index) {
         // Update status: read
         $.ajax({
             url: "/notification/" + notifId,
             method: "POST",
             success: function (data) {
+                delete this.state.notifications[index];
+                this.forceUpdate();
                 // Update count
                 // Update visual aspect for read / unread
                 //this.setState({pins: data});
@@ -88,13 +90,13 @@ var Dashboard = React.createClass({
                     }
 
                     body =
-                        <li onClick={self.setRead.bind(self, notification.id)}>
+                        <li onClick={self.setRead.bind(self, notification.id, index)}>
                             <div className="media">
                                 <a className="pull-left" href="#">
                                     <img className="media-object" alt="48x48" src={icon} style={imgStyle} />
                                 </a>
                                 <div className="media-body">
-                                    {notification.body}
+                                    <span dangerouslySetInnerHTML={{__html: notification.body}} />
                                 </div>
                             </div>
                         </li>

@@ -47,11 +47,6 @@ module.exports.routes = {
     },
      */
 
-
-    '/map': {
-        view: '/map/app'
-    },
-
     '/air': {
         view: 'airbnb'
     },
@@ -94,12 +89,19 @@ module.exports.routes = {
     'get /search/:query': 'PinController.search',
 
     'get /notification': 'NotificationController.get',
-
+    'post /notification/:id': 'NotificationController.update',
 
     'get /location/:id': 'LocationController.get',
     'post /location': 'LocationController.create',
 
     'get /category/:id': 'CategoryController.get',
 
-    'get /config': 'ConfigController.display'
+    'get /config': 'ConfigController.display',
+
+    'post /action/like/:id': 'ActionController.like',
+    'post /action/comment/:id': 'ActionController.comment',
+    'post /action/reserve/:id': 'ActionController.reserve',
+    'post /action/remove/:id': 'ActionController.remove'
+
+
 };

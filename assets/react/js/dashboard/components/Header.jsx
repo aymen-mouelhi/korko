@@ -17,7 +17,6 @@ var Notifications = require('./Notifications.jsx');
 var UserMenu = require('./UserMenu.jsx');
 
 
-
 var Header = React.createClass({
 
     getInitialState: function () {
@@ -69,17 +68,14 @@ var Header = React.createClass({
 
         // Get query
         var query = $('#search').val();
-
-        if(query.length > 0){
-            $.ajax({
-                url: "/search/" + query,
-                method: "GET",
-                success: function (data) {
-                    // Update count
-                    this.setState({pins: data});
-                }.bind(this)
-            });
-        }
+        $.ajax({
+            url: "/search/" + query,
+            method: "GET",
+            success: function (data) {
+                // Update count
+                this.setState({pins: data});
+            }.bind(this)
+        });
     },
 
 
@@ -107,8 +103,9 @@ var Header = React.createClass({
                     </ul>
 
                     {/* Search Part */}
-                    <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left" style={searchStyle}  >
-                        <input id="search" type="text" className="search-query" placeholder="Search" />
+                    <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left"
+                          style={searchStyle}>
+                        <input id="search" type="text" className="search-query" placeholder="Search"/>
                     </form>
 
                     <ul className="nav pull-right">
@@ -128,4 +125,4 @@ var Header = React.createClass({
     }
 });
 
-module.exports =  Header;
+module.exports = Header;
