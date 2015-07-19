@@ -69,7 +69,7 @@ module.exports = {
                     if (err) return res.serverError(err);
 
                     Pin.create({
-                        location: location,
+                        location: location.id,
                         user: req.user.id,
                         title: title,
                         description: description,
@@ -111,7 +111,11 @@ module.exports = {
                 }
             });
 
-
+            // Todo: To be fixed !
+            /*
+             return res.view({
+             errors: req.flash('error')
+             });*/
         }
     },
 
@@ -221,6 +225,7 @@ module.exports = {
                     if (!pin) {
                         return res.serverError("Pin is not found");
                     }
+                    console.log("Pin Location: " + JSON.stringify(pin.location));
                     // Todo: allow update only if pin owner, otherwize show other details: messaging ..
                     // Todo; Node Roles / Authorizations !
                     // Todo: pin toJson (to remove extra fields)

@@ -10,8 +10,7 @@ if (document.getElementById('react').getAttribute("pin")) {
     React.render(<Pin pin={document.getElementById("react").getAttribute("pin")}/>, document.getElementById("react"));
 } else {
     if (document.getElementById('react').getAttribute("neighborhood")) {
-        React.render(<App location={document.getElementById("react").getAttribute("neighborhood")}
-                          showRemove={false}/>, document.getElementById("react"));
+        React.render(<App location={document.getElementById("react").getAttribute("neighborhood")}/>, document.getElementById("react"));
     } else {
         React.render(<App />, document.getElementById("react"));
     }

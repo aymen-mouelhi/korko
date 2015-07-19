@@ -158,12 +158,24 @@ var PinForm = React.createClass({
 
         var self = this;
         var data = {};
+        var location = {};
         event.preventDefault();
 
         // Todo: better form validation
 
-        if ($("#title").val() != "" && window.selectedLocation != {} != $("#price").val() != "") {
+        if ($("#title").val() != "" && (this.props.location != undefined || window.selectedLocation != {}) != $("#price").val() != "") {
 
+            // Todo: to be fixed !
+            if (window.selectedLocation != {}) {
+                location = window.selectedLocation;
+            } else {
+                location = this.props.location;
+            }
+            // Todo: to be fixed !
+            location = this.props.location;
+
+            // Todo: this.props.location is a neighborhood object; a pin expects a location object
+            // Todo: add event listener for clicking remove + create new location for the pin
             // Sharing Category
             if (this.state.showCalendar) {
                 if (this.state.range != 0) {
@@ -173,7 +185,7 @@ var PinForm = React.createClass({
                         description: $("#description").val(),
                         category: $("#category").children(":selected").attr("id"),
                         price: $("#price").val(),
-                        location: JSON.stringify(window.selectedLocation),
+                        location: location,
                         range: this.state.range.toString()
                     };
 
@@ -187,7 +199,7 @@ var PinForm = React.createClass({
                     description: $("#description").val(),
                     category: $("#category").children(":selected").attr("id"),
                     price: $("#price").val(),
-                    location: JSON.stringify(window.selectedLocation)
+                    location: location
                 };
             }
 
@@ -307,7 +319,7 @@ var PinForm = React.createClass({
                             <h3 className="panel-title">Location</h3>
                         </div>
                         <div className="panel-body" id="map-container">
-                            <Map page="pin" location={this.props.location} showRemove={false}/>
+                            <Map page="pin" location={this.props.location} showRemove={true}/>
                         </div>
                     </div>
 
