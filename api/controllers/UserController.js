@@ -12,13 +12,15 @@ module.exports = {
 
         Neighborhood.findOne({
             user: req.user.id
-        }, function (err, neighborhood) {
-            if (!err) {
-                console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
-                req.user.neighborhoods = neighborhood;
+        })
+            .populate("location")
+            .then(function (neighborhood) {
+            if (neighborhood) {
+                console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
+                req.user.neighborhoods = neighborhood.location;
                 return res.view();
             } else {
-                console.info("Error while retrieving neighborhoods: " + err);
+                console.info("Neighborhood is not found");
                 return res.view();
             }
         });

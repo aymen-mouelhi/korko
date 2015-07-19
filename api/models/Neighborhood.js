@@ -26,10 +26,12 @@ var Neighborhood = {
             type: 'string'
         },
 
+        /*
         // Center of polygon, can be calculated
         location: {
             type: 'json' // lat and lng
-        },
+        },*/
+        location: {model: 'Location', required: true},
         user: {model: 'User', required: true}
 
     }

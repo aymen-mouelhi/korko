@@ -51,6 +51,7 @@ module.exports = {
                 price = parseFloat(price);
             }
 
+
             // Get Range
             if (req.body.range) {
                 range = req.body.range;
@@ -69,7 +70,7 @@ module.exports = {
                     if (err) return res.serverError(err);
 
                     Pin.create({
-                        location: location.id,
+                        location: location,
                         user: req.user.id,
                         title: title,
                         description: description,
@@ -92,30 +93,29 @@ module.exports = {
 
         } else {
 
+
             req.user.neighborhoods = [];
 
             Neighborhood.findOne({
                 user: req.user.id
-            }, function (err, neighborhood) {
-                if (!err) {
-                    console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
-                    req.user.neighborhoods = neighborhood;
-                    return res.view({
-                        errors: req.flash('error')
-                    });
-                } else {
-                    console.info("Error while retrieving neighborhoods: " + err);
-                    return res.view({
-                        errors: req.flash('error')
-                    });
-                }
-            });
+            })
+                .populate("location")
+                .then(function (neighborhood) {
+                    if (neighborhood) {
+                        console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
+                        req.user.neighborhoods = neighborhood.location;
+                        return res.view();
+                    } else {
+                        console.info("Neighborhood is not found");
+                        return res.view();
+                    }
+                });
 
-            // Todo: To be fixed !
             /*
              return res.view({
              errors: req.flash('error')
-             });*/
+             });
+             */
         }
     },
 

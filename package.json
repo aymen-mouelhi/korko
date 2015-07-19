@@ -57,6 +57,7 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "0.0.1",
     "passport-twitter": "^1.0.3",
+    "qs": "^4.0.0",
     "rc": "~0.5.0",
     "react": "^0.12.2",
     "react-daterange-picker": "^0.9.0",

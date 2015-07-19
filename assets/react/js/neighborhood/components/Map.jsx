@@ -145,7 +145,12 @@ function RemoveControl(controlDiv, map) {
                 // Todo: Ajax request to store neighborhood for user id
 
                 // Call backend
-                Utils.call("POST", "/user/" + window.uid, neighborhoodData);
+                // Todo store location in Location Collection
+
+                //Utils.call("POST", "/location", neighborhoodData, self.ajaxCallback);
+
+                // Raise event range updated
+                eventEmitter.emit('locationUpdated', neighborhoodData);
 
                 // Show remove button
                 $('#remove-button').show();
@@ -168,6 +173,7 @@ function RemoveControl(controlDiv, map) {
     });
 
 }
+
 
 function setUid(uid) {
     window.uid = uid;
@@ -231,6 +237,7 @@ var Map = React.createClass({
         };
 
         var location = this.props.location;
+
         var neighborhood;
         var type = "";
 
@@ -393,7 +400,7 @@ var Map = React.createClass({
 
                 // Center
                 neighborhood = new google.maps.Circle({
-                    radius: nighborhoodJson.radius,    // in m
+                    radius: parseFloat(nighborhoodJson.radius),    // in m
                     strokeWeight: 0,
                     fillOpacity: 0.45,
                     editable: false,
@@ -518,13 +525,9 @@ var Map = React.createClass({
 
             //if (self.state.page.indexOf("create") < 0) {
 
+            // Raise event range updated
+            eventEmitter.emit('locationUpdated', neighborhoodData);
 
-            if (self.props.page.indexOf("pin") < 0) {
-                // Call backend
-                Utils.call("POST", "/user/" + self.state.uid, neighborhoodData);
-            } else {
-                window.selectedLocation = neighborhoodData;
-            }
             // Show remove button
             $('#remove-button').show();
 

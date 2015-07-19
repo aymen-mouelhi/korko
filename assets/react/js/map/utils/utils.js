@@ -103,12 +103,12 @@ var Utils = {
             'url': url,
             'dataType': "json",
             'success': function (data) {
-                console.info("User seems to be updated correctly: " + JSON.stringify(data))
-                //callback(null, data);
+                console.info("User seems to be updated correctly: " + JSON.stringify(data));
+                callback(null, data);
             },
             'error': function (error) {
-                console.info("Error occured: " + JSON.stringify(error))
-                //callback(error, null)
+                console.info("Error occured: " + JSON.stringify(error));
+                callback(error, null)
             }
         });
     },
@@ -154,6 +154,19 @@ var Utils = {
         else {
             return "unknown";
         }
+    },
+
+    /**
+     * Get Location object from Neighborhood
+     * @param neighborhood
+     * @returns {{}}
+     */
+    getLocationFromNeighborhood: function(neighborhood){
+        var location = {
+            coordinates: neighborhood.coordinates,
+            type: neighborhood.type
+        };
+        return location;
     }
 };
 

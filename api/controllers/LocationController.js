@@ -409,6 +409,28 @@ module.exports = {
         });
     },
 
+
+    create: function(req, res){
+
+        //var coordinates = JSON.parse(req.body.coordinates);
+        // Store new location
+        Location.create({
+            coordinates: req.body.coordinates,
+            type: req.body.type
+        }, function (err, location) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            }
+            console.info("location saved: " + JSON.stringify(location));
+            req.flash('success', 'location saved');
+            return res.json({id: location.id})
+
+        });
+
+
+    },
+
     /**
      * Overrides for the settings in `config/controllers.js`
      * (specific to LocationController)

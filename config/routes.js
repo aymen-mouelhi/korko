@@ -93,12 +93,13 @@ module.exports.routes = {
 
     'get /search/:query': 'PinController.search',
 
-
     'get /notification': 'NotificationController.get',
 
-    'get /location/:id': 'LocationController.get',
-    'get /category/:id': 'CategoryController.get',
 
+    'get /location/:id': 'LocationController.get',
+    'post /location': 'LocationController.create',
+
+    'get /category/:id': 'CategoryController.get',
 
     'get /config': 'ConfigController.display'
 };

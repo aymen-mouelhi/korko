@@ -211,17 +211,21 @@ var AuthController = {
                 // find neighborhhods of user
 
                 req.user.neighborhoods = [];
-
+                
                 Neighborhood.findOne({
                     user: user.id
-                }, function (err, neighborhood) {
-                    if (!err) {
-                        console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
-                        req.user.neighborhoods = neighborhood;
-                    } else {
-                        console.info("Error while retrieeing neigborhood: " + err);
-                    }
-                });
+                })
+                    .populate("location")
+                    .then(function (neighborhood) {
+                        if (neighborhood) {
+                            console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
+                            req.user.neighborhoods = neighborhood.location;
+                            return res.view();
+                        } else {
+                            console.info("Neighborhood is not found");
+                            return res.view();
+                        }
+                    });
 
 
                 console.info("Req.user: " + JSON.stringify(req.user));

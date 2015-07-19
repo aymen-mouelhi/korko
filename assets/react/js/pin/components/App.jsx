@@ -22,17 +22,10 @@ var Map = require('../../neighborhood/components/Map.jsx');
 var Calendar = require('./Calendar.jsx');
 var Validator = require('validator');
 var eventEmitter = require('central-event');
+var Utils = require('../../map/utils/utils');
+var qs = require('qs');
 
 var button = Bootstrap.button;
-
-var options = [
-    {value: 'one', label: 'One'},
-    {value: 'two', label: 'Two'}
-];
-
-function logChange(val) {
-    console.log("Selected: " + val);
-}
 
 // Ajax Request without jquery
 var ajax = {};
@@ -77,6 +70,9 @@ ajax.send = function (url, method, data, sync, callback) {
 
 var Dropzone;
 
+window.selectedLocation = null;
+
+
 var PinForm = React.createClass({
 
     getInitialState: function () {
@@ -87,6 +83,7 @@ var PinForm = React.createClass({
             showCalendar: false,
             dateStates: [],
             stateDefinitions: [],
+            location: {},
             range: 0
         }
     },
@@ -152,80 +149,103 @@ var PinForm = React.createClass({
                 range: range
             });
         });
+
+        // Listen for location updates
+        eventEmitter.on('locationUpdated', function (location) {
+            self.setState({
+                location: location
+            });
+        });
     },
+
+
 
     submit: function (event) {
 
         var self = this;
-        var data = {};
-        var location = {};
+        var locationId;
         event.preventDefault();
 
         // Todo: better form validation
+        if ($("#title").val() != "" && (this.props.location != undefined || this.state.location != {}) != $("#price").val() != "") {
 
-        if ($("#title").val() != "" && (this.props.location != undefined || window.selectedLocation != {}) != $("#price").val() != "") {
+            if (this.state.location.hasOwnProperty("coordinates")) {
+                var location = this.state.location;
+                // Todo: location has to be stored
 
-            // Todo: to be fixed !
-            if (window.selectedLocation != {}) {
-                location = window.selectedLocation;
+                // Todo: ajax should move to its own file
+
+                // send data
+                ajax.send("/location", "POST", qs.stringify(location), true, function (data) {
+                    // now upload images ! /pin/:id
+                    var locationId = JSON.parse(data).id;
+
+                    // Save Pin
+                    self.savePin(locationId);
+                });
+
             } else {
-                location = this.props.location;
+                locationId = JSON.parse(this.props.location).id;
+
+                self.savePin(locationId);
             }
-            // Todo: to be fixed !
-            location = this.props.location;
+        }
+    },
 
-            // Todo: this.props.location is a neighborhood object; a pin expects a location object
-            // Todo: add event listener for clicking remove + create new location for the pin
-            // Sharing Category
-            if (this.state.showCalendar) {
-                if (this.state.range != 0) {
 
-                    data = {
-                        title: $("#title").val(),
-                        description: $("#description").val(),
-                        category: $("#category").children(":selected").attr("id"),
-                        price: $("#price").val(),
-                        location: location,
-                        range: this.state.range.toString()
-                    };
+    savePin: function (locationId) {
+        var data = {};
+        var self = this;
 
-                } else {
-                    // Error: range is not selected
-                    // Todo: show error + stop submission
-                }
-            } else {
+        // Sharing Category
+        if (this.state.showCalendar) {
+            if (this.state.range != 0) {
+
                 data = {
                     title: $("#title").val(),
                     description: $("#description").val(),
                     category: $("#category").children(":selected").attr("id"),
                     price: $("#price").val(),
-                    location: location
+                    location: locationId,
+                    range: this.state.range.toString()
                 };
+
+            } else {
+                // Error: range is not selected
+                // Todo: show error + stop submission
             }
-
-
-            var query = [];
-            for (var key in data) {
-                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-            }
-
-            // send data
-            ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
-                // now upload images ! /pin/:id
-                var pinId = JSON.parse(data).id;
-                if (pinId) {
-                    Dropzone.options.url = "/pin/" + pinId;
-                    Dropzone.processQueue();
-                    Dropzone.on('complete', function (file) {
-                        // Upload is now completed
-                        self.showSuccessMessage();
-                    });
-                } else {
-                    // Todo: display error message
-                    console.debug("Pin couldn't be created");
-                }
-            });
+        } else {
+            data = {
+                title: $("#title").val(),
+                description: $("#description").val(),
+                category: $("#category").children(":selected").attr("id"),
+                price: $("#price").val(),
+                location: locationId
+            };
         }
+
+
+        var query = [];
+        for (var key in data) {
+            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+        }
+
+        // send data
+        ajax.send("/pin/create", "POST", query.join('&'), true, function (data) {
+            // now upload images ! /pin/:id
+            var pinId = JSON.parse(data).id;
+            if (pinId) {
+                Dropzone.options.url = "/pin/" + pinId;
+                Dropzone.processQueue();
+                Dropzone.on('complete', function (file) {
+                    // Upload is now completed
+                    self.showSuccessMessage();
+                });
+            } else {
+                // Todo: display error message
+                console.debug("Pin couldn't be created");
+            }
+        });
     },
 
     showSuccessMessage: function () {

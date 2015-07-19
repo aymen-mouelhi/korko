@@ -25,6 +25,8 @@ var button = Bootstrap.button;
 var PinForm = React.createClass({
 
     getInitialState: function () {
+        console.debug("Pin to be displayed: " + this.props.pin);
+
         var pin = JSON.parse(this.props.pin);
         var showCalendar = false;
 
