@@ -12,7 +12,9 @@ var stateDefinitions = {
         label: 'Available'
     },
     enquire: {
-        color: '#ffd200',
+        selectable: false,
+        //color: '#ffd200', yellow
+        color: '#2ecc71',
         label: 'Enquire'
     },
     unavailable: {
@@ -23,7 +25,6 @@ var stateDefinitions = {
     }
 };
 /*
-// Todo: Update dateRanges with info from the pin history
 var dateRanges = [
     {
         state: 'enquire',
@@ -44,7 +45,6 @@ var dateRanges = [
 
 var DatePicker = React.createClass({
     getInitialState: function () {
-        // Todo: dateRanges / stateDefinitions
         return {
             value: null,
             stateDefinitions: stateDefinitions,
@@ -63,7 +63,6 @@ var DatePicker = React.createClass({
     },
 
     componentDidMount: function () {
-        console.log("stateDefinitions: " + this.props.stateDefinitions);
     },
 
     render: function () {

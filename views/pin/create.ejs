@@ -10,7 +10,11 @@
 <link rel="stylesheet" href="http://onefinestay.github.io/react-daterange-picker/css/react-calendar.css">
 
 <div class="container">
-    <div id="react"></div>
+    <% if(req.user.neighborhoods.length > 0){ %>
+    <div id="react" neighborhood="<%= JSON.stringify(req.user.neighborhoods[0]) %>"></div>
+    <% }else{ %>
+    <div id="react" neighborhood="<%= JSON.stringify(req.user.neighborhoods) %>"></div>
+    <% } %>
 </div>
 
 

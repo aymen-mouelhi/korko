@@ -234,17 +234,23 @@ var Map = React.createClass({
         var neighborhood;
         var type = "";
 
-        if(location){
-            neighborhood = this.props.location.coordinates;
-            type = this.props.location.type;
+        if (location) {
+            // Check if object is JSON
+            if (Utils.getObjectType(location) != "object") { // not json
+                if (!location.coordinates) {
+                    location = JSON.parse(location);
+                }
+            }
+
+            neighborhood = location.coordinates;
+            type = location.type;
         }
+
 
         // Todo: update page
         var page = this.props.page;
+        // Todo: check uid, is it needed?
         var uid = 0;
-
-        // Todo: get info from props
-        console.log("Try to read provided location:" + this.props.location);
 
         return {
             page: page,
@@ -326,7 +332,7 @@ var Map = React.createClass({
         });
 
         // Todo: check if current user is the owner of the pin
-        if(this.props.showRemove){
+        if (this.props.showRemove) {
             // add button remove
             // Create the DIV to hold the control and
             // call the RemoveControl() constructor passing
@@ -351,10 +357,10 @@ var Map = React.createClass({
                 var i;
                 var polygonCoords = [];
                 /*
-                if (this.state.neighborhood.length == 0) {
-                    this.state.neighborhood = this.state.zone;
-                }
-                */
+                 if (this.state.neighborhood.length == 0) {
+                 this.state.neighborhood = this.state.zone;
+                 }
+                 */
 
                 // Get polygon coordinates
                 for (i = 0; i < nighborhoodJson.length; i++) {

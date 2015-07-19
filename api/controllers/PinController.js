@@ -91,9 +91,27 @@ module.exports = {
             });
 
         } else {
-            return res.view({
-                errors: req.flash('error')
+
+            req.user.neighborhoods = [];
+
+            Neighborhood.findOne({
+                user: req.user.id
+            }, function (err, neighborhood) {
+                if (!err) {
+                    console.info("retrived neighborhood: " + JSON.stringify(neighborhood));
+                    req.user.neighborhoods = neighborhood;
+                    return res.view({
+                        errors: req.flash('error')
+                    });
+                } else {
+                    console.info("Error while retrieving neighborhoods: " + err);
+                    return res.view({
+                        errors: req.flash('error')
+                    });
+                }
             });
+
+
         }
     },
 

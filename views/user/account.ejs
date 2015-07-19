@@ -26,7 +26,11 @@
             <h3 class="panel-title">Neighborhood</h3>
         </div>
         <div class="panel-body" id="map-container">
-            <div id="react" data-uid="<%= req.user.id %>"></div>
+            <% if(req.user.neighborhoods.length > 0){ %>
+            <div id="react" neighborhood="<%= JSON.stringify(req.user.neighborhoods[0]) %>"></div>
+            <% }else{ %>
+            <div id="react" neighborhood="<%= JSON.stringify(req.user.neighborhoods) %>"></div>
+            <% } %>
         </div>
     </div>
 
@@ -48,19 +52,18 @@
         </div>
     </div>
 </div>
+
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-<script src="/bower_components/requirejs/require.js"></script>
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=drawing"></script>
-<% if(req.user.neighborhoods.length > 0){ %>
-<script id="argScript"
-        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods[0].coordinates) %>&type=<%= JSON.stringify(req.user.neighborhoods[0].type.replace('"', '')) %>"></script>
-<% }else{ %>
-<script id="argScript"
-        src="/react/js/neighborhood/main.js?uid=<%= req.user.id %>&n=<%= JSON.stringify(req.user.neighborhoods) %>"></script>
-<%
-} %>
+        src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true&libraries=drawing"></script>
+<script src="/bower_components/geolocator/src/geolocator.js"></script>
+<script>
+    window.geolocator = geolocator;
+</script>
+
+<script src="/react/js/neighborhood/main.js"></script>
+
 <style>
     .item {
         color: #333;

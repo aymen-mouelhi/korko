@@ -5,8 +5,14 @@ var React = require('react');
 var App = require('./components/App.jsx');
 var Pin = require('./components/Pin.jsx');
 
+
 if (document.getElementById('react').getAttribute("pin")) {
-    React.render(<Pin pin={document.getElementById("react").getAttribute("pin")} />, document.getElementById("react"));
-}else{
-    React.render(<App />, document.getElementById("react"));
+    React.render(<Pin pin={document.getElementById("react").getAttribute("pin")}/>, document.getElementById("react"));
+} else {
+    if (document.getElementById('react').getAttribute("neighborhood")) {
+        React.render(<App location={document.getElementById("react").getAttribute("neighborhood")}
+                          showRemove={false}/>, document.getElementById("react"));
+    } else {
+        React.render(<App />, document.getElementById("react"));
+    }
 }

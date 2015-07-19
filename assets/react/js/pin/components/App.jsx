@@ -307,7 +307,7 @@ var PinForm = React.createClass({
                             <h3 className="panel-title">Location</h3>
                         </div>
                         <div className="panel-body" id="map-container">
-                            <Map page="pin" showRemove={false}/>
+                            <Map page="pin" location={this.props.location} showRemove={false}/>
                         </div>
                     </div>
 
