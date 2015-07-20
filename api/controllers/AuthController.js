@@ -220,10 +220,12 @@ var AuthController = {
                         if (neighborhood) {
                             console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
                             req.user.neighborhoods = neighborhood.location;
-                            return res.view();
+                            //return res.view();
+                            res.redirect('/');
                         } else {
                             console.info("Neighborhood is not found");
-                            return res.view();
+                            //return res.view();
+                            res.redirect('/');
                         }
                     });
 
