@@ -16,11 +16,19 @@ var masonry = require('masonry');
 var moment = require('moment');
 var Notifications = require('./Notifications.jsx');
 var UserMenu = require('./UserMenu.jsx');
+var Calendar = require('../../pin/components/Calendar.jsx');
+//var Modal = require('react-modal');
+var ReactBootstrap = require('react-bootstrap');
+var Modal = ReactBootstrap.Modal;
+var Button = ReactBootstrap.Button;
 
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
+/*
+Modal.setAppElement(document.getElementById('react'));
+Modal.injectCSS();
+*/
 var Pins = React.createClass({
 
     getInitialState: function () {
@@ -28,7 +36,8 @@ var Pins = React.createClass({
             pins: {},
             homeClass: "",
             createClass: "",
-            mapClass: ""
+            mapClass: "",
+            showModal: false
         }
     },
 
@@ -111,23 +120,58 @@ var Pins = React.createClass({
         window.location.href = "/pin/" + pinId;
     },
 
+    closeModal: function () {
+        this.setState({showModal: false});
+    },
+
 
     // Todo: Add like / comment in pin model + new thread / message model
 
     // Add a like
-    like: function (pinId, action) {
+    like: function (pin, action) {
+        var pinId = pin.id;
+
         console.log("item is " + action + "d ! " + pinId);
         console.log("action:  " + action);
 
-        $.ajax({
-            //url: "/like/" + pinId,
-            url: "/action/" + action + "/" + pinId,
-            method: "POST",
-            success: function (data) {
-                // Update count
-                //this.setState({pins: data});
-            }.bind(this)
-        });
+
+        if (action === 'reserve') {
+            // Display Calendar to select dates
+            // Todo: Get pin availability
+            var range = pin.range;
+
+            if (range) {
+                console.log("Pin range: " + range);
+
+                if (moment.range instanceof Object) {
+                    range = moment.range(range);
+
+                    var dateRanges = [{
+                        state: 'enquire',
+                        range: range
+                    }];
+                } else {
+                    var dateRanges = [];
+                }
+
+                // Todo: Display Calendar
+                this.setState({
+                    showModal: true,
+                    dateRanges: dateRanges
+                });
+            }
+
+        } else {
+            $.ajax({
+                //url: "/like/" + pinId,
+                url: "/action/" + action + "/" + pinId,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                }.bind(this)
+            });
+        }
     },
 
     // Comment
@@ -156,6 +200,18 @@ var Pins = React.createClass({
         });
     },
 
+    reserve: function (pinId) {
+        console.log("item is reserved ! " + pinId);
+        $.ajax({
+            url: "/reserve/" + pinId,
+            method: "POST",
+            success: function (data) {
+                // Update count
+                //this.setState({pins: data});
+            }.bind(this)
+        });
+    },
+
     render: function () {
 
         var pins;
@@ -169,6 +225,7 @@ var Pins = React.createClass({
         if (this.state.pins.length > 0) {
 
             pins = this.state.pins.reverse().map(function (pin, index) {
+                console.debug("Pin" + index + " Info:" + JSON.stringify(pin));
                 var image = <img src={imgSrc}/>;
                 var path;
                 if (pin.images) {
@@ -226,12 +283,27 @@ var Pins = React.createClass({
                             </div>
                             <div className="card-actions">
                                 <button className="btn" style={marginLeft}
-                                        onClick={self.like.bind(self, pin.id, likeText.toLowerCase())}>{likeText}</button>
+                                        onClick={self.like.bind(self, pin, likeText.toLowerCase())}>{likeText}</button>
                                 <button className="btn" style={marginLeft} onClick={self.comment.bind(self, pin.id)}>
                                     Comment
                                 </button>
                                 <button className="btn" onClick={self.share.bind(self, pin.id)}>Share</button>
                             </div>
+
+                            <Modal show={self.state.showModal} onHide={self.closeModal}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Select Desired Date</Modal.Title>
+                                </Modal.Header>
+                                <button onClick={self.closeModal}>close</button>
+                                <Modal.Body>
+                                    <Calendar dateRanges={self.state.dateRanges} defaultState="unavailable"/>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button>Close</Button>
+                                    <Button bsStyle='primary' onClick={self.reserve.bind(self, pin.id)}>Reserve</Button>
+                                </Modal.Footer>
+                            </Modal>
+
                         </div>
                     </div>
                 );

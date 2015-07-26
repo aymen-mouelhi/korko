@@ -10,9 +10,9 @@
 
 var React = require('react');
 var jQuery = require('jquery');
-//var geolocator = require('geolocator');
 var _ = require('underscore');
 var Utils = require('../utils/utils');
+var eventEmitter = require('central-event');
 
 
 var drawingManager;
@@ -462,6 +462,8 @@ var Map = React.createClass({
                     // check Distance
                     if (self.distance(location, self.state.searchArea) <= self.state.RADIUS) {
                         self.createCustomMarker(location, pin);
+                        // Todo: Update Pins Collection
+                        eventEmitter.emit('radiusUpdated', self.state.searchArea);
                     }
 
                 }

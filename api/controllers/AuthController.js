@@ -222,6 +222,7 @@ var AuthController = {
                             req.user.neighborhoods = neighborhood.location;
                             //return res.view();
                             res.redirect('/');
+                            return;
                         } else {
                             console.info("Neighborhood is not found");
                             //return res.view();
