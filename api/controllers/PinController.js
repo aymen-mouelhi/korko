@@ -14,15 +14,27 @@ var async = require("async");
 module.exports = {
 
     get: function (req, res) {
-        var pinArray = [];
+        var annotatedPins = [];
         Pin.find()
             .populate('location')
             .populate('user')
             .populate('category')
             .populate('threads')
             .then(function (pins) {
+                async.each(pins, function (pin, callback) {
+                    // isMine is needed to know if item belongs to user or not
+                    pin.isMine = false;
 
-                return res.json(pins);
+                    if(pin.user.id === req.user.id) {
+                        pin.isMine = true;
+                    }
+
+                    annotatedPins.push(pin);
+
+                    callback();
+                }, function (err) {
+                    return res.json(annotatedPins);
+                });
 
             });
     },

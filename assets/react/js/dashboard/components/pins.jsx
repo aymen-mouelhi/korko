@@ -242,7 +242,11 @@ var Pins = React.createClass({
 
                 switch (pin.category.title) {
                     case 'Sharing':
-                        likeText = "Reserve";
+                        if(!pin.isMine){
+                            likeText = "Reserve";
+                        }else{
+                            likeText = "Like";
+                        }
                         break;
                     default :
                         likeText = "Like";
