@@ -63,13 +63,23 @@ var DatePicker = React.createClass({
     },
 
     componentDidMount: function () {
+        // Handle that all the other ranges are anavailable
+        if(this.props.dateRanges.length > 0){
+            this.props.dateRanges.push({
+                state: 'unavailable',
+                range: moment().range(
+                    moment().add(3, 'weeks'),
+                    moment().add(3, 'weeks').add(5, 'days')
+                )
+            })
+        }
     },
 
     render: function () {
         return (
             <DateRangePicker
                 firstOfWeek={1}
-                numberOfCalendars={2}
+                numberOfCalendars={1}
                 selectionType='range'
                 earliestDate={new Date()}
                 stateDefinitions={this.state.stateDefinitions}

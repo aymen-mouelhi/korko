@@ -13,22 +13,13 @@ var React = require('react');
 var $ = require('jquery');
 var imagesLoaded = require('imagesloaded');
 var masonry = require('masonry');
-var moment = require('moment');
+
+var PinCard = require('./PinCard.jsx');
 var Notifications = require('./Notifications.jsx');
 var UserMenu = require('./UserMenu.jsx');
-var Calendar = require('../../pin/components/Calendar.jsx');
-//var Modal = require('react-modal');
-var ReactBootstrap = require('react-bootstrap');
-var Modal = ReactBootstrap.Modal;
-var Button = ReactBootstrap.Button;
 
-function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-/*
-Modal.setAppElement(document.getElementById('react'));
-Modal.injectCSS();
-*/
+
+
 var Pins = React.createClass({
 
     getInitialState: function () {
@@ -36,8 +27,7 @@ var Pins = React.createClass({
             pins: {},
             homeClass: "",
             createClass: "",
-            mapClass: "",
-            showModal: false
+            mapClass: ""
         }
     },
 
@@ -110,104 +100,7 @@ var Pins = React.createClass({
         $.ajax({
             url: "/pin",
             success: function (data) {
-                this.setState({pins: data});
-            }.bind(this)
-        });
-    },
-
-    // Go to pin page
-    goToPin: function (pinId) {
-        window.location.href = "/pin/" + pinId;
-    },
-
-    closeModal: function () {
-        this.setState({showModal: false});
-    },
-
-
-    // Todo: Add like / comment in pin model + new thread / message model
-
-    // Add a like
-    like: function (pin, action) {
-        var pinId = pin.id;
-
-        console.log("item is " + action + "d ! " + pinId);
-        console.log("action:  " + action);
-
-
-        if (action === 'reserve') {
-            // Display Calendar to select dates
-            // Todo: Get pin availability
-            var range = pin.range;
-
-            if (range) {
-                console.log("Pin range: " + range);
-
-                if (moment.range instanceof Object) {
-                    range = moment.range(range);
-
-                    var dateRanges = [{
-                        state: 'enquire',
-                        range: range
-                    }];
-                } else {
-                    var dateRanges = [];
-                }
-
-                // Todo: Display Calendar
-                this.setState({
-                    showModal: true,
-                    dateRanges: dateRanges
-                });
-            }
-
-        } else {
-            $.ajax({
-                //url: "/like/" + pinId,
-                url: "/action/" + action + "/" + pinId,
-                method: "POST",
-                success: function (data) {
-                    // Update count
-                    //this.setState({pins: data});
-                }.bind(this)
-            });
-        }
-    },
-
-    // Comment
-    comment: function (pinId) {
-        console.log("item is commented ! " + pinId);
-        $.ajax({
-            url: "/action/comment/" + pinId,
-            method: "POST",
-            success: function (data) {
-                // Update count
-                //this.setState({pins: data});
-            }.bind(this)
-        });
-    },
-
-    // Share
-    share: function (pinId) {
-        console.log("item is shared ! " + pinId);
-        $.ajax({
-            url: "/share/" + pinId,
-            method: "POST",
-            success: function (data) {
-                // Update count
-                //this.setState({pins: data});
-            }.bind(this)
-        });
-    },
-
-    reserve: function (pinId) {
-        console.log("item is reserved ! " + pinId);
-        $.ajax({
-            url: "/reserve/" + pinId,
-            method: "POST",
-            success: function (data) {
-                // Update count
-                //this.setState({pins: data});
+                this.setState({pins: data.reverse()});
             }.bind(this)
         });
     },
@@ -216,100 +109,22 @@ var Pins = React.createClass({
 
         var pins;
         var self = this;
-        var imgSrc = "/bower_components/bootplus/docs/assets/img/cover" + randomIntFromInterval(1, 4) + ".jpg";
+
 
         var searchStyle = {
             "margin-top": "12px"
         };
 
+        var fixedMargin = {
+            "margin-left": "-16px"
+        };
+
         if (this.state.pins.length > 0) {
 
-            pins = this.state.pins.reverse().map(function (pin, index) {
-                console.debug("Pin" + index + " Info:" + JSON.stringify(pin));
-                var image = <img src={imgSrc}/>;
-                var path;
-                if (pin.images) {
-                    if (pin.images.length > 0) {
-                        path = "../" + pin.images[0].path;
-                        path.replace("/.tmp/public", "");
-                        path.replace("\\.tmp\\public", "");
-                        console.debug("Image path: " + path);
-                        image = <img src={path}/>
-                    }
-                }
-
-                var likeText = "Like";
-
-                switch (pin.category.title) {
-                    case 'Sharing':
-                        if(!pin.isMine){
-                            likeText = "Reserve";
-                        }else{
-                            likeText = "Like";
-                        }
-                        break;
-                    default :
-                        likeText = "Like";
-                        break;
-                }
-
-                // Todo: add location information
-                var link = "/pin/" + pin.id;
-
-                var marginLeft = {
-                    "margin-right": "5px;"
-                };
-
-                var published = moment(pin.createdAt).fromNow();
-
-                var name = pin.user.firstName + " " + pin.user.lastName;
-
+            pins = this.state.pins.map(function (pin, index) {
+                //console.debug("Pin" + index + " Info:" + JSON.stringify(pin))
                 return (
-                    <div className="col-md-4 col-sm-6 item">
-                        <div className="card">
-                            <div className="card-heading image">
-                                <img src={pin.user.avatar} alt=""/>
-
-                                <div className="card-heading-header">
-                                    <h3>{name}</h3>
-                                    <span>{published}</span>
-                                </div>
-                            </div>
-                            <div className="card-body">
-                                <p>{pin.title}</p>
-
-                                <p>{pin.description}</p>
-                            </div>
-                            <div className="card-media" onClick={self.goToPin.bind(self, pin.id)}>
-                                <a className="card-media-container" href="#">
-                                    {image}
-                                </a>
-                            </div>
-                            <div className="card-actions">
-                                <button className="btn" style={marginLeft}
-                                        onClick={self.like.bind(self, pin, likeText.toLowerCase())}>{likeText}</button>
-                                <button className="btn" style={marginLeft} onClick={self.comment.bind(self, pin.id)}>
-                                    Comment
-                                </button>
-                                <button className="btn" onClick={self.share.bind(self, pin.id)}>Share</button>
-                            </div>
-
-                            <Modal show={self.state.showModal} onHide={self.closeModal}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Select Desired Date</Modal.Title>
-                                </Modal.Header>
-                                <button onClick={self.closeModal}>close</button>
-                                <Modal.Body>
-                                    <Calendar dateRanges={self.state.dateRanges} defaultState="unavailable"/>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button>Close</Button>
-                                    <Button bsStyle='primary' onClick={self.reserve.bind(self, pin.id)}>Reserve</Button>
-                                </Modal.Footer>
-                            </Modal>
-
-                        </div>
-                    </div>
+                    <PinCard pin={pin} key={pin.id} />
                 );
             });
         }
@@ -348,7 +163,7 @@ var Pins = React.createClass({
                     </div>
 
                 </div>
-                <div className="row masonry-container">
+                <div className="row masonry-container" style={fixedMargin}>
                     {pins}
                 </div>
             </div>

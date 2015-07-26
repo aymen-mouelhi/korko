@@ -72,8 +72,6 @@ var Dashboard = React.createClass({
         var notifications = "";
         if (this.state.notifications.length > 0) {
             notifications = this.state.notifications.map(function (notification, index) {
-
-                console.log("notification: " + JSON.stringify(notification));
                 var icon;
                 var body;
 
