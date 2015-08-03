@@ -161,8 +161,9 @@ var Pins = React.createClass({
                         </ul>
 
                     </div>
-
                 </div>
+
+
                 <div className="row masonry-container" style={fixedMargin}>
                     {pins}
                 </div>

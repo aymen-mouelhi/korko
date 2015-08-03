@@ -8,7 +8,8 @@ var eventEmitter = require('central-event');
 
 var stateDefinitions = {
     available: {
-        color: null,
+        //color: '#ffd200',
+        color: '#2ecc71',
         label: 'Available'
     },
     enquire: {
@@ -25,32 +26,34 @@ var stateDefinitions = {
     }
 };
 /*
-var dateRanges = [
-    {
-        state: 'enquire',
-        range: moment().range(
-            moment().add(2, 'weeks').subtract(5, 'days'),
-            moment().add(2, 'weeks').add(6, 'days')
-        )
-    },
-    {
-        state: 'unavailable',
-        range: moment().range(
-            moment().add(3, 'weeks'),
-            moment().add(3, 'weeks').add(5, 'days')
-        )
-    }
-];
-*/
+ var dateRanges = [
+ {
+ state: 'enquire',
+ range: moment().range(
+ moment().add(2, 'weeks').subtract(5, 'days'),
+ moment().add(2, 'weeks').add(6, 'days')
+ )
+ },
+ {
+ state: 'unavailable',
+ range: moment().range(
+ moment().add(3, 'weeks'),
+ moment().add(3, 'weeks').add(5, 'days')
+ )
+ }
+ ];
+ */
 
 var DatePicker = React.createClass({
     getInitialState: function () {
+
         return {
             value: null,
             stateDefinitions: stateDefinitions,
             dateRanges: []
         };
     },
+
     handleSelect: function (range, states) {
         // range is a moment-range object
         this.setState({
@@ -63,19 +66,19 @@ var DatePicker = React.createClass({
     },
 
     componentDidMount: function () {
-        // Handle that all the other ranges are anavailable
-        if(this.props.dateRanges.length > 0){
-            this.props.dateRanges.push({
-                state: 'unavailable',
-                range: moment().range(
-                    moment().add(3, 'weeks'),
-                    moment().add(3, 'weeks').add(5, 'days')
-                )
-            })
-        }
     },
 
     render: function () {
+        // Handle that all the other ranges are unavailable
+        var dateRanges = [];
+
+        if (dateRanges) {
+            dateRanges.push({
+                state: 'available',
+                range: this.props.dateRanges[0].range
+            });
+        }
+
         return (
             <DateRangePicker
                 firstOfWeek={1}
@@ -83,7 +86,7 @@ var DatePicker = React.createClass({
                 selectionType='range'
                 earliestDate={new Date()}
                 stateDefinitions={this.state.stateDefinitions}
-                dateStates={this.props.dateRanges}
+                dateStates={dateRanges}
                 defaultState={this.props.defaultState}
                 showLegend={false}
                 value={this.state.value}

@@ -17,6 +17,7 @@ require('moment-range');
 var Calendar = require('../../pin/components/Calendar.jsx');
 //var Modal = require('react-modal');
 var ReactBootstrap = require('react-bootstrap');
+var eventEmitter = require('central-event');
 var Modal = ReactBootstrap.Modal;
 var Button = ReactBootstrap.Button;
 
@@ -39,6 +40,18 @@ var PinCard = React.createClass({
 
     componentDidMount: function () {
         console.log("Pin Card loaded for :" + this.props.pin.id);
+
+        var self = this;
+
+        // Listen for range updates
+        eventEmitter.on('rangeUpdated', function (range) {
+            console.debug("Selected range in App.jsx: " + range);
+            console.debug("Selected range in App.jsx: " + range.toString());
+
+            // Todo: Post reservation
+            self.reserve(self.props.pin.id, range);
+            
+        });
     },
 
     closeModal: function () {
@@ -121,7 +134,7 @@ var PinCard = React.createClass({
         });
     },
 
-    reserve: function (pinId) {
+    reserve: function (pinId, range) {
         console.log("item is reserved ! " + pinId);
         $.ajax({
             url: "/reserve/" + pinId,
@@ -231,7 +244,7 @@ var PinCard = React.createClass({
                                 <Modal.Title>Select Desired Date</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                                <Calendar dateRanges={this.state.dateRanges} defaultState="available"/>
+                                <Calendar dateRanges={this.state.dateRanges} defaultState="unavailable"/>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button>Close</Button>
