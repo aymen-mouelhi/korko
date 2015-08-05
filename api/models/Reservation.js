@@ -8,6 +8,7 @@ var Reservation = {
     attributes: {
         from: {type: 'string'},
         to: {type: 'string'},
+        range: {type: 'string'},
         accepted: {type: 'boolean'},
         payment: {model: 'Payment', required: true},
         user: {model: 'User', required: true},

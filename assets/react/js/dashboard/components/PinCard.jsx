@@ -145,8 +145,12 @@ var PinCard = React.createClass({
 
             $.ajax({
                 url: "/action/reserve/" + pinId,
+                dataType: 'json',
+                data: {
+                    range: range.toString()
+                },
                 method: "POST",
-                success: function (data) {
+                success: function () {
                     // Update count
                     //this.setState({pins: data});
                     console.log("item is reserved ! " + pinId);
@@ -154,7 +158,7 @@ var PinCard = React.createClass({
             });
         }else{
             // Todo: show error message + don't close modal
-            console.debug("Range not selected!")
+            console.debug("Range not selected!");
             this.setState({
                 showModal: true
             });

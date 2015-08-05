@@ -36,7 +36,7 @@ module.exports = {
     reserve: function (req, res) {
         console.log("Actions Controller: reserve");
 
-        console.log("Recieved data: " + req.body.range);
+        console.log("Received data: " + req.body.range);
 
         var pinId = req.params.id;
 
@@ -45,6 +45,21 @@ module.exports = {
         }).populate('user')
             .then(function (pin) {
             if (pin) {
+
+                var reservation = {
+                    accepted: false,
+                    range: req.body.range,
+                    user: req.user.id,
+                    pin: pinId
+
+                };
+
+                if(!pin.reservations){
+                    pin.reservations = [];
+                }
+
+                // add reservation
+                pin.reservations.push(reservation);
 
                 if(pin.status != "RESERVED"){
                     // Update status
@@ -79,7 +94,7 @@ module.exports = {
 
                 }else{
                     // Pin is alredy reserved by somebody
-                    return res.status(200).send("Pin is alredy reserved");
+                    return res.status(200).send("Pin is already reserved");
                 }
 
             } else {
