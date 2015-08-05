@@ -44,63 +44,77 @@ module.exports = {
             id: pinId
         }).populate('user')
             .then(function (pin) {
-            if (pin) {
+                if (pin) {
 
-                var reservation = {
-                    accepted: false,
-                    range: req.body.range,
-                    user: req.user.id,
-                    pin: pinId
+                    var reservation = {
+                        accepted: false,
+                        range: req.body.range,
+                        user: req.user.id,
+                        pin: pinId
+                    };
 
-                };
+                    if (!pin.reservations) {
+                        pin.reservations = [];
+                    }
 
-                if(!pin.reservations){
-                    pin.reservations = [];
-                }
-
-                // add reservation
-                pin.reservations.push(reservation);
-
-                if(pin.status != "RESERVED"){
-                    // Update status
-                    pin.status = "RESERVED";
-
-                    // Todo: Create new reservation
-
-                    pin.save(function (err, data) {
+                    // Add reservation
+                    Reservation.create({
+                        accepted: false,
+                        range: req.body.range,
+                        user: req.user.id,
+                        pin: pinId
+                    }, function (err, reservation) {
                         if (err) {
                             console.info(err);
                             return res.serverError(err);
-                        }else{
-                            var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a>";
+                        } else {
+                            console.log("Reservation saved: " + JSON.stringify(reservation));
 
-                            // Send notification to pin owner
-                            Notification.create({
-                                body: message,
-                                sender: req.user.id,
-                                recipient: pin.user.id,
-                                read: false
-                            }, function(err, notification){
-                                // Todo: Push Notification in realtime (socket.io)
-                                if(!err){
-                                    console.info("Pin saved: " + JSON.stringify(pin));
-                                    req.flash('success', 'Pin saved');
-                                    //return res.ok();
-                                    return res.json({id: pin.id})
-                                }
-                            });
+                            // add reservation
+                            pin.reservations.push(reservation);
+
+                            if (pin.status != "RESERVED") {
+                                // Update status
+                                pin.status = "RESERVED";
+
+                                console.log("Trying to add new reservation");
+
+                                // Save Pin
+                                pin.save(function (err, data) {
+                                    if (err) {
+                                        console.info(err);
+                                        return res.serverError(err);
+                                    } else {
+
+                                        var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a>";
+
+                                        // Send notification to pin owner
+                                        Notification.create({
+                                            body: message,
+                                            sender: req.user.id,
+                                            recipient: pin.user.id,
+                                            read: false
+                                        }, function (err, notification) {
+                                            // Todo: Push Notification in realtime (socket.io)
+                                            if (!err) {
+                                                console.info("Pin saved: " + JSON.stringify(pin));
+                                                req.flash('success', 'Pin saved');
+                                                //return res.ok();
+                                                return res.json({id: pin.id})
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                // Pin is alredy reserved by somebody
+                                return res.status(200).send("Pin is already reserved");
+                            }
                         }
                     });
-
-                }else{
-                    // Pin is alredy reserved by somebody
-                    return res.status(200).send("Pin is already reserved");
+                } else {
+                    return res.serverError("Pin cannot be found");
                 }
-
-            } else {
-                return res.serverError("Pin cannot be found");
-            }
-        });
+            });
 
     },
 

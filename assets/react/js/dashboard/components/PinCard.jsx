@@ -140,7 +140,7 @@ var PinCard = React.createClass({
     reserve: function (pinId) {
         var range = this.state.range;
 
-        if(range){
+        if (range) {
             console.log("Needed Range: " + range);
 
             $.ajax({
@@ -150,13 +150,17 @@ var PinCard = React.createClass({
                     range: range.toString()
                 },
                 method: "POST",
-                success: function () {
+                success: function (data) {
                     // Update count
                     //this.setState({pins: data});
                     console.log("item is reserved ! " + pinId);
+                    console.log("Recieved data ! " + JSON.stringify(data));
+                },
+                fail: function (err) {
+                    console.log("Error: " + err);
                 }.bind(this)
             });
-        }else{
+        } else {
             // Todo: show error message + don't close modal
             console.debug("Range not selected!");
             this.setState({
@@ -221,7 +225,7 @@ var PinCard = React.createClass({
             "-webkit-box-shadow": "none;",
             "-moz-box-shadow": "none;",
             "box-shadow": "none;",
-            "width":"auto"
+            "width": "auto"
         };
 
         var published = moment(this.props.pin.createdAt).fromNow();

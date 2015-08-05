@@ -10,9 +10,9 @@ var Reservation = {
         to: {type: 'string'},
         range: {type: 'string'},
         accepted: {type: 'boolean'},
-        payment: {model: 'Payment', required: true},
+        //payment: {model: 'Payment', required: false},
         user: {model: 'User', required: true},
-        pin: {model: 'Pin', required: false}
+        pin: {model: 'Pin', required: true}
     }
 };
 

@@ -20,6 +20,7 @@ module.exports = {
             .populate('user')
             .populate('category')
             .populate('threads')
+            .populate('reservations')
             .then(function (pins) {
                 async.each(pins, function (pin, callback) {
                     // isMine is needed to know if item belongs to user or not
