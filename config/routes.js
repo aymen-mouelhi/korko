@@ -101,7 +101,10 @@ module.exports.routes = {
     'post /action/like/:id': 'ActionController.like',
     'post /action/comment/:id': 'ActionController.comment',
     'post /action/reserve/:id': 'ActionController.reserve',
-    'post /action/remove/:id': 'ActionController.remove'
+    'post /action/remove/:id': 'ActionController.remove',
+
+
+    'get /:userId/pins': 'PinController.getUserPins'
 
 
 };

@@ -139,6 +139,7 @@ var PinCard = React.createClass({
 
     reserve: function (pinId) {
         var range = this.state.range;
+        var self = this;
 
         if (range) {
             console.log("Needed Range: " + range);
@@ -155,6 +156,9 @@ var PinCard = React.createClass({
                     //this.setState({pins: data});
                     console.log("item is reserved ! " + pinId);
                     console.log("Recieved data ! " + JSON.stringify(data));
+
+                    // close modal
+                    self.closeModal();
                 },
                 fail: function (err) {
                     console.log("Error: " + err);

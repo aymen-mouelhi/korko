@@ -26,7 +26,7 @@ module.exports = {
                     // isMine is needed to know if item belongs to user or not
                     pin.isMine = false;
 
-                    if(pin.user.id === req.user.id) {
+                    if (pin.user.id === req.user.id) {
                         pin.isMine = true;
                     }
 
@@ -37,6 +37,39 @@ module.exports = {
                     return res.json(annotatedPins);
                 });
 
+            });
+    },
+
+    /**
+     * Get User Pins
+     * @param req
+     * @param res
+     */
+    getUserPins: function (req, res) {
+        var annotatedPins = [];
+        Pin.find({
+            user: req.params.userId
+        })
+            .populate('location')
+            .populate('user')
+            .populate('category')
+            .populate('threads')
+            .populate('reservations')
+            .then(function (pins) {
+                async.each(pins, function (pin, callback) {
+                    // isMine is needed to know if item belongs to user or not
+                    pin.isMine = false;
+
+                    if (pin.user.id === req.user.id) {
+                        pin.isMine = true;
+                    }
+
+                    annotatedPins.push(pin);
+
+                    callback();
+                }, function (err) {
+                    return res.json(annotatedPins);
+                });
             });
     },
 
@@ -234,6 +267,7 @@ module.exports = {
                 .populate('user')
                 .populate('category')
                 .populate('threads')
+                .populate('reservations')
                 .then(function (pin) {
                     if (!pin) {
                         return res.serverError("Pin is not found");
