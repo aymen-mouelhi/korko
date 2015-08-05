@@ -49,8 +49,10 @@ var PinCard = React.createClass({
             console.debug("Selected range in App.jsx: " + range.toString());
 
             // Todo: Post reservation
-            self.reserve(self.props.pin.id, range);
-            
+            //self.reserve(self.props.pin.id, range);
+
+            self.setState({range: range});
+
         });
     },
 
@@ -91,7 +93,8 @@ var PinCard = React.createClass({
                 // Todo: Display Calendar
                 this.setState({
                     dateRanges: dateRanges,
-                    showModal: true
+                    showModal: true,
+                    range: null
                 });
             }
 
@@ -134,16 +137,29 @@ var PinCard = React.createClass({
         });
     },
 
-    reserve: function (pinId, range) {
-        console.log("item is reserved ! " + pinId);
-        $.ajax({
-            url: "/reserve/" + pinId,
-            method: "POST",
-            success: function (data) {
-                // Update count
-                //this.setState({pins: data});
-            }.bind(this)
-        });
+    reserve: function (pinId) {
+        var range = this.state.range;
+
+        if(range){
+            console.log("Needed Range: " + range);
+
+            $.ajax({
+                url: "/action/reserve/" + pinId,
+                method: "POST",
+                success: function (data) {
+                    // Update count
+                    //this.setState({pins: data});
+                    console.log("item is reserved ! " + pinId);
+                }.bind(this)
+            });
+        }else{
+            // Todo: show error message + don't close modal
+            console.debug("Range not selected!")
+            this.setState({
+                showModal: true
+            });
+        }
+
     },
 
     // Go to pin page

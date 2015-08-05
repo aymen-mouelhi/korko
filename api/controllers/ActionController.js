@@ -36,6 +36,8 @@ module.exports = {
     reserve: function (req, res) {
         console.log("Actions Controller: reserve");
 
+        console.log("Recieved data: " + req.body.range);
+
         var pinId = req.params.id;
 
         Pin.findOne({
