@@ -19,7 +19,6 @@ var Notifications = require('./Notifications.jsx');
 var UserMenu = require('./UserMenu.jsx');
 
 
-
 var Pins = React.createClass({
 
     getInitialState: function () {
@@ -119,12 +118,16 @@ var Pins = React.createClass({
             "margin-left": "-16px"
         };
 
+        var fixedRoght = {
+            "margin-left": "60%"
+        };
+
         if (this.state.pins.length > 0) {
 
             pins = this.state.pins.map(function (pin, index) {
                 //console.debug("Pin" + index + " Info:" + JSON.stringify(pin))
                 return (
-                    <PinCard pin={pin} key={pin.id} />
+                    <PinCard pin={pin} key={pin.id}/>
                 );
             });
         }
@@ -163,10 +166,11 @@ var Pins = React.createClass({
                     </div>
                 </div>
 
-
+                { /*  Some div to test */}
                 <div className="row masonry-container" style={fixedMargin}>
                     {pins}
                 </div>
+
             </div>
         );
     }
