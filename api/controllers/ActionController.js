@@ -86,7 +86,7 @@ module.exports = {
                                         return res.serverError(err);
                                     } else {
 
-                                        var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a>";
+                                        var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
 
                                         // Send notification to pin owner
                                         Notification.create({
@@ -116,6 +116,31 @@ module.exports = {
                 }
             });
 
+    },
+
+
+    confirmReserve: function(req, res){
+        var action = req.query.action;
+
+        Reservation.findOne({
+            id: req.params.id
+        }, function(err, reservation){
+                if (err) {
+                    console.info(err);
+                    return res.serverError(err);
+                } else {
+
+                    if(action === "accept"){
+                        reservation.accepted = true;
+                        reservation.save(function(err, data){
+                            return res.status(200).send("Reservation is accepted");
+                        });
+                    }else{
+                        return res.status(200).send("reservation is cancelled");
+                    }
+                }
+
+        });
     },
 
     remove: function (req, res) {

@@ -103,6 +103,8 @@ module.exports.routes = {
     'post /action/reserve/:id': 'ActionController.reserve',
     'post /action/remove/:id': 'ActionController.remove',
 
+    'get /reserve/:id': 'ActionController.confirmReserve',
+
 
     'get /:userId/pins': 'PinController.getUserPins'
 
