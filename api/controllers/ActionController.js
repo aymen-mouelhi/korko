@@ -119,31 +119,54 @@ module.exports = {
     },
 
 
-    confirmReserve: function(req, res){
+    confirmReserve: function (req, res) {
         var action = req.query.action;
 
         Reservation.findOne({
             id: req.params.id
-        }, function(err, reservation){
-                if (err) {
-                    console.info(err);
-                    return res.serverError(err);
+        }, function (err, reservation) {
+            if (err) {
+                console.info(err);
+                return res.serverError(err);
+            } else {
+                var message = "";
+
+                if (action === "accept") {
+
+                    reservation.accepted = true;
+                    // Todo: Send notification to user to inform him that his reservation was accepted
+                    message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
+
                 } else {
 
-                    if(action === "accept"){
-                        // Todo: Send notification to user to inform him that his reservation was accepted
-                        reservation.accepted = true;
+                    // Neeeded to update last changed on
+                    reservation.accepted = false;
 
-                    }else{
-                        // Todo: Send notification to user to inform him that his reservation was rejected
-                        // Neeeded to update last changed on
-                        reservation.accepted = false;
-                    }
-
-                    reservation.save(function(err, data){
-                        return res.status(200).send("Reservation is accepted");
-                    });
+                    // Todo: Send notification to user to inform him that his reservation was rejected
+                    message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
                 }
+
+                reservation.save(function (err, data) {
+                    return res.status(200).send("Reservation is accepted");
+                });
+
+
+                // Send notification to pin owner
+                Notification.create({
+                    body: message,
+                    sender: req.user.id,
+                    recipient: pin.user.id,
+                    read: false
+                }, function (err, notification) {
+                    // Todo: Push Notification in realtime (socket.io)
+                    if (!err) {
+                        console.info("Pin saved: " + JSON.stringify(pin));
+                        req.flash('success', 'Pin saved');
+                        //return res.ok();
+                        return res.json({id: pin.id})
+                    }
+                });
+            }
 
         });
     },
