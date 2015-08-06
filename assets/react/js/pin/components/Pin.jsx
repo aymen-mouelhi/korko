@@ -76,6 +76,7 @@ var PinForm = React.createClass({
     },
 
     render: function () {
+        // Todo: Handle reservations if user is pin's owner
         var images;
         if (this.state.pin.images) {
             if (this.state.pin.images.length > 0) {
