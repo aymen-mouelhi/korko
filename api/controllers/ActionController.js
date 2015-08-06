@@ -131,13 +131,18 @@ module.exports = {
                 } else {
 
                     if(action === "accept"){
+                        // Todo: Send notification to user to inform him that his reservation was accepted
                         reservation.accepted = true;
-                        reservation.save(function(err, data){
-                            return res.status(200).send("Reservation is accepted");
-                        });
+
                     }else{
-                        return res.status(200).send("reservation is cancelled");
+                        // Todo: Send notification to user to inform him that his reservation was rejected
+                        // Neeeded to update last changed on
+                        reservation.accepted = false;
                     }
+
+                    reservation.save(function(err, data){
+                        return res.status(200).send("Reservation is accepted");
+                    });
                 }
 
         });
