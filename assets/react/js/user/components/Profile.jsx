@@ -103,8 +103,7 @@ var Profile = React.createClass({
             <div className="container" style={marginAuto}>
                 <div className="profile-image">
                     <img className="img-rounded slide img-responsive" src="http://s9.postimg.org/41fwo4k4v/pro.png"/>
-                    <img className="img-thumbnail personal-pic img-responsive"
-                         src="http://s10.postimg.org/rqhogyy3p/image.png"/>
+                    <img className="img-thumbnail personal-pic img-responsive" src="http://s10.postimg.org/rqhogyy3p/image.png"/>
                 </div>
                 <div className="w925px person-info">
                     <div className="panel panel-default">
@@ -115,11 +114,12 @@ var Profile = React.createClass({
                                     { this.state.showPins ? <Pins url="/me/pins"/> : null }
                                 </TabPane>
                                 <TabPane eventKey={3} tab='My Neighborhood' style={pin}>
+                                    <div id="map-container">
                                     { this.state.showNeighborhood ? <Map location={this.state.neighborhood.location} showRemove={true}/> : null }
+                                    </div>
                                 </TabPane>
                                 <TabPane eventKey={4} tab='My neighbours' disabled>TabPane 3 content</TabPane>
                             </TabbedArea>
-
                         </div>
                     </div>
                 </div>
