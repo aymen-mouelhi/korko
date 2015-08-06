@@ -160,12 +160,18 @@ var PinCard = React.createClass({
                     // close modal
                     self.closeModal();
                 },
-                fail: function (err) {
-                    console.log("Error: " + err);
+                error: function (err) {
+                    console.log("Error: " + err.responseText);
+                    // Todo: Show error message
+
+                    // Close modal Dialog
+                    this.setState({
+                        showModal: false
+                    });
                 }.bind(this)
             });
         } else {
-            // Todo: show error message + don't close modal
+            // Todo: show error message
             console.debug("Range not selected!");
             this.setState({
                 showModal: true

@@ -36,8 +36,6 @@ module.exports = {
     reserve: function (req, res) {
         console.log("Actions Controller: reserve");
 
-        console.log("Received data: " + req.body.range);
-
         var pinId = req.params.id;
 
         Pin.findOne({
@@ -57,23 +55,24 @@ module.exports = {
                         pin.reservations = [];
                     }
 
-                    // Add reservation
-                    Reservation.create({
-                        accepted: false,
-                        range: req.body.range,
-                        user: req.user.id,
-                        pin: pinId
-                    }, function (err, reservation) {
-                        if (err) {
-                            console.info(err);
-                            return res.serverError(err);
-                        } else {
-                            console.log("Reservation saved: " + JSON.stringify(reservation));
 
-                            // add reservation
-                            pin.reservations.push(reservation);
+                    console.log("Pin Status is: " + pin.status);
 
-                            if (pin.status != "RESERVED") {
+                    if (pin.status != "RESERVED") {
+                        // Add reservation
+                        Reservation.create({
+                            accepted: false,
+                            range: req.body.range,
+                            user: req.user.id,
+                            pin: pinId
+                        }, function (err, reservation) {
+                            if (err) {
+                                console.info(err);
+                                return res.serverError(err);
+                            } else {
+                                // add reservation
+                                pin.reservations.push(reservation);
+
                                 // Update status
                                 pin.status = "RESERVED";
 
@@ -86,7 +85,9 @@ module.exports = {
                                         return res.serverError(err);
                                     } else {
 
-                                        var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
+                                        var message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><br />" +
+                                            "<a href='/reserve/" + reservation.id + "?action=accept'>Accept</a><br>" +
+                                            "<a href='/reserve/" + reservation.id + "?action=cancel'>Cancel</a>";
 
                                         // Send notification to pin owner
                                         Notification.create({
@@ -96,7 +97,10 @@ module.exports = {
                                             read: false
                                         }, function (err, notification) {
                                             // Todo: Push Notification in realtime (socket.io)
-                                            if (!err) {
+                                            if (err) {
+                                                console.info(err);
+                                                return res.serverError(err);
+                                            } else {
                                                 console.info("Pin saved: " + JSON.stringify(pin));
                                                 req.flash('success', 'Pin saved');
                                                 //return res.ok();
@@ -105,12 +109,14 @@ module.exports = {
                                         });
                                     }
                                 });
-                            } else {
-                                // Pin is alredy reserved by somebody
-                                return res.status(200).send("Pin is already reserved");
+
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        // Pin is alredy reserved by somebody
+                        //return res.status(200).("Pin is already reserved");
+                        return res.serverError("Pin is already reserved");
+                    }
                 } else {
                     return res.serverError("Pin cannot be found");
                 }
@@ -118,24 +124,29 @@ module.exports = {
 
     },
 
-
+    /**
+     * Confirm reservation
+     * @param req
+     * @param res
+     */
     confirmReserve: function (req, res) {
         var action = req.query.action;
 
+        console.log("Action: " + action);
+
         Reservation.findOne({
             id: req.params.id
-        }, function (err, reservation) {
-            if (err) {
-                console.info(err);
-                return res.serverError(err);
-            } else {
+        }).populate("pin")
+            .populate("user")
+            .then(function (reservation) {
+
                 var message = "";
 
                 if (action === "accept") {
 
                     reservation.accepted = true;
                     // Todo: Send notification to user to inform him that his reservation was accepted
-                    message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
+                    message = "Your reservation for <a href='/pin/" + reservation.pin.id + "'> " + reservation.pin.title + "</a> is accepted";
 
                 } else {
 
@@ -143,32 +154,32 @@ module.exports = {
                     reservation.accepted = false;
 
                     // Todo: Send notification to user to inform him that his reservation was rejected
-                    message = "<a href='/martin'>" + req.user.firstName + " " + req.user.lastName + "</a> has booked <a href='/pin/" + pinId + "'> " + pin.title + "</a><a href='/reserve/?id=" + reservation.id + " &action=accept'>Accept</a><a href='/reserve/?id=" + reservation.id + " &action=cancel'>Cancel</a>";
+                    message = "Your reservation for <a href='/pin/" + reservation.pin.id + "'> " + reservation.pin.title + "</a> is not accepted";
                 }
 
                 reservation.save(function (err, data) {
-                    return res.status(200).send("Reservation is accepted");
+
+                    // Send notification to pin owner
+                    Notification.create({
+                        body: message,
+                        sender: reservation.pin.user,
+                        recipient: reservation.user.id,
+                        read: false
+                    }, function (err, notification) {
+                        // Todo: Push Notification in realtime (socket.io)
+                        if (err) {
+                            console.info(err);
+                            return res.serverError(err);
+                        } else {
+                            req.flash('success', 'reservation handled');
+                            //return res.ok();
+                            return res.json({id: notification.id})
+                        }
+                    });
+
                 });
-
-
-                // Send notification to pin owner
-                Notification.create({
-                    body: message,
-                    sender: req.user.id,
-                    recipient: pin.user.id,
-                    read: false
-                }, function (err, notification) {
-                    // Todo: Push Notification in realtime (socket.io)
-                    if (!err) {
-                        console.info("Pin saved: " + JSON.stringify(pin));
-                        req.flash('success', 'Pin saved');
-                        //return res.ok();
-                        return res.json({id: pin.id})
-                    }
-                });
-            }
-
-        });
+                
+            });
     },
 
     remove: function (req, res) {
