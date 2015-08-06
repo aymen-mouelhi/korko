@@ -238,6 +238,8 @@ var Map = React.createClass({
 
         var location = this.props.location;
 
+        console.debug("Receieved location in Map: " + location);
+
         var neighborhood;
         var type = "";
 

@@ -15,20 +15,25 @@ module.exports = {
         })
             .populate("location")
             .then(function (neighborhood) {
-            if (neighborhood) {
-                console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
-                req.user.neighborhoods = neighborhood.location;
-                return res.view();
-            } else {
-                console.info("Neighborhood is not found");
-                return res.view();
-            }
-        });
-
+                if (neighborhood) {
+                    console.info("retrived neighborhood: " + JSON.stringify(neighborhood.location));
+                    req.user.neighborhoods = neighborhood.location;
+                    return res.view();
+                } else {
+                    console.info("Neighborhood is not found");
+                    return res.view();
+                }
+            });
     },
 
-    update: function (req, res) {
+    profile: function (req, res) {
+        return res.view({
+            errors: req.flash('error')
+        });
+    },
 
+
+    update: function (req, res) {
         // Get neighborhood
         var neighborhood = JSON.parse(req.body.neighborhood);
 
@@ -57,5 +62,28 @@ module.exports = {
 
             });
         });
+    },
+
+    getMyInformation: function (req, res) {
+        User.findOne({
+            id: req.user.id
+        }).populate("neighborhoods")
+            .then(function (user) {
+                if (user) {
+                    if(user.neighborhoods.length > 0){
+                        Neighborhood.findOne({
+                            id: user.neighborhoods[0].id
+                        }).populate("location")
+                            .then(function(neighborhood){
+                                user.neighborhoods = [];
+                                user.neighborhoods.push(neighborhood);
+
+                                res.json(user);
+                            })
+                    }else{
+                        res.json(user);
+                    }
+                }
+            });
     }
 };

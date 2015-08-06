@@ -15,8 +15,7 @@ var imagesLoaded = require('imagesloaded');
 var masonry = require('masonry');
 
 var PinCard = require('./PinCard.jsx');
-var Notifications = require('./Notifications.jsx');
-var UserMenu = require('./UserMenu.jsx');
+
 
 
 var Pins = React.createClass({
@@ -46,58 +45,21 @@ var Pins = React.createClass({
             });
         });
 
-
-        var homeClass;
-        var createClass;
-        var mapClass;
-
-        switch (this.props.page) {
-            case "home":
-                homeClass = "active";
-                break;
-            case "create":
-                createClass = "active";
-                break;
-            case "map":
-                mapClass = "active";
-                break;
-            default:
-                homeClass = "active";
-                break;
-        }
-
-        this.setState({
-            homeClass: homeClass,
-            createClass: createClass,
-            mapClass: mapClass
-        });
-
-    },
-
-
-    handleSubmit: function (event) {
-        // Prevent Default Behavior
-        event.preventDefault();
-
-        // Get query
-        var query = $('#search').val();
-
-        if (query.length > 0) {
-            $.ajax({
-                url: "/search/" + query,
-                method: "GET",
-                success: function (data) {
-                    // Update count
-                    this.setState({pins: data});
-                }.bind(this)
-            });
-        }
     },
 
     // Load Pins
     getPins: function () {
+
+        var url = "";
+
+        if (!this.props.url) {
+            url = "/pin";
+        } else {
+            url = this.props.url;
+        }
+
         $.ajax({
-            url: "/pin",
+            url: url,
             success: function (data) {
                 this.setState({pins: data.reverse()});
             }.bind(this)
@@ -110,16 +72,8 @@ var Pins = React.createClass({
         var self = this;
 
 
-        var searchStyle = {
-            "margin-top": "12px"
-        };
-
         var fixedMargin = {
             "margin-left": "-16px"
-        };
-
-        var fixedRoght = {
-            "margin-left": "60%"
         };
 
         if (this.state.pins.length > 0) {
@@ -132,46 +86,13 @@ var Pins = React.createClass({
             });
         }
         return (
+
             <div>
-                {/* <Header /> */}
-                <div className="navbar">
-                    <div className="navbar-inner">
-                        <a className="brand" href="#">Korko</a>
-                        <ul className="nav">
-                            <li className={this.state.homeClass}>
-                                <a href="/">Home</a>
-                            </li>
-                            <li className={this.state.createClass}>
-                                <a href="/pin/create">Add</a>
-                            </li>
-                            <li className={this.state.mapClass}>
-                                <a href="/map/app">Browse</a>
-                            </li>
-                        </ul>
-
-                        {/* Search Part */}
-                        <form role="form" onSubmit={this.handleSubmit} className="navbar-search pull-left"
-                              style={searchStyle}>
-                            <input id="search" type="text" className="search-query" placeholder="Search"/>
-                        </form>
-
-                        <ul className="nav pull-right">
-                            {/* Notifications Part */}
-                            <Notifications />
-
-                            {/* User Part: is it needed? */}
-                            <UserMenu />
-                        </ul>
-
-                    </div>
-                </div>
-
-                { /*  Some div to test */}
                 <div className="row masonry-container" style={fixedMargin}>
                     {pins}
                 </div>
-
             </div>
+
         );
     }
 });

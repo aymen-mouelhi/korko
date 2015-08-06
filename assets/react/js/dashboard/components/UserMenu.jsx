@@ -63,7 +63,7 @@ var UserMenu = React.createClass({
 
                 <ul className="dropdown-menu dropdown-notifications">
                     <li>
-                        <span className="title"><a href="/user/account">My Profil</a></span>
+                        <span className="title"><a href="/user/profile">My Profil</a></span>
                     </li>
                     <li>
                         <span className="title">My Pins</span>

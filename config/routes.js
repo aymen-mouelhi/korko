@@ -102,11 +102,11 @@ module.exports.routes = {
     'post /action/comment/:id': 'ActionController.comment',
     'post /action/reserve/:id': 'ActionController.reserve',
     'post /action/remove/:id': 'ActionController.remove',
-
     'get /reserve/:id': 'ActionController.confirmReserve',
 
 
-    'get /:userId/pins': 'PinController.getUserPins'
+    'get /:userId/pins': 'PinController.getUserPins',
+    'get /me': 'UserController.getMyInformation'
 
 
 };

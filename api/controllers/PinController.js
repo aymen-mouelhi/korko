@@ -47,8 +47,15 @@ module.exports = {
      */
     getUserPins: function (req, res) {
         var annotatedPins = [];
+
+        var userId = req.params.userId;
+
+        if (userId === "me") {
+            userId = req.user.id;
+        }
+
         Pin.find({
-            user: req.params.userId
+            user: userId
         })
             .populate('location')
             .populate('user')

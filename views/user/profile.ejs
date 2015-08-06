@@ -1,1 +1,66 @@
-<!-- Todo: User's Profile Page -->
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>
+<!-- Bootplus -->
+<link href="/bower_components/bootplus/docs/assets/css/bootplus.css" rel="stylesheet" media="screen">
+<link href="/bower_components/bootplus/docs/assets/css/bootplus-responsive.css" rel="stylesheet" media="screen">
+<!--[if IE 7]>
+<link rel="stylesheet" href="/bower_components/bootplus/docs/assets/css/bootplus-ie7.min.css">
+<![endif]-->
+
+<style>
+    .profile-image {
+        margin: 50px auto !important;
+        text-align: center !important;
+        position: relative;
+    }
+
+    .slide {
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    .personal-pic {
+        display: block;
+        position: relative;
+        z-index: 2;
+        top: -83px;
+        left: 12px;
+        float: left;
+    }
+
+    .person-info {
+        float: right;
+        margin: -40px 71px -40px auto;
+        width: 808px;
+    }
+
+    @media only screen
+    and (min-width: 1224px) {
+        .profile-image {
+            margin: 50px auto !important;
+            text-align: center !important;
+            width: 1000px;
+            position: relative;
+        }
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div id="react" style="margin: 0px;"></div>
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/bower_components/moment/min/moment.min.js"></script>
+<script src="/bower_components/moment-range/dist/moment-range.js"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true&libraries=drawing"></script>
+<script src="/bower_components/geolocator/src/geolocator.js"></script>
+<script>
+    window.geolocator = geolocator;
+</script>
+<script src="/react/js/user/main.js"></script>
