@@ -29,12 +29,16 @@ var PinForm = React.createClass({
 
         var pin = JSON.parse(this.props.pin);
         var showCalendar = false;
+        var showReservations = false;
 
         if (pin.category) {
             // check category
             if (pin.category.title.indexOf('Sharing') > -1) {
                 // Display Calendar
                 showCalendar = true;
+                if (pin.isMine) {
+                    showReservations = true;
+                }
             }
         }
 
@@ -42,7 +46,8 @@ var PinForm = React.createClass({
             pin: pin,
             location: {},
             category: pin.category,
-            showCalendar: showCalendar
+            showCalendar: showCalendar,
+            showReservations: showReservations
         }
     },
 
@@ -143,13 +148,23 @@ var PinForm = React.createClass({
                                 <p id="category" class="form-control-static">{this.state.price}</p>
                             </div>
 
-
                         </div>
                     </div>
 
                     { this.state.showCalendar ? <div className="panel panel-default">
                         <div className="panel-heading">
                             <h3 className="panel-title">Availability</h3>
+                        </div>
+                        <div className="wrapper">
+                            <div className="panel-body">
+                                <Calendar dateRanges={dateRanges} defaultState="unavailable"/>
+                            </div>
+                        </div>
+                    </div> : null }
+
+                    { this.state.showReservations ? <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h3 className="panel-title">Reservations</h3>
                         </div>
                         <div className="wrapper">
                             <div className="panel-body">

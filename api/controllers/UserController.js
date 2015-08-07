@@ -32,6 +32,12 @@ module.exports = {
         });
     },
 
+    calendar: function (req, res) {
+        return res.view({
+            errors: req.flash('error')
+        });
+    },
+
 
     update: function (req, res) {
         // Get neighborhood

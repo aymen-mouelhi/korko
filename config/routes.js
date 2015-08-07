@@ -85,6 +85,8 @@ module.exports.routes = {
     'get /pin/create': 'PinController.create',
     'post /pin/:id': 'PinController.update',
     'get /pin/:id': 'PinController.update',
+    // Todo: Implement method to get events (bookings for a pin)
+    'get /pin/:id/events': 'PinController.getPinEvents',
 
     'get /search/:query': 'PinController.search',
 
@@ -106,6 +108,8 @@ module.exports.routes = {
 
 
     'get /:userId/pins': 'PinController.getUserPins',
+    // Todo: Implement method to get events (bookings for a user)
+    'get /:userId/events': 'PinController.getUserEvents',
     'get /me': 'UserController.getMyInformation'
 
 
